@@ -278,6 +278,10 @@
       <button class="navitem" data-page="publico" aria-current="false">Comportamento de Usuário</button>
       <button class="navitem" data-page="portabilidade" aria-current="false">Padrão de Portabilidade</button>
     </nav>
+    <div class="nav-sec">Ferramentas</div>
+    <nav>
+      <button class="navitem" data-page="analises" aria-current="false">Análises de Ofertas</button>
+    </nav>
     <button id="themeToggle" class="theme-toggle" type="button"><span class="tdot"></span><span id="themeLabel">Modo claro</span></button>
     <div class="nav-soon">Atualizado: <b>10/ago/2026</b><br>Páginas de ofertas/criativos/VSL são atualizadas a cada acesso. Dossiês só sob demanda.</div>
   </aside>
@@ -928,6 +932,40 @@
       <div class="note" style="margin-top:12px"><b>Metodologia:</b> "overlap provado" = mesma família de produto/ângulo detectada em Facebook <b>e</b> em Native nos swipes (MonsterSwipe agrega Swipe Offers via fonte <span class="mono">SO</span>). Score pondera: nº de overlaps · maturidade da infra de checkout · fit do público native (45+) · nível de concorrência da rede (mar azul). Dossiê estático — peça pra atualizar quando quiser.</div>
     </div>
   </div><!-- /page-portabilidade -->
+
+  <div class="page" id="page-analises">
+    <div class="wrap">
+      <header>
+        <div>
+          <div class="eyebrow">Ferramenta · Análise de Ofertas</div>
+          <h1>Análises de Ofertas</h1>
+          <p>Biblioteca de ofertas analisadas: qual rede rodar, qual criativo (vídeo/imagem) e todo o porquê. Traga uma oferta no chat que eu registro a análise aqui.</p>
+        </div>
+        <div class="snapshot"><b>Análise sob demanda</b><br>por oferta<br>rede · criativo · porquê</div>
+      </header>
+
+      <div class="insight"><h3>Como usar</h3><p>Me mande no chat o <b>advertorial (link ou texto), a VSL e o produto</b> de qualquer oferta. Eu abro o funil, vejo os criativos reais e devolvo o veredito — e registro como um card aqui embaixo. Cada análise traz: <b>rede recomendada · alternativas · tipo de criativo · público · custo/concorrência · portabilidade · daypart · risco (white/grey/black) · veredito</b>.</p></div>
+
+      <div class="sec-label">Exemplo de análise <span class="tag">modelo do que você recebe</span></div>
+      <div class="regcards" id="anaList">
+        <article class="regcard us">
+        <div class="regcard-h"><span class="regcard-t">Bariatric Gelatin</span><span class="regcard-sub">emagrecimento (gelatina) · físico · 🇺🇸 EN</span></div>
+        <div class="reg-row"><span class="reg-k">Oferta</span><span class="reg-v">Gelatina com 'efeito bariátrico'. Advertorial (firstminutejournal) + VSL, checkout CartPanda. Ativa hoje, 589 anúncios, ~7 meses no ar (evergreen).</span></div>
+        <div class="reg-row"><span class="reg-k">Público</span><span class="reg-v">Mulher 40–55 que quer emagrecer sem cirurgia/remédio. Dor de massa, público native clássico.</span></div>
+        <div class="reg-row"><span class="reg-k">Rede #1</span><span class="reg-v"><b>Revcontent (EUA)</b> — concorrência baixa (mar azul), CPC US$0,01–0,20, vertical nutra/health, público dos EUA.</span></div>
+        <div class="reg-row"><span class="reg-k">Alternativas</span><span class="reg-v"><b>NewsBreak</b> (mulher 45+ suburbana, saúde) · <b>Taboola</b> (escala) · <b>MGID</b> se quiser levar pro BR/LatAm.</span></div>
+        <div class="reg-row"><span class="reg-k">Criativo</span><span class="reg-v"><b>VÍDEO</b> (VSL). A oferta já roda VSL e emagrecimento no native é ~80% vídeo (esta tem 38 vídeos vs 9 imagens). Imagem estática só como teste secundário no below-article.</span></div>
+        <div class="reg-row"><span class="reg-k">Custo / concorrência</span><span class="reg-v">Revcontent = entrada barata + leilão pouco disputado → CPC baixo pra achar o vencedor e escalar.</span></div>
+        <div class="reg-row"><span class="reg-k">Portabilidade</span><span class="reg-v">Overlap FB↔native <b>FORTE</b>: gelatina roda nos 2 canais (Leanzene/MeltDrops no FB ↔ Bariatric/Gelatine Slim no native). Advertorial pronto = copia-e-cola.</span></div>
+        <div class="reg-row"><span class="reg-k">Daypart</span><span class="reg-v">Sem daypart sólido público p/ Revcontent — começar full-day e otimizar por horário nos primeiros dias.</span></div>
+        <div class="reg-row"><span class="reg-k">Risco</span><span class="reg-v"><span class="pill cls-g">Grey</span> — produto físico real + checkout CartPanda; hook agressivo mas sem prometer milagre em 1 dia. Atenção: o domínio rotaciona (recriar).</span></div>
+        <div class="reg-row" style="border-top:1px solid var(--border2)"><span class="reg-k" style="color:var(--accent)">Veredito</span><span class="reg-v"><b>Clonar o advertorial de gelatina EN e subir na Revcontent (mar azul US), criativo em vídeo. Portabilidade 92/100 — a maior aposta.</b></span></div>
+      </article>
+      </div>
+
+      <div class="note" style="margin-top:16px"><h4>Fila</h4><p>Sem novas ofertas na fila. Manda a primeira que eu analiso e adiciono aqui. 🕊</p></div>
+    </div>
+  </div><!-- /page-analises -->
   </main>
 </div><!-- /app -->
 
@@ -940,7 +978,7 @@
     const mount=document.getElementById('publico-mount'), aud=document.getElementById('p-audience');
     if(mount&&aud){ aud.classList.add('active'); mount.appendChild(aud); }
     const items=[...document.querySelectorAll('.navitem')];
-    const pages={ofertas:document.getElementById('page-ofertas'),publico:document.getElementById('page-publico'),frescor:document.getElementById('page-frescor'),portabilidade:document.getElementById('page-portabilidade')};
+    const pages={ofertas:document.getElementById('page-ofertas'),publico:document.getElementById('page-publico'),frescor:document.getElementById('page-frescor'),portabilidade:document.getElementById('page-portabilidade'),analises:document.getElementById('page-analises')};
     items.forEach(b=>b.addEventListener('click',()=>{
       items.forEach(x=>x.setAttribute('aria-current', x===b));
       Object.entries(pages).forEach(([k,p])=>p.classList.toggle('active',k===b.dataset.page));
