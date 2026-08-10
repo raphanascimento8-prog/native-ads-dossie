@@ -2,14 +2,14 @@
 <title>Native Ads — Inteligência de Ofertas White</title>
 <style>
   :root{
-    --bg:#14110d;--bg2:#1a1611;--surface:#1c1813;--surface2:#221d17;
-    --border:#2e2820;--border2:#3a332a;
-    --text:#ece4d6;--muted:#a79b88;--faint:#766e5f;
-    --white-c:#9dbba6;--white-bg:#15211a;
-    --grey-c:#c2a98a;--grey-bg:#241e13;
-    --black-c:#c08a80;--black-bg:#241615;
-    --accent:#c7a667;--accent-soft:#241e14;--link:#c7a667;
-    --ok:#9dbba6;--warn:#d2b473;--bad:#c08a80;
+    --bg:#161514;--bg2:#1c1b19;--surface:#1e1d1a;--surface2:#242320;
+    --border:#302e2a;--border2:#3c3a35;
+    --text:#e9e6e0;--muted:#a29c93;--faint:#6f6b63;
+    --white-c:#9dbba6;--white-bg:#17201b;
+    --grey-c:#bcb0a0;--grey-bg:#211e17;
+    --black-c:#c08a80;--black-bg:#221716;
+    --accent:#c7a667;--accent-soft:#201e18;--link:#c7a667;
+    --ok:#9dbba6;--warn:#cdb488;--bad:#c08a80;
     --shadow:0 1px 0 rgba(255,255,255,.015),0 24px 50px -32px rgba(0,0,0,.75);
     --mono:ui-monospace,"SF Mono","Cascadia Code","Roboto Mono",Consolas,monospace;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -23,10 +23,10 @@
     --ok:#5e7e67;--warn:#a8843c;--bad:#a65b4e;
     --shadow:0 1px 2px rgba(40,32,20,.04),0 24px 48px -34px rgba(40,32,20,.16);}}
   :root[data-theme="dark"]{
-    --bg:#14110d;--bg2:#1a1611;--surface:#1c1813;--surface2:#221d17;--border:#2e2820;--border2:#3a332a;
-    --text:#ece4d6;--muted:#a79b88;--faint:#766e5f;--white-c:#9dbba6;--grey-c:#c2a98a;--black-c:#c08a80;
-    --white-bg:#15211a;--grey-bg:#241e13;--black-bg:#241615;
-    --accent:#c7a667;--accent-soft:#241e14;--link:#c7a667;--ok:#9dbba6;--warn:#d2b473;--bad:#c08a80;
+    --bg:#161514;--bg2:#1c1b19;--surface:#1e1d1a;--surface2:#242320;--border:#302e2a;--border2:#3c3a35;
+    --text:#e9e6e0;--muted:#a29c93;--faint:#6f6b63;--white-c:#9dbba6;--grey-c:#bcb0a0;--black-c:#c08a80;
+    --white-bg:#17201b;--grey-bg:#211e17;--black-bg:#221716;
+    --accent:#c7a667;--accent-soft:#201e18;--link:#c7a667;--ok:#9dbba6;--warn:#cdb488;--bad:#c08a80;
     --shadow:0 1px 0 rgba(255,255,255,.015),0 24px 50px -32px rgba(0,0,0,.75);}
   :root[data-theme="light"]{
     --bg:#f6f2ea;--bg2:#efeae0;--surface:#fcfaf5;--surface2:#f3eee4;--border:#e5dece;--border2:#d6cdba;
@@ -253,6 +253,11 @@
   .intel{gap:12px;padding-top:15px;}
   .cell{padding:11px 13px;}
   @media(max-width:860px){.wrap{padding:30px 20px 72px;}header h1{font-size:30px;}}
+
+  /* ===== theme toggle ===== */
+  .theme-toggle{margin-top:12px;appearance:none;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;padding:10px 12px;border-radius:8px;cursor:pointer;width:100%;text-align:left;display:flex;align-items:center;gap:8px;transition:border-color .15s,color .15s;}
+  .theme-toggle:hover{border-color:var(--border2);color:var(--text);}
+  .theme-toggle .tdot{width:9px;height:9px;border-radius:50%;border:1px solid currentColor;background:linear-gradient(90deg,currentColor 50%,transparent 50%);flex:none;}
 </style>
 
 <div class="app">
@@ -270,6 +275,7 @@
       <button class="navitem" data-page="portabilidade" aria-current="false">Padrão de Portabilidade</button>
     </nav>
     <div class="nav-soon">Atualizado: <b>10/ago/2026</b><br>Páginas de ofertas/criativos/VSL são atualizadas a cada acesso. Dossiês só sob demanda.</div>
+    <button id="themeToggle" class="theme-toggle" type="button"><span class="tdot"></span><span id="themeLabel">Modo claro</span></button>
   </aside>
   <main class="main">
   <div class="page active" id="page-ofertas">
@@ -1110,5 +1116,13 @@
   function renderMicroChips(){[...microWrap.querySelectorAll('.chip')].forEach(x=>x.remove());const t=TAX.find(x=>x.b===curBig);mkChip(microWrap,'Todos','all'===curMicro,nfor(curBig).length,()=>{curMicro='all';renderNicheTable();});t.m.forEach(m=>{const cnt=OFF.filter(o=>o.b===curBig&&o.mi===m).length;mkChip(microWrap,m,m===curMicro,cnt,()=>{curMicro=m;renderNicheTable();});});}
   function renderNicheTable(){if(!nTable)return;const list=OFF.filter(o=>o.b===curBig&&(curMicro==='all'||o.mi===curMicro)&&(!wtc.checked||o.c!=='b'));if(!list.length){nTable.innerHTML='<div style="padding:28px;text-align:center;color:var(--faint);font-size:13px">Sem oferta desse nicho na amostra atual. (Estrutura pronta — some ofertas aqui ao ampliar as fontes.)</div>';return;}const rows=list.map(o=>`<tr><td class="name">${o.n} ${o.f?'<span title="checar copy do funil" style="color:var(--warn)"></span>':''}</td><td>${o.mi}</td><td class="geo">${o.g}</td><td>${o.s==='now'?'agora':'já escalou'}</td><td><span class="dot ${o.c}"></span>${CN[o.c]}</td><td class="ads">${o.a}</td></tr>`).join('');nTable.innerHTML=`<table><thead><tr><th>Oferta</th><th>Micro-nicho</th><th>Geo</th><th>Status</th><th>Classe</th><th style="text-align:right">Anúncios</th></tr></thead><tbody>${rows}</tbody></table>`;}
   renderBigChips();renderMicroChips();renderNicheTable();
-</script>
-</body></html>
+
+  /* ===== theme toggle ===== */
+  (function(){
+    const root=document.documentElement, btn=document.getElementById("themeToggle"), lbl=document.getElementById("themeLabel"), KEY="nd-theme";
+    function apply(t){root.setAttribute("data-theme",t); if(lbl) lbl.textContent = t==="dark" ? "Modo claro" : "Modo escuro";}
+    const saved=localStorage.getItem(KEY);
+    apply(saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
+    if(btn) btn.addEventListener("click", function(){ const cur=root.getAttribute("data-theme")||"dark"; const next=cur==="dark"?"light":"dark"; try{localStorage.setItem(KEY,next);}catch(e){} apply(next); });
+  })();
+</script></body></html>
