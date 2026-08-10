@@ -263,21 +263,32 @@
   .ptab{appearance:none;border:0;background:transparent;color:var(--muted);font-family:var(--sans);font-size:12.5px;font-weight:500;padding:8px 15px;border-radius:7px;cursor:pointer;}
   .ptab[aria-selected="true"]{background:var(--surface2);color:var(--text);box-shadow:inset 0 0 0 1px var(--border2);}
 
-  /* ===== item dourado cintilante (Análises de Ofertas) ===== */
+  /* ===== item dourado sólido + brilho (Análises de Ofertas) ===== */
   .navitem.gold{
-    color:#2b2109; font-weight:600; border:1px solid #caa64e;
-    background:linear-gradient(100deg,#7d611f 0%,#b98f38 16%,#e7c96f 34%,#f7e7ac 50%,#e7c96f 66%,#b98f38 84%,#7d611f 100%);
-    background-size:220% 100%;
-    box-shadow:0 3px 14px -5px rgba(201,162,74,.55), inset 0 1px 0 rgba(255,255,255,.35);
-    animation:goldShine 3.4s linear infinite;
-    text-shadow:0 1px 0 rgba(255,245,210,.35);
+    color:#2b2109; font-weight:600; border:1px solid #d8b45c; position:relative; overflow:hidden;
+    background:linear-gradient(175deg,#f4da8b 0%,#e6bd5b 40%,#cf9f3c 78%,#bd8d2f 100%);
+    box-shadow:0 4px 16px -6px rgba(201,162,74,.6), inset 0 1px 0 rgba(255,255,255,.5);
+    text-shadow:0 1px 0 rgba(255,245,210,.4);
   }
-  .navitem.gold:hover,.navitem.gold[aria-current="true"]{ color:#2b2109; border-color:#e7c96f;
-    background:linear-gradient(100deg,#7d611f 0%,#b98f38 16%,#e7c96f 34%,#f7e7ac 50%,#e7c96f 66%,#b98f38 84%,#7d611f 100%);
-    background-size:220% 100%; animation:goldShine 3.4s linear infinite; }
+  .navitem.gold::after{ content:""; position:absolute; top:-20%; left:-70%; width:45%; height:140%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent); transform:skewX(-18deg);
+    animation:goldSweep 3.8s ease-in-out infinite; pointer-events:none; }
+  @keyframes goldSweep{ 0%{left:-70%} 60%{left:130%} 100%{left:130%} }
+  .navitem.gold:hover,.navitem.gold[aria-current="true"]{ color:#2b2109; border-color:#f4da8b;
+    background:linear-gradient(175deg,#f8e29c 0%,#eec468 40%,#dba845 78%,#c99636 100%); }
   .navitem.gold[aria-current="true"]::before{ background:#4a3a12; }
-  @keyframes goldShine{ 0%{background-position:220% 0} 100%{background-position:-220% 0} }
-  @media (prefers-reduced-motion:reduce){ .navitem.gold{animation:none; background-position:50% 0;} }
+  @media (prefers-reduced-motion:reduce){ .navitem.gold::after{display:none;} }
+
+
+  .ana-form{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:18px;display:flex;flex-direction:column;gap:14px;}
+  .ana-form label{display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);}
+  .ana-form textarea,.ana-form input,.ana-form select{font-family:var(--sans);font-size:13px;color:var(--text);background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 11px;letter-spacing:0;text-transform:none;}
+  .ana-form textarea{resize:vertical;min-height:54px;}
+  .ana-form select{cursor:pointer;}
+  .ana-form textarea:focus,.ana-form input:focus,.ana-form select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);}
+  .ana-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:13px;}
+  .ana-run{align-self:flex-start;appearance:none;border:1px solid var(--accent);background:var(--accent);color:#1c1608;font-family:var(--sans);font-weight:600;font-size:13px;padding:11px 24px;border-radius:9px;cursor:pointer;}
+  .ana-run:hover{filter:brightness(1.07);}
 </style>
 
 <div class="app">
@@ -960,7 +971,22 @@
         <div class="snapshot"><b>Análise sob demanda</b><br>por oferta<br>rede · criativo · porquê</div>
       </header>
 
-      <div class="insight"><h3>Como usar</h3><p>Me mande no chat o <b>advertorial (link ou texto), a VSL e o produto</b> de qualquer oferta. Eu abro o funil, vejo os criativos reais e devolvo o veredito — e registro como um card aqui embaixo. Cada análise traz: <b>rede recomendada · alternativas · tipo de criativo · público · custo/concorrência · portabilidade · daypart · risco (white/grey/black) · veredito</b>.</p></div>
+      <div class="ana-form">
+        <label>Advertorial / oferta (cole a headline ou o texto)
+          <textarea id="fAdv" rows="3" placeholder="Ex.: Truque da gelatina que imita o efeito da cirurgia bariátrica sem remédio..."></textarea></label>
+        <div class="ana-grid">
+          <label>Produto <input id="fProd" type="text" placeholder="Ex.: Bariatric Gelatin"></label>
+          <label>VSL / funil (link, opcional) <input id="fVsl" type="text" placeholder="https://..."></label>
+          <label>Nicho <select id="fNicho"><option value="auto">Detectar automaticamente</option><option value="emagrecimento">Emagrecimento</option><option value="diabetes">Diabetes/glicose</option><option value="prostata">Próstata</option><option value="memoria">Memória</option><option value="articulacoes">Articulações/dor</option><option value="fungos">Fungos (unha)</option><option value="calvicie">Cabelo/calvície</option><option value="beleza">Pele/beleza</option><option value="adulto">Adulto/ED</option><option value="coracao">Coração/pressão</option><option value="digestao">Digestão</option><option value="financas">Finanças/renda</option><option value="energia">Energia/DIY</option><option value="educacao">Educação/idioma</option><option value="espiritualidade">Espiritualidade</option><option value="outros">Outros/geral</option></select></label>
+          <label>Região <select id="fReg"><option value="us">EUA (EN)</option><option value="br">Brasil (PT)</option><option value="eu">Europa</option></select></label>
+          <label>Público (gênero) <select id="fGen"><option value="auto">Auto (pelo nicho)</option><option value="Homem">Homem</option><option value="Mulher">Mulher</option><option value="Ambos">Ambos</option></select></label>
+          <label>Ticket <select id="fTicket"><option>Low</option><option>Mid</option><option>High</option></select></label>
+          <label>Tipo de produto <select id="fTipo"><option>Suplemento físico</option><option>Infoproduto/curso</option><option>Device</option><option>Guia digital</option><option>E-commerce</option></select></label>
+          <label>Formato do funil <select id="fFmt"><option>Advertorial + VSL</option><option>Quiz</option><option>Advertorial</option><option>TSL</option></select></label>
+        </div>
+        <button id="anaRun" class="ana-run" type="button">Gerar relatório</button>
+      </div>
+      <div id="anaOutput"></div>
 
       <div class="sec-label">Exemplo de análise <span class="tag">modelo do que você recebe</span></div>
       <div class="regcards" id="anaList">
@@ -1150,5 +1176,53 @@
       tabs.forEach(function(x){ x.setAttribute("aria-selected", x===t?"true":"false"); });
       for(var k in views){ if(views[k]) views[k].style.display = (k===t.dataset.v)?"":"none"; }
     }); });
+  })();
+
+  /* ===== Analisador de Oferta (client-side) ===== */
+  (function(){
+    var NICHES={"emagrecimento":{"label":"Emagrecimento","gen":"Mulher 35–55","cre":"video","port":"forte (gelatina/receita roda em FB e native)","net":{"us":["Revcontent","NewsBreak","Taboola"],"br":["MGID","Taboola"],"eu":["MGID","Outbrain"]}},"diabetes":{"label":"Diabetes/glicose","gen":"Ambos 50+","cre":"video","port":"forte (salt/vinagre em FB e native)","net":{"us":["NewsBreak","Taboola","Revcontent"],"br":["Taboola","MGID"],"eu":["Outbrain","MGID"]}},"prostata":{"label":"Próstata","gen":"Homem 50+","cre":"video","port":"média-forte","net":{"us":["Taboola","Outbrain","NewsBreak"],"br":["Taboola","MGID"],"eu":["Outbrain","MGID"]}},"memoria":{"label":"Memória/cognição","gen":"55+","cre":"video","port":"média","net":{"us":["NewsBreak","Taboola"],"br":["Taboola","MGID"],"eu":["Outbrain"]}},"articulacoes":{"label":"Articulações/dor","gen":"55+","cre":"video","port":"média","net":{"us":["Taboola","Outbrain"],"br":["MGID","Taboola"],"eu":["Outbrain","MGID"]}},"fungos":{"label":"Fungos (unha)","gen":"Misto 45+","cre":"video","port":"média","net":{"us":["Revcontent","Taboola","MGID"],"br":["MGID"],"eu":["MGID","Outbrain"]}},"calvicie":{"label":"Cabelo/calvície","gen":"Homem/misto","cre":"video","port":"média","net":{"us":["Revcontent","Taboola"],"br":["MGID","Taboola"],"eu":["MGID"]}},"beleza":{"label":"Pele/beleza","gen":"Mulher 30+","cre":"video+imagem","port":"média","net":{"us":["Revcontent","Taboola"],"br":["MGID","Taboola"],"eu":["Outbrain","MGID"]}},"adulto":{"label":"Adulto/ED","gen":"Homem","cre":"imagem+video","port":"média (restrito no native mainstream)","net":{"us":["Traffic Junky"],"br":["Traffic Junky"],"eu":["Traffic Junky"]}},"coracao":{"label":"Coração/pressão","gen":"50+","cre":"video","port":"média","net":{"us":["NewsBreak","Taboola","Outbrain"],"br":["Taboola","MGID"],"eu":["Outbrain"]}},"digestao":{"label":"Digestão/intestino","gen":"Misto 40+","cre":"video","port":"média","net":{"us":["Taboola","NewsBreak"],"br":["MGID","Taboola"],"eu":["Outbrain","MGID"]}},"financas":{"label":"Finanças/renda","gen":"Homem afluente","cre":"video+imagem","port":"média","net":{"us":["Bing","Outbrain","MediaGo"],"br":["Bing","Taboola"],"eu":["Outbrain","Bing"]}},"energia":{"label":"Energia/DIY","gen":"Homem","cre":"video","port":"baixa (white evergreen)","net":{"us":["Taboola","Bing","MediaGo"],"br":["Taboola","MGID"],"eu":["Outbrain"]}},"educacao":{"label":"Educação/idioma","gen":"Misto","cre":"video","port":"baixa-média","net":{"us":["Taboola"],"br":["Taboola","MGID"],"eu":["Outbrain"]}},"espiritualidade":{"label":"Espiritualidade","gen":"Misto","cre":"video","port":"média (mas quase tudo black)","net":{"us":["Taboola","MGID"],"br":["Taboola","MGID"],"eu":["MGID"]}},"outros":{"label":"Outros/geral","gen":"—","cre":"video","port":"—","net":{"us":["Taboola","MGID"],"br":["MGID","Taboola"],"eu":["Outbrain","MGID"]}}}, NETINFO={"Revcontent":"concorrência de afiliado baixa (mar azul) + CPC baixo (US$0,01–0,20), vertical nutra/health","NewsBreak":"mulher 45+ suburbana dos EUA, cara no Meta e ausente no TikTok; intenção local","Taboola":"escala máxima em portais de notícia (formato below-article)","MGID":"forte LatAm/Europa, CPC baixo e política permissiva — ótimo pra validar barato","Outbrain":"inventário premium europeu (Ligatus), público de maior renda","Bing":"público afluente, desktop, horário comercial; forte em finanças/high-ticket","MediaGo":"inventário MSN (desktop, homem 45–54); finanças/e-commerce","Traffic Junky":"tráfego adulto gigante (homem, mobile, à noite); entrada US$25","Yahoo":"vertical finanças, público masculino, concorrência muito baixa"}, REGLABEL={"us":"🇺🇸 EUA","br":"🇧🇷 Brasil","eu":"🇪🇺 Europa"};
+    var KW=[["gelatin|emagrec|weight|slim|gordura|melt ?drops|barig","i","emagrecimento"],["diabet|glicose|glicemia|açúcar|acucar|blood sugar|sal azul|salt trick|neuropat|vinagre","i","diabetes"],["próstata|prostat","i","prostata"],["memória|memoria|alzheimer|cerebr|cognit","i","memoria"],["articula|joelho|artrite|dor nas|\\bjoint\\b|nutra flex|congelum","i","articulacoes"],["unha|fungo|\\bnail\\b|micose|pé de atleta","i","fungos"],["cabelo|calvíc|calvic|queda de|\\bhair\\b|regrow|folix","i","calvicie"],["\\bpele\\b|colágeno|colageno|rug[ai]|dark spot|celulite|silício|silicio","i","beleza"],["ereç|erec|libido|desempenho sexual|boostaro|cavalo|virimax|íntimo","i","adulto"],["pressão|pressao|hipertens|colesterol|\\bcoração\\b|blood pressure","i","coracao"],["intestino|digest|inchaço|inchaco|parasit|desparasit|gundry|\\bgut\\b","i","digestao"],["renda|dinheiro|\\bmoney\\b|lucr|\\bcash\\b|invest|ganhar dinheiro|apostas?","i","financas"],["energia|solar|electric|conta de luz|gerador|\\bpower\\b","i","energia"],["inglês|ingles|idioma|\\bcurso\\b|método|metodo|aula de","i","educacao"],["oração|oracao|\\banjo|prosperidade|\\britual\\b|espiritual|manifesta","i","espiritualidade"]];
+    var BLACK=new RegExp("\\bcura\\b|curar|reverter|em 1 dia|em \\d+ dias?|em \\d+ semanas|milagr|elimina.*(diabetes|câncer|cancer)|\\britual\\b|\\banjo|prosperidade|fique rico|ganhe .*por dia|famoso|celebridad", "i");
+    var btn=document.getElementById("anaRun"), out=document.getElementById("anaOutput");
+    if(!btn||!out) return;
+    function detect(txt){ for(var i=0;i<KW.length;i++){ if(new RegExp(KW[i][0],KW[i][1]).test(txt)) return KW[i][2]; } return "outros"; }
+    function row(k,v){ return '<div class="reg-row"><span class="reg-k">'+k+'</span><span class="reg-v">'+v+'</span></div>'; }
+    function creative(n){ if(n.cre==="imagem+video") return ["Imagem (banner) + Vídeo","adulto roda banner/popunder no site adulto + criativo em vídeo"]; if(n.cre==="video+imagem") return ["Vídeo (VSL) + imagem estática","VSL como principal; imagem estática no below-article pra teste"]; return ["Vídeo (VSL)","native de saúde/curiosidade é ~80% vídeo — a VSL porta direto do FB"]; }
+    btn.addEventListener("click", function(){
+      var adv=(document.getElementById("fAdv").value||""), prod=(document.getElementById("fProd").value||"");
+      var reg=document.getElementById("fReg").value, gsel=document.getElementById("fGen").value;
+      var ticket=document.getElementById("fTicket").value, tipo=document.getElementById("fTipo").value, fmt=document.getElementById("fFmt").value;
+      var nk=document.getElementById("fNicho").value;
+      if(nk==="auto"){ nk=detect((adv+" "+prod).toLowerCase()); }
+      var n=NICHES[nk]||NICHES.outros;
+      var nets=(n.net[reg]||n.net.us||["Taboola"]);
+      var n1=nets[0], alt=nets.slice(1);
+      var gen = gsel==="auto"? n.gen : gsel;
+      var cre=creative(n);
+      // daypart
+      var day; if(n1==="Bing"||nk==="financas") day="horário comercial (público Workday do Bing)"; else if(nk==="adulto"||n1==="Traffic Junky") day="noite — pico após 22h (padrão do tráfego adulto)"; else day="full-day; otimizar por horário nos primeiros dias (sem daypart público forte)";
+      // risco
+      var risco, txtAll=(adv+" "+prod).toLowerCase();
+      if(BLACK.test(txtAll)) risco='<span class="pill cls-b">Black (provável)</span> — o texto sugere promessa/ângulo agressivo (cura/prazo/ritual/famoso). Revise antes de rodar.';
+      else if(/infoproduto|curso|guia/i.test(tipo)) risco='<span class="pill cls-w">White/Grey</span> — infoproduto/guia, promessa costuma ser plausível.';
+      else risco='<span class="pill cls-g">Grey</span> — produto real com hook de curiosidade; confirme que não promete milagre em prazo curto.';
+      var reasonN1 = NETINFO[n1]||"";
+      var altStr = alt.length? alt.map(function(a){return "<b>"+a+"</b>";}).join(" · ") : "—";
+      var offerLine = (prod?("<b>"+prod+"</b> · "):"")+ n.label + " · " + REGLABEL[reg] + " · " + fmt + (ticket?(" · ticket "+ticket):"");
+      var html='<div class="sec-label">Relatório da oferta <span class="tag">gerado automaticamente</span></div><div class="regcards"><article class="regcard">'
+        + '<div class="regcard-h"><span class="regcard-t">'+(prod||n.label)+'</span><span class="regcard-sub">'+n.label+' · '+REGLABEL[reg]+'</span></div>'
+        + row("Oferta", offerLine)
+        + row("Público-alvo", gen)
+        + row("Rede #1", "<b>"+n1+"</b> — "+reasonN1)
+        + row("Alternativas", altStr)
+        + row("Criativo", "<b>"+cre[0]+"</b> — "+cre[1])
+        + row("Portabilidade", "overlap FB↔native: "+n.port)
+        + row("Daypart", day)
+        + row("Risco", risco)
+        + '<div class="reg-row" style="border-top:1px solid var(--border2)"><span class="reg-k" style="color:var(--accent)">Veredito</span><span class="reg-v"><b>Rodar em '+n1+' ('+REGLABEL[reg]+'), criativo em '+cre[0].toLowerCase()+'. '+(alt.length?("Se saturar, testar "+alt[0]+"."):"")+'</b></span></div>'
+        + '</article></div>';
+      out.innerHTML=html;
+      out.scrollIntoView({behavior:"smooth",block:"start"});
+    });
   })();
 </script></body></html>
