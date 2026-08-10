@@ -1242,7 +1242,7 @@
       if(o.vsl) lk.push('<a class="lnk" target="_blank" rel="noopener" href="'+o.vsl+'">▶ VSL</a>');
       if(o.vid && o.vid!==o.vsl) lk.push('<a class="lnk" target="_blank" rel="noopener" href="'+o.vid+'">▶ Criativo (vídeo)</a>');
       if(o.img) lk.push('<a class="lnk" target="_blank" rel="noopener" href="'+o.img+'">▤ Criativo/print</a>');
-      return '<article class="regcard '+o.cls+'"><div class="regcard-h"><span class="regcard-t">'+esc(o.name)+'</span><span class="regcard-sub">'+esc(o.nl)+' · '+o.geo+' · '+o.lang+'</span></div>'
+      return '<article class="regcard '+o.cls+'"><div class="regcard-h"><span class="regcard-t">'+esc(o.name)+((window.__NOVAS&&window.__NOVAS[o.slug])?' <span class="pill-nova">NOVA</span>':'')+'</span><span class="regcard-sub">'+esc(o.nl)+' · '+o.geo+' · '+o.lang+'</span></div>'
         + row("Classe", clsPill(o.cls))
         + row("Onde roda", "<b>"+o.net+"</b> · "+o.geo+" <span class='mono' style='color:var(--faint)'>(rede recomendada p/ o nicho)</span>")
         + row("Anúncios ativos", "<b>"+o.ads+"</b>"+(o.active?" · ativa hoje":""))
@@ -1306,8 +1306,24 @@
     /* apply + refresh */
     var MES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
     function fmt(d){ if(!d) return "?"; var p=(""+d).slice(0,10).split("-"); return p.length===3? (p[2]+"/"+MES[(+p[1])-1]+"/"+p[0]) : d; }
-    window.applyKB=function(rawArr, dateStr){ window.NKB=window.normalizeRaw(rawArr); window.__buildLupaIDX();
-      var st=document.getElementById("kbStamp"); if(st) st.textContent="Banco native atualizado · "+fmt(dateStr)+" · "+window.NKB.length+" ofertas ativas"; };
+    window.applyKB=function(rawArr, dateStr){ window.NKB=window.normalizeRaw(rawArr);
+      var cur=window.NKB.map(function(o){return o.slug;}), novas={}, up=dateStr||"";
+      try{ var st0=JSON.parse(localStorage.getItem("nkb_seen")||"null");
+        if(st0 && st0.slugs && st0.updated!==up){ cur.forEach(function(s){ if(st0.slugs.indexOf(s)<0) novas[s]=1; }); localStorage.setItem("nkb_seen", JSON.stringify({updated:up,slugs:cur,novas:Object.keys(novas)})); }
+        else if(st0 && st0.updated===up){ (st0.novas||[]).forEach(function(s){ novas[s]=1; }); }
+        else { localStorage.setItem("nkb_seen", JSON.stringify({updated:up,slugs:cur,novas:[]})); }
+      }catch(e){}
+      window.__NOVAS=novas; var nn=Object.keys(novas).length;
+      window.__buildLupaIDX();
+      var st=document.getElementById("kbStamp"); if(st) st.textContent="Banco native atualizado · "+fmt(dateStr)+" · "+window.NKB.length+" ofertas"+(nn?(" · "+nn+" novas"):"");
+      var nb=document.getElementById("novasBtn"); if(nb) nb.style.display=nn?"inline-flex":"none"; };
+    window.showNovas=function(){ var out=document.getElementById("offerSearchResult"), grid=document.getElementById("offerGrid"); if(!out) return;
+      var t=document.querySelector('.tab[data-panel="offers"]'); if(t&&t.getAttribute("aria-selected")!=="true") t.click();
+      if(grid) grid.style.display="none";
+      var novas=(window.NKB||[]).filter(function(o){return window.__NOVAS&&window.__NOVAS[o.slug];}).sort(function(a,b){return b.ads-a.ads;});
+      if(!novas.length){ out.innerHTML='<div class="osr-note">Nenhuma oferta nova nesta atualização.</div>'; return; }
+      out.innerHTML='<div class="osr-note">🆕 Novas nesta atualização · '+novas.length+' oferta'+(novas.length>1?"s":"")+'</div><div class="regcards">'+novas.map(function(o){return window.renderOffer(o);}).join("")+'</div>';
+      out.scrollIntoView({behavior:"smooth",block:"start"}); };
     window.refreshKB=function(){ var st=document.getElementById("kbStamp"), b=document.querySelector(".kb-refresh"); if(b) b.classList.add("spin"); if(st) st.textContent="Atualizando banco…";
       fetch("native_kb.json?t="+(""+Math.random()).slice(2)).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
         var off=j.offers||j, up=j.updated||null; window.applyKB(off, up); try{ localStorage.setItem("nkb_cache", JSON.stringify({up:up,off:off})); }catch(e){}
