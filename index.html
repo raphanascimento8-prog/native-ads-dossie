@@ -301,6 +301,9 @@
   .osr-hit{position:relative;}
   .osr-hit .card-top h3{color:var(--accent);}
   .osr-empty{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px;color:var(--muted);font-size:13px;}
+
+  .update-stamp{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:5px 13px;margin:2px 0 14px;}
+  .update-stamp .dot-live{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent);}
 </style>
 
 <div class="app">
@@ -348,7 +351,8 @@
     <p>Native é dominado por <b>black</b>. A jogada mais segura é a <strong>Endless Eletricity</strong> (white, evergreen 2021, funil vivo). Use os <b>chips de Rede/Nicho</b> abaixo para isolar o que interessa — ex.: clique <b>NewsBreak</b> e veja só o modelo Gundry MD. Contagem de criativos <b>exata</b> (deduplicada do payload) em cada card.</p>
   </div>
 
-  <div class="controls">
+  <div class="update-stamp"><span class="dot-live"></span>Banco native atualizado · 10/ago/2026 · 87 ofertas ativas</div>
+    <div class="controls">
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" aria-selected="true" data-panel="offers">Ofertas + criativos</button>
       <button class="tab" role="tab" aria-selected="false" data-panel="land">Landscape</button>
