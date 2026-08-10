@@ -1274,7 +1274,21 @@
       var creline = totC? (vp>=55? ('<b>Vídeo</b> domina — '+vp+'% dos criativos do nicho são vídeo ('+nv+'v/'+ni+'i)') : vp<=45? ('<b>Imagem</b> forte — só '+vp+'% vídeo ('+nv+'v/'+ni+'i)') : ('misto — '+vp+'% vídeo ('+nv+'v/'+ni+'i)')) : 'sem criativos salvos no nicho';
       var ckLine = ckTop.length? ('<b>'+ckTop.join('</b> · <b>')+'</b> <span class="mono" style="color:var(--faint)">(checkouts portáveis reais do nicho)</span>') : 'sem checkout capturado';
       var clsLine = '<span class="pill cls-w">'+w+' white</span> <span class="pill cls-g">'+g+' grey</span> <span class="pill cls-b">'+b+' black</span>';
-      var brief = '<div class="sec-label">Brief de modelagem <span class="tag" style="color:var(--ok)">baseado em '+C.length+' ofertas reais de '+nlabel+' no banco</span></div><div class="regcards"><article class="regcard">'
+      // veredito data-driven 0-100
+      var scEsc=Math.min(35,Math.round(35*(Math.log(Math.max(1,maxA))/Math.log(600))));
+      var portOk=ckTop.some(function(p){return /BuyGoods|ClickBank|CartPanda|Hotmart|Kiwify|Payt|Digistore|Monetizze|Yampi|Pagah|JVZoo|Youshop/i.test(p);});
+      var scPort=portOk?25:(ckTop.length?15:8);
+      var scCre=totC?(vp>=55?15:(vp>=45?11:8)):6;
+      var scRede=netCov?15:6;
+      var penal=(b>g&&b>w)?10:(b>0?5:0);
+      var score=Math.max(0,Math.min(100,scEsc+scPort+scCre+scRede-penal));
+      var vd = score>=70?["🟢","Modele","nicho provado, checkout portável e padrão de criativo claro"] : score>=45?["🟡","Teste com cautela","sinais mistos — valide antes de escalar"] : ["🔴","Evite / valide muito","pouca prova ou risco alto neste nicho"];
+      var vcard='<div class="sec-label">Veredito de modelagem <span class="tag">nota data-driven 0–100</span></div><div class="regcards"><article class="regcard '+(score>=70?"w":score>=45?"g":"b")+'">'
+        + '<div class="regcard-h"><span class="regcard-t">'+vd[0]+' '+vd[1]+' · nota '+score+'/100</span><span class="regcard-sub">'+vd[2]+'</span></div>'
+        + '<div class="reg-row"><span class="reg-k">Nota</span><span class="reg-v"><div class="scorebar"><div class="track"><div class="fill" style="width:'+score+'%"></div></div><span class="val">'+score+'</span></div></span></div>'
+        + R("Como somou","Escala <b>"+scEsc+"</b>/35 · Portabilidade <b>"+scPort+"</b>/25 · Criativo <b>"+scCre+"</b>/15 · Rede <b>"+scRede+"</b>/15 · Risco <b>−"+penal+"</b>")
+        + '</article></div>';
+      var brief = vcard + '<div class="sec-label">Brief de modelagem <span class="tag" style="color:var(--ok)">baseado em '+C.length+' ofertas reais de '+nlabel+' no banco</span></div><div class="regcards"><article class="regcard">'
         + '<div class="regcard-h"><span class="regcard-t">Fatos do nicho: '+nlabel+'</span><span class="regcard-sub">'+C.length+' comparáveis · '+geoTop+'</span></div>'
         + R("Redes onde o nicho roda", netCov? ('<b>'+netTop+'</b> <span class="mono" style="color:var(--ok)">de rastreio + pixel do advertorial · '+netCov+'/'+C.length+' funis</span>') : '<span class="mono" style="color:var(--faint)">sem rastro de rede no dado deste nicho — cai na recomendação por regra</span>')
         + R("Criativo (o que o nicho usa)", creline)
