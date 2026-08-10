@@ -289,6 +289,18 @@
   .ana-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:13px;}
   .ana-run{align-self:flex-start;appearance:none;border:1px solid var(--accent);background:var(--accent);color:#1c1608;font-family:var(--sans);font-weight:600;font-size:13px;padding:11px 24px;border-radius:9px;cursor:pointer;}
   .ana-run:hover{filter:brightness(1.07);}
+
+  .offerSearch{display:flex;align-items:center;gap:8px;flex:1 1 260px;min-width:220px;max-width:460px;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:8px 13px;transition:border-color .15s;}
+  .offerSearch:focus-within{border-color:var(--accent);}
+  .offerSearch svg{width:15px;height:15px;flex:none;stroke:var(--faint);}
+  .offerSearch input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--sans);font-size:13px;}
+  .offerSearch input::placeholder{color:var(--faint);}
+  #offerSearchResult{margin-bottom:16px;}
+  #offerSearchResult:empty{display:none;}
+  .osr-note{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:2px 0 12px;}
+  .osr-hit{position:relative;}
+  .osr-hit .card-top h3{color:var(--accent);}
+  .osr-empty{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px;color:var(--muted);font-size:13px;}
 </style>
 
 <div class="app">
@@ -344,7 +356,11 @@
       <button class="tab" role="tab" aria-selected="false" data-panel="niche">Nichos (20)</button>
       <button class="tab" role="tab" aria-selected="false" data-panel="net">Redes</button>
       <button class="tab" role="tab" aria-selected="false" data-panel="cartpanda">CartPanda</button>
-    </div>
+      </div>
+      <div class="offerSearch">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+        <input id="offerSearchInput" type="search" autocomplete="off" placeholder="Buscar oferta ou nicho — puxa VSL, criativos, advertorial, rede, preço...">
+      </div>
     <div class="spacer"></div>
     <label class="toggle" id="wt"><input type="checkbox" id="wtc"><span>Só white / grey</span></label>
   </div>
@@ -371,6 +387,7 @@
       </div>
     </div>
 
+    <div id="offerSearchResult"></div>
     <div class="cards" id="offerGrid">
 
       <!-- ENDLESS -->
@@ -1224,5 +1241,46 @@
       out.innerHTML=html;
       out.scrollIntoView({behavior:"smooth",block:"start"});
     });
+  })();
+
+  /* ===== Lupa: busca de ofertas (Inteligência de Ofertas) ===== */
+  (function(){
+    var input=document.getElementById("offerSearchInput");
+    var out=document.getElementById("offerSearchResult");
+    var grid=document.getElementById("offerGrid");
+    if(!input||!out||!grid) return;
+    var cards=Array.prototype.slice.call(grid.querySelectorAll(".card"));
+    // índice de busca
+    var IDX=cards.map(function(c){
+      var name=(c.querySelector("h3")||{}).textContent||"";
+      var prod=(c.querySelector(".prod")||{}).textContent||"";
+      var angle=(c.querySelector(".angle")||{}).textContent||"";
+      var pills=(c.querySelector(".pills")||{}).textContent||"";
+      var blob=(name+" "+prod+" "+angle+" "+pills+" "+(c.dataset.net||"")+" "+(c.dataset.niche||"")).toLowerCase();
+      return {el:c, blob:blob, name:name};
+    });
+    function activateOffersTab(){
+      var t=document.querySelector('.tab[data-panel="offers"]');
+      if(t && t.getAttribute("aria-selected")!=="true") t.click();
+    }
+    function run(){
+      var q=(input.value||"").trim().toLowerCase();
+      if(!q){ out.innerHTML=""; grid.style.display=""; return; }
+      activateOffersTab();
+      grid.style.display="none";
+      var hits=IDX.filter(function(o){ return o.blob.indexOf(q)>-1; });
+      if(!hits.length){
+        out.innerHTML='<div class="osr-note">Busca · nenhum resultado</div><div class="osr-empty">Nada encontrado para <b>"'+q.replace(/</g,"&lt;")+'"</b>. O índice tem '+IDX.length+' ofertas: '+IDX.map(function(o){return o.name;}).join(" · ")+'. Tente por nicho (emagrecimento, energia, próstata, fungos, digestão, estética) ou rede (taboola, revcontent, newsbreak, yahoo).</div>';
+        return;
+      }
+      var html='<div class="osr-note">Resultado da busca · '+hits.length+' oferta'+(hits.length>1?"s":"")+' · tudo que temos (advertorial · VSL · criativos · rede · nº de anúncios · checkout/preço)</div>';
+      html+='<div class="cards">'+hits.map(function(o){
+        return '<div class="osr-hit">'+o.el.outerHTML+'</div>';
+      }).join("")+'</div>';
+      out.innerHTML=html;
+      out.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+    input.addEventListener("input", run);
+    input.addEventListener("search", run);
   })();
 </script></body></html>
