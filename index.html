@@ -1,0 +1,1034 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Native Ads — Dossiê de Ofertas</title></head><body>
+<title>Native Ads — Inteligência de Ofertas White</title>
+<style>
+  :root{
+    --bg:#0e1116;--bg2:#12161d;--surface:#171c25;--surface2:#1d2430;
+    --border:#28303c;--border2:#333d4c;
+    --text:#e7ecf3;--muted:#95a1b2;--faint:#6b7686;
+    --white-c:#34d399;--white-bg:#0f3d31;
+    --grey-c:#f5b544;--grey-bg:#3d2f0f;
+    --black-c:#f0576b;--black-bg:#3d1620;
+    --accent:#ff8a3d;--accent-soft:#2a2016;--link:#5fb0ff;
+    --ok:#34d399;--warn:#f5b544;--bad:#f0576b;
+    --shadow:0 1px 0 rgba(255,255,255,.02),0 8px 24px -12px rgba(0,0,0,.6);
+    --mono:ui-monospace,"SF Mono","Cascadia Code","Roboto Mono",Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: light){:root{
+    --bg:#f4f6f9;--bg2:#eef1f6;--surface:#fff;--surface2:#f6f8fb;
+    --border:#e0e5ec;--border2:#d2d9e3;--text:#141a22;--muted:#586474;--faint:#8792a2;
+    --white-bg:#e2f7ee;--grey-bg:#fbf1da;--black-bg:#fde4e8;--accent:#e0600f;--accent-soft:#fbeadb;--link:#1667c8;
+    --shadow:0 1px 2px rgba(20,26,34,.04),0 10px 30px -18px rgba(20,26,34,.25);}}
+  :root[data-theme="dark"]{
+    --bg:#0e1116;--bg2:#12161d;--surface:#171c25;--surface2:#1d2430;--border:#28303c;--border2:#333d4c;
+    --text:#e7ecf3;--muted:#95a1b2;--faint:#6b7686;--white-bg:#0f3d31;--grey-bg:#3d2f0f;--black-bg:#3d1620;
+    --accent:#ff8a3d;--accent-soft:#2a2016;--link:#5fb0ff;--shadow:0 1px 0 rgba(255,255,255,.02),0 8px 24px -12px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{
+    --bg:#f4f6f9;--bg2:#eef1f6;--surface:#fff;--surface2:#f6f8fb;--border:#e0e5ec;--border2:#d2d9e3;
+    --text:#141a22;--muted:#586474;--faint:#8792a2;--white-bg:#e2f7ee;--grey-bg:#fbf1da;--black-bg:#fde4e8;
+    --accent:#e0600f;--accent-soft:#fbeadb;--link:#1667c8;--shadow:0 1px 2px rgba(20,26,34,.04),0 10px 30px -18px rgba(20,26,34,.25);}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1140px;margin:0 auto;padding:32px 22px 80px;}
+  a{color:var(--link);text-decoration:none;} a:hover{text-decoration:underline;}
+  h1,h2,h3,h4{margin:0;text-wrap:balance;letter-spacing:-.01em;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600;}
+  .mono{font-family:var(--mono);} .tnum{font-variant-numeric:tabular-nums;}
+
+  header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:18px;border-bottom:1px solid var(--border);padding-bottom:22px;margin-bottom:24px;}
+  header h1{font-size:29px;font-weight:800;margin-top:8px;}
+  header p{color:var(--muted);margin:6px 0 0;font-size:14px;max-width:60ch;}
+  .snapshot{font-family:var(--mono);font-size:11.5px;color:var(--faint);text-align:right;line-height:1.7;}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 16px;box-shadow:var(--shadow);}
+  .kpi .n{font-family:var(--mono);font-size:25px;font-weight:700;letter-spacing:-.02em;line-height:1;}
+  .kpi .l{color:var(--muted);font-size:12px;margin-top:8px;}
+  .kpi.hl .n{color:var(--white-c);}
+
+  .insight{background:linear-gradient(180deg,var(--accent-soft),transparent);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:12px;padding:15px 18px;margin-bottom:22px;}
+  .insight h3{font-size:13px;color:var(--accent);font-family:var(--mono);letter-spacing:.02em;margin-bottom:6px;}
+  .insight p{margin:0;font-size:13.5px;} .insight strong{color:var(--white-c);}
+
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px;}
+  .tabs{display:inline-flex;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px;gap:2px;flex-wrap:wrap;}
+  .tab{appearance:none;border:0;background:transparent;color:var(--muted);font-family:var(--sans);font-size:13px;font-weight:600;padding:8px 14px;border-radius:7px;cursor:pointer;}
+  .tab[aria-selected="true"]{background:var(--surface2);color:var(--text);box-shadow:inset 0 0 0 1px var(--border2);}
+  .spacer{flex:1;}
+  .toggle{display:inline-flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:7px 13px;cursor:pointer;font-size:13px;color:var(--muted);user-select:none;}
+  .toggle input{appearance:none;width:34px;height:19px;background:var(--border2);border-radius:20px;position:relative;cursor:pointer;transition:background .15s;flex:none;}
+  .toggle input::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:transform .15s;}
+  .toggle input:checked{background:var(--white-c);} .toggle input:checked::after{transform:translateX(15px);}
+  .toggle.on{color:var(--text);}
+
+  .panel{display:none;} .panel.active{display:block;animation:fade .2s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.panel.active{animation:none}}
+
+  /* filter bar */
+  .filterbar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:16px;display:flex;flex-direction:column;gap:10px;}
+  .frow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+  .frow .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);width:46px;flex:none;}
+  .chip{appearance:none;border:1px solid var(--border);background:var(--bg2);color:var(--muted);font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:20px;cursor:pointer;font-family:var(--sans);display:inline-flex;align-items:center;gap:6px;}
+  .chip:hover{border-color:var(--border2);color:var(--text);}
+  .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .chip .n{font-family:var(--mono);font-size:10.5px;opacity:.8;}
+
+  .sec-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin:26px 0 13px;display:flex;align-items:center;gap:10px;}
+  .sec-label::after{content:"";flex:1;height:1px;background:var(--border);}
+  .sec-label .tag{text-transform:none;letter-spacing:0;}
+
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:820px){.cards{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}header{align-items:flex-start}.snapshot{text-align:left}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:17px 17px 15px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;}
+  .card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--cls,var(--border2));}
+  .card[data-cls="w"]{--cls:var(--white-c);} .card[data-cls="g"]{--cls:var(--grey-c);} .card[data-cls="b"]{--cls:var(--black-c);}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .card h3{font-size:16.5px;font-weight:700;line-height:1.25;}
+  .card .prod{color:var(--muted);font-size:12.5px;margin-top:3px;}
+  .score-badge{font-family:var(--mono);font-weight:700;font-size:13px;padding:4px 9px;border-radius:8px;background:var(--surface2);border:1px solid var(--border2);white-space:nowrap;}
+  .score-badge b{font-size:16px;}
+
+  .pills{display:flex;flex-wrap:wrap;gap:6px;}
+  .pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid transparent;display:inline-flex;align-items:center;gap:5px;}
+  .pill.cls-w{color:var(--white-c);background:var(--white-bg);} .pill.cls-g{color:var(--grey-c);background:var(--grey-bg);} .pill.cls-b{color:var(--black-c);background:var(--black-bg);}
+  .pill.meta{color:var(--muted);background:var(--surface2);border-color:var(--border);}
+  .pill.heat{color:var(--accent);background:var(--accent-soft);font-family:var(--mono);}
+  .pill.now{color:var(--accent);background:var(--accent-soft);} .pill.past{color:var(--muted);background:var(--surface2);border-color:var(--border);}
+  .src{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;color:var(--faint);border:1px solid var(--border);border-radius:6px;padding:3px 6px;white-space:nowrap;}
+
+  .angle{font-size:12.5px;color:var(--muted);font-style:italic;border-left:2px solid var(--border2);padding-left:10px;}
+  .angle b{color:var(--text);font-style:normal;}
+
+  .intel{display:grid;grid-template-columns:1fr 1fr;gap:9px;border-top:1px solid var(--border);padding-top:12px;}
+  .cell{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 10px;}
+  .cell .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:4px;}
+  .cell .v{font-size:12.5px;color:var(--text);line-height:1.35;} .cell .v .mono{font-size:11.5px;}
+  .trend{display:inline-flex;align-items:center;gap:6px;font-weight:600;}
+  .trend.up{color:var(--ok);} .trend.flat{color:var(--warn);} .trend.down{color:var(--bad);}
+  .status{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:2px 7px;border-radius:6px;}
+  .status.live{color:var(--ok);background:var(--white-bg);} .status.dead{color:var(--bad);background:var(--black-bg);} .status.gate{color:var(--warn);background:var(--grey-bg);}
+  .status::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+  .links{display:flex;flex-wrap:wrap;gap:7px;}
+  .lnk{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:7px 11px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);}
+  .lnk:hover{border-color:var(--link);text-decoration:none;color:var(--link);} .lnk .i{font-size:12px;opacity:.85;}
+
+  .empty{display:none;text-align:center;color:var(--faint);font-size:13px;padding:40px 0;}
+
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--surface);box-shadow:var(--shadow);}
+  table{border-collapse:collapse;width:100%;font-size:13px;min-width:660px;}
+  thead th{text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;padding:11px 14px;border-bottom:1px solid var(--border);background:var(--surface2);}
+  tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle;} tbody tr:last-child td{border-bottom:0;}
+  tbody tr:hover{background:var(--surface2);}
+  td.name{font-weight:600;} td.ads{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;font-weight:600;}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:middle;}
+  .dot.w{background:var(--white-c);} .dot.g{background:var(--grey-c);} .dot.b{background:var(--black-c);}
+  .geo{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;}
+  .tag{font-family:var(--mono);font-size:10.5px;color:var(--faint);border:1px solid var(--border);border-radius:5px;padding:1px 6px;}
+
+  .scorebar{display:flex;align-items:center;gap:9px;}
+  .scorebar .track{flex:1;height:7px;background:var(--bg2);border-radius:5px;overflow:hidden;min-width:80px;}
+  .scorebar .fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent),var(--white-c));}
+  .scorebar .val{font-family:var(--mono);font-weight:700;font-size:13px;width:28px;text-align:right;}
+
+  body.only-white [data-cls="b"]{display:none !important;}
+
+  .nets{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media (max-width:820px){.nets{grid-template-columns:1fr}}
+  .net{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 15px;box-shadow:var(--shadow);}
+  .net-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:9px;border-bottom:1px solid var(--border);}
+  .net-b{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent);}
+  .net-geo{font-size:11px;color:var(--faint);}
+  .net ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;}
+  .net li{font-size:13px;display:grid;grid-template-columns:auto 1fr;gap:0 8px;align-items:baseline;}
+  .net li .dot{align-self:center;} .net li .obs{grid-column:2;color:var(--muted);font-size:12px;margin-top:2px;display:block;}
+
+  .legend{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;} @media (max-width:820px){.legend{grid-template-columns:1fr}}
+  .leg{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 15px;}
+  .leg h4{margin:0 0 6px;font-size:13px;display:flex;align-items:center;gap:8px;} .leg p{margin:0;font-size:12.5px;color:var(--muted);}
+  .leg.w h4{color:var(--white-c);} .leg.g h4{color:var(--grey-c);} .leg.b h4{color:var(--black-c);}
+
+  .notecols{display:grid;grid-template-columns:1fr 1fr;gap:12px;} @media (max-width:820px){.notecols{grid-template-columns:1fr}}
+  .note{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 15px;font-size:12.5px;color:var(--muted);}
+  .note h4{font-size:13px;color:var(--text);margin-bottom:7px;} .note b{color:var(--text);}
+  .note ul{margin:6px 0 0;padding-left:18px;} .note li{margin:3px 0;}
+
+  footer{margin-top:34px;border-top:1px solid var(--border);padding-top:18px;color:var(--faint);font-size:12px;line-height:1.7;} footer strong{color:var(--muted);}
+
+  /* ===== sidebar / multi-page shell ===== */
+  .app{display:flex;align-items:flex-start;}
+  .sidebar{position:sticky;top:0;height:100vh;width:216px;flex:none;background:var(--surface);border-right:1px solid var(--border);padding:22px 14px;display:flex;flex-direction:column;gap:4px;overflow-y:auto;}
+  .sidebar .brand{font-family:var(--mono);font-weight:800;font-size:15px;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;letter-spacing:-.01em;}
+  .nav-sec{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:6px 0 6px 6px;}
+  .sidebar nav{display:flex;flex-direction:column;gap:5px;}
+  .navitem{appearance:none;text-align:left;border:1px solid transparent;background:transparent;color:var(--muted);font-family:var(--sans);font-size:13px;font-weight:600;padding:10px 12px;border-radius:9px;cursor:pointer;display:flex;align-items:center;gap:9px;line-height:1.2;}
+  .navitem:hover{background:var(--surface2);color:var(--text);}
+  .navitem[aria-current="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--border);}
+  .nav-soon{font-size:10.5px;color:var(--faint);padding:9px 11px;border:1px dashed var(--border2);border-radius:9px;margin-top:auto;line-height:1.4;}
+  .main{flex:1;min-width:0;}
+  .page{display:none;} .page.active{display:block;}
+  #page-publico .panel{display:block;}
+  @media (max-width:860px){
+    .app{flex-direction:column;}
+    .sidebar{position:static;height:auto;width:auto;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:0;border-bottom:1px solid var(--border);padding:12px 14px;gap:8px;}
+    .sidebar .brand{margin:0 12px 0 0;} .nav-sec{display:none;} .sidebar nav{flex-direction:row;flex-wrap:wrap;} .nav-soon{display:none;}
+  }
+</style>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">🐀 Native Intel</div>
+    <div class="nav-sec">Dossiês</div>
+    <div class="nav-sec" style="margin-top:0">🟢 Dados vivos</div>
+    <nav>
+      <button class="navitem" data-page="ofertas" aria-current="true">🎯 Inteligência de Ofertas</button>
+      <button class="navitem" data-page="frescor" aria-current="false">🔥 Frescor / Novidades</button>
+    </nav>
+    <div class="nav-sec">📚 Dossiês (estáticos)</div>
+    <nav>
+      <button class="navitem" data-page="publico" aria-current="false">🌍 Comportamento de Usuário</button>
+      <button class="navitem" data-page="portabilidade" aria-current="false">🧭 Padrão de Portabilidade</button>
+    </nav>
+    <div class="nav-soon">🟢 Atualizado: <b>10/ago/2026</b><br>Páginas de ofertas/criativos/VSL são atualizadas a cada acesso. Dossiês só sob demanda.</div>
+  </aside>
+  <main class="main">
+  <div class="page active" id="page-ofertas">
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Inteligência de Tráfego · Native Ads · v4</div>
+      <h1>Ofertas em native — dossiê de modelagem</h1>
+      <p>Filtre por <b>rede</b> (Taboola, NewsBreak…) e por <b>nicho</b> para ver só as ofertas certas, com criativos, funil, economia e score de clonabilidade.</p>
+    </div>
+    <div class="snapshot"><b style="color:var(--ok)">🟢 ÚLTIMA ATUALIZAÇÃO · 10 ago 2026</b><br>FONTES · Swipe Offers + MonsterSwipe<br>NATIVE VARRIDAS · 253 ofertas</div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi"><div class="n tnum">253</div><div class="l">Native varridas (162 + 91)</div></div>
+    <div class="kpi hl"><div class="n tnum">3</div><div class="l">White "limpas" confirmadas</div></div>
+    <div class="kpi"><div class="n tnum">6</div><div class="l">Ofertas com dossiê + rede</div></div>
+    <div class="kpi"><div class="n tnum">85</div><div class="l">Maior score de clonabilidade</div></div>
+  </div>
+
+  <div class="insight">
+    <h3>▲ Leitura do analista</h3>
+    <p>Native é dominado por <b>black</b>. A jogada mais segura é a <strong>Endless Eletricity</strong> (white, evergreen 2021, funil vivo). Use os <b>chips de Rede/Nicho</b> abaixo para isolar o que interessa — ex.: clique <b>NewsBreak</b> e veja só o modelo Gundry MD. Contagem de criativos <b>exata</b> (deduplicada do payload) em cada card.</p>
+  </div>
+
+  <div class="controls">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-panel="offers">🗂 Ofertas + criativos</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="land">📊 Landscape</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="score">🎯 Score</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="niche">🧬 Nichos (20)</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="net">📡 Redes</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="cartpanda">🛒 CartPanda</button>
+    </div>
+    <div class="spacer"></div>
+    <label class="toggle" id="wt"><input type="checkbox" id="wtc"><span>Só white / grey</span></label>
+  </div>
+
+  <!-- ============ OFERTAS (filtrável) ============ -->
+  <section class="panel active" id="p-offers">
+    <div class="filterbar">
+      <div class="frow"><span class="lbl">Rede</span>
+        <button class="chip" aria-pressed="true" data-f="net" data-v="all">Todas <span class="n">6</span></button>
+        <button class="chip" aria-pressed="false" data-f="net" data-v="taboola">Taboola <span class="n">2</span></button>
+        <button class="chip" aria-pressed="false" data-f="net" data-v="newsbreak">NewsBreak <span class="n">1</span></button>
+        <button class="chip" aria-pressed="false" data-f="net" data-v="revcontent">Revcontent <span class="n">1</span></button>
+        <button class="chip" aria-pressed="false" data-f="net" data-v="yahoo">Yahoo / DSP <span class="n">2</span></button>
+        <button class="chip" aria-pressed="false" data-f="net" data-v="clickbank">ClickBank pool <span class="n">1</span></button>
+      </div>
+      <div class="frow"><span class="lbl">Nicho</span>
+        <button class="chip" aria-pressed="true" data-f="niche" data-v="all">Todos</button>
+        <button class="chip" aria-pressed="false" data-f="niche" data-v="energia">Energia/DIY</button>
+        <button class="chip" aria-pressed="false" data-f="niche" data-v="emagrecimento">Emagrecimento</button>
+        <button class="chip" aria-pressed="false" data-f="niche" data-v="fungos">Fungos</button>
+        <button class="chip" aria-pressed="false" data-f="niche" data-v="digestao">Digestão</button>
+        <button class="chip" aria-pressed="false" data-f="niche" data-v="estetica">Estética</button>
+        <button class="chip" aria-pressed="false" data-f="niche" data-v="prostata">Próstata</button>
+      </div>
+    </div>
+
+    <div class="cards" id="offerGrid">
+
+      <!-- ENDLESS -->
+      <article class="card" data-cls="w" data-net="taboola" data-niche="energia" data-status="now">
+        <div class="card-top"><div><h3>Endless Eletricity</h3><div class="prod">Easy DIY Power Plan · Energia/DIY</div></div><span class="score-badge" style="color:var(--white-c)"><b>85</b>/100</span></div>
+        <div class="pills"><span class="pill cls-w">● White</span><span class="pill now">🔥 escalando</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">Taboola / Revcontent</span><span class="src">SWIPE&nbsp;OFFERS</span></div>
+        <p class="angle"><b>Ângulo:</b> professor de geografia anônimo (pen-name Ryan Taylor) inventa gerador caseiro. Headline nativa: <b>"Home Invasion Leads to Breakthrough Solar Discovery (12x Better Than Panels)"</b>.</p>
+        <div class="intel">
+          <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend up">▲ Evergreen</span> · 4+ anos, Estável</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 1 vídeo (VSL) · 🖼 1 imagem</div></div>
+          <div class="cell"><div class="k">Economia</div><div class="v mono">ClickBank · one-time + upsells</div></div>
+          <div class="cell"><div class="k">Funil (ao vivo?)</div><div class="v"><span class="status live">VSL no ar</span></div></div>
+        </div>
+        <div class="links">
+          <a class="lnk" target="_blank" rel="noopener" href="https://healthierlivingtips.org/int_pp_spl_ee/"><span class="i">◈</span> Abrir Pressel</a>
+          <a class="lnk" target="_blank" rel="noopener" href="https://easydiypowerplan.com/"><span class="i">▶</span> Abrir VSL / Oferta</a>
+        </div>
+      </article>
+
+      <!-- BARIATRIC -->
+      <article class="card" data-cls="g" data-net="revcontent" data-niche="emagrecimento" data-status="now">
+        <div class="card-top"><div><h3>Bariatric Gelatin</h3><div class="prod">Emagrecimento (gelatina) · nutra</div></div><span class="score-badge" style="color:var(--grey-c)"><b>78</b>/100</span></div>
+        <div class="pills"><span class="pill cls-g">● Grey/white</span><span class="pill now">🔥 escalando</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">Revcontent (RTK)</span><span class="pill heat">589 anúncios · 🔥 hoje</span><span class="src">MONSTERSWIPE</span></div>
+        <p class="angle"><b>Ângulo:</b> "gelatina bariátrica" que imita efeito de cirurgia/GLP-1. Maior volume do inventário native, 5 meses no ar.</p>
+        <div class="intel">
+          <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend up">▲ Alta</span> · ~3,8/dia (152d)</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 38 vídeos · 🖼 9 imagens</div></div>
+          <div class="cell"><div class="k">Economia</div><div class="v mono">CartPanda · físico + upsell</div></div>
+          <div class="cell"><div class="k">Status (10/ago)</div><div class="v"><span class="status live">🔥 ativa hoje</span> · domínio rotaciona</div></div>
+        </div>
+        <div class="links">
+          <a class="lnk" target="_blank" rel="noopener" href="https://firstminutejournal.com/gela2/"><span class="i">◈</span> Abrir Pressel</a>
+          <a class="lnk" target="_blank" rel="noopener" href="https://pub-8dbfef0507e44a919f83629bd86cf9ce.r2.dev/offers/SM2KY2iinM5CvsNSHiBS/criativos/0_1771686085137_36ca0fbe_9daedb72-3a9e-447b-a54f-a0b5c1a3202c_comprimido.mp4"><span class="i">🎬</span> Criativo (vídeo)</a>
+          <a class="lnk" target="_blank" rel="noopener" href="https://pub-8dbfef0507e44a919f83629bd86cf9ce.r2.dev/offers/f8e74a28-a04e-4275-896a-c27898a00cf1/creatives/880ca398-7c29-47ba-a04e-df1fc95c7651.png"><span class="i">🖼</span> Criativo (imagem)</a>
+        </div>
+      </article>
+
+      <!-- PRO NAIL -->
+      <article class="card" data-cls="g" data-net="clickbank" data-niche="fungos" data-status="now">
+        <div class="card-top"><div><h3>Pro Nail Complex</h3><div class="prod">Fungos (unha) · nutra ClickBank</div></div><span class="score-badge" style="color:var(--grey-c)"><b>64</b>/100</span></div>
+        <div class="pills"><span class="pill cls-g">● Grey/white</span><span class="pill now">🔥 escalando</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">ClickBank pool US</span><span class="pill heat">94 anúncios · 🔥 hoje</span><span class="src">MONSTERSWIPE</span></div>
+        <p class="angle"><b>Ângulo:</b> "1-Minute Sock Trick" — hook de curiosidade sobre truque da meia contra fungo. Produto ClickBank consolidado.</p>
+        <div class="intel">
+          <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend up">▲ Subindo</span> · ~1,7/dia (54d)</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 1 vídeo · 🖼 1 imagem</div></div>
+          <div class="cell"><div class="k">Economia</div><div class="v mono">ClickBank (item 302)</div></div>
+          <div class="cell"><div class="k">Funil (ao vivo?)</div><div class="v"><span class="status gate">VSL gated</span></div></div>
+        </div>
+        <div class="links">
+          <a class="lnk" target="_blank" rel="noopener" href="https://pronailcomplex.com/video.php"><span class="i">▶</span> Abrir VSL / Oferta</a>
+          <a class="lnk" target="_blank" rel="noopener" href="https://pub-8dbfef0507e44a919f83629bd86cf9ce.r2.dev/offers/937f8a76-9317-479e-ab82-7dd057841f3f/creatives/bb2812ba-b9cd-4b3a-a157-9366f038aff1.mp4"><span class="i">🎬</span> Criativo (vídeo)</a>
+        </div>
+      </article>
+
+      <!-- GUT GUNDRY -->
+      <article class="card" data-cls="w" data-net="newsbreak" data-niche="digestao" data-status="past">
+        <div class="card-top"><div><h3>Gut Protocol — Gundry MD</h3><div class="prod">Nutracêutico · marca real (Dr. Gundry)</div></div><span class="score-badge" style="color:var(--white-c)"><b>63</b>/100</span></div>
+        <div class="pills"><span class="pill cls-w">● White</span><span class="pill past">🕒 já escalou</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">NewsBreak</span><span class="src">MONSTERSWIPE</span></div>
+        <p class="angle"><b>Ângulo:</b> quiz de saúde intestinal da Gundry MD no NewsBreak (<span class="mono">nb_cid</span>). White de manual: marca médica real, sem cloaking.</p>
+        <div class="intel">
+          <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend down">▼ Esfriou</span> · parou em jun</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 0 vídeo · 🖼 1 imagem</div></div>
+          <div class="cell"><div class="k">Economia</div><div class="v mono">Assinatura (6-un) · NewsBreak</div></div>
+          <div class="cell"><div class="k">Funil (ao vivo?)</div><div class="v"><span class="status gate">quiz próprio</span></div></div>
+        </div>
+        <div class="links"><a class="lnk" target="_blank" rel="noopener" href="https://www3.ultimatehydrogenguide.com/"><span class="i">▶</span> Abrir Funil / Quiz</a></div>
+      </article>
+
+      <!-- POLYPHENOL GUNDRY -->
+      <article class="card" data-cls="w" data-net="yahoo" data-niche="estetica" data-status="past">
+        <div class="card-top"><div><h3>Polyphenol Dark Spot — Gundry MD</h3><div class="prod">Estética/pele · marca real</div></div><span class="score-badge" style="color:var(--white-c)"><b>52</b>/100</span></div>
+        <div class="pills"><span class="pill cls-w">● White</span><span class="pill past">🕒 já escalou</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">Yahoo / DSP · Everflow</span><span class="src">MONSTERSWIPE</span></div>
+        <p class="angle"><b>Ângulo:</b> "Dark Spot Diminisher" via advertorial nativo (healthclubjournal), rede DSP com afiliação Everflow.</p>
+        <div class="intel">
+          <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend down">▼ Curto</span> · ~27 dias</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 0 vídeo · 🖼 1 imagem</div></div>
+          <div class="cell"><div class="k">Economia</div><div class="v mono">Assinatura (3-un) · Everflow</div></div>
+          <div class="cell"><div class="k">Funil (ao vivo?)</div><div class="v"><span class="status gate">advertorial próprio</span></div></div>
+        </div>
+        <div class="links"><a class="lnk" target="_blank" rel="noopener" href="https://healthclubjournal.com/"><span class="i">◈</span> Abrir Pressel / Advertorial</a></div>
+      </article>
+
+      <!-- PROSTLOSINA -->
+      <article class="card" data-cls="b" data-net="taboola yahoo" data-niche="prostata" data-status="past">
+        <div class="card-top"><div><h3>Prostlosina / Tittanus</h3><div class="prod">Próstata · nutra BR</div></div><span class="score-badge" style="color:var(--black-c)"><b>35</b>/100</span></div>
+        <div class="pills"><span class="pill cls-b">● Black</span><span class="pill past">🕒 já escalou</span><span class="pill meta">🇧🇷 Brasil</span><span class="pill meta">Taboola + Yahoo</span><span class="src">MONSTERSWIPE</span></div>
+        <p class="angle"><b>Ângulo:</b> próstata BR com advertorial e claims agressivos. Multi-rede: <span class="mono">tblci</span> (Taboola) + Yahoo, desktop.</p>
+        <div class="intel">
+          <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend down">▼ Parou</span> · baixa velocidade</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 0 vídeo · 🖼 1 imagem</div></div>
+          <div class="cell"><div class="k">Economia</div><div class="v mono">Yampi (BR) · one-time</div></div>
+          <div class="cell"><div class="k">Funil (ao vivo?)</div><div class="v"><span class="status gate">advertorial BR</span></div></div>
+        </div>
+        <div class="links">
+          <a class="lnk" target="_blank" rel="noopener" href="https://processador1.online/ad-prost-n1-01-26/"><span class="i">◈</span> Abrir Pressel</a>
+          <a class="lnk" target="_blank" rel="noopener" href="https://tittanuscaps.pay.yampi.com.br/checkout"><span class="i">◈</span> Abrir Checkout</a>
+        </div>
+      </article>
+
+    </div>
+    <div class="empty" id="emptyMsg">Nenhuma oferta com essa combinação de rede + nicho. Limpe um dos filtros.</div>
+    <p class="mono" style="color:var(--faint);font-size:11px;margin-top:14px">Rede confirmada pelos parâmetros de rastreio de cada funil. "Criativos salvos" = o que o spy capturou (deduplicado); o nº de anúncios no leilão é o volume real em circulação.</p>
+  </section>
+
+  <!-- ============ LANDSCAPE ============ -->
+  <section class="panel" id="p-land">
+    <div class="sec-label">Escalando agora · native por nº de anúncios</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Oferta</th><th>Nicho</th><th>Geo</th><th>Classe</th><th style="text-align:right">Anúncios</th></tr></thead>
+      <tbody>
+        <tr data-cls="g"><td class="name">Bariatric Gelatin</td><td>Emagrecimento</td><td class="geo">🇺🇸 EN</td><td><span class="dot g"></span>Grey</td><td class="ads">589</td></tr>
+        <tr data-cls="g"><td class="name">Pro Nail Complex</td><td>Fungos</td><td class="geo">🇺🇸 EN</td><td><span class="dot g"></span>Grey</td><td class="ads">94</td></tr>
+        <tr data-cls="b"><td class="name">The Secrets of Lourdes</td><td>Prosperidade</td><td class="geo">🇺🇸 EN</td><td><span class="dot b"></span>Black</td><td class="ads">9</td></tr>
+        <tr data-cls="b"><td class="name">The Angel Whisperer</td><td>Prosperidade</td><td class="geo">🇺🇸 EN</td><td><span class="dot b"></span>Black</td><td class="ads">6</td></tr>
+        <tr data-cls="g"><td class="name">Queima de Gordura Abdominal</td><td>Emagrecimento</td><td class="geo">🇧🇷 PT</td><td><span class="dot g"></span>Grey</td><td class="ads">6</td></tr>
+        <tr data-cls="g"><td class="name">LipoVive</td><td>Emagrecimento</td><td class="geo">🇺🇸 EN</td><td><span class="dot g"></span>Grey</td><td class="ads">5</td></tr>
+        <tr data-cls="b"><td class="name">Pink Salt Trick — Nervelin</td><td>Diabetes</td><td class="geo">🇺🇸 EN</td><td><span class="dot b"></span>Black</td><td class="ads">3</td></tr>
+        <tr data-cls="b"><td class="name">MounjaRosa · Slimsy · OzenVitta</td><td>Emagrecimento</td><td class="geo">🇧🇷 PT</td><td><span class="dot b"></span>Black</td><td class="ads">1-2</td></tr>
+        <tr data-cls="b"><td class="name">VIGOPROST · GlicoTrin · Folix · Vitala</td><td>Vários (BR)</td><td class="geo">🇧🇷 PT</td><td><span class="dot b"></span>Black</td><td class="ads">1</td></tr>
+      </tbody>
+    </table></div>
+    <div class="sec-label">Já escalaram (esfriaram) · por nº de anúncios</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Oferta</th><th>Nicho</th><th>Geo</th><th>Classe</th><th style="text-align:right">Anúncios</th></tr></thead>
+      <tbody>
+        <tr data-cls="b"><td class="name">Truque do Mel — Clarify</td><td>Memória</td><td class="geo">🇧🇷 PT</td><td><span class="dot b"></span>Black</td><td class="ads">31</td></tr>
+        <tr data-cls="b"><td class="name">Prostlosina / Tittanus</td><td>Próstata</td><td class="geo">🇧🇷 PT</td><td><span class="dot b"></span>Black</td><td class="ads">12</td></tr>
+        <tr data-cls="b"><td class="name">Oração da Prosperidade</td><td>Cristão</td><td class="geo">🇧🇷 PT</td><td><span class="dot b"></span>Black</td><td class="ads">10</td></tr>
+        <tr data-cls="b"><td class="name">Prize Nobel Rotine — NerveCalm</td><td>Neuropatia</td><td class="geo">🇺🇸 EN</td><td><span class="dot b"></span>Black</td><td class="ads">8</td></tr>
+        <tr data-cls="g"><td class="name">Gelatine Slim</td><td>Emagrecimento</td><td class="geo">🇧🇷 PT</td><td><span class="dot g"></span>Grey</td><td class="ads">8</td></tr>
+        <tr data-cls="g"><td class="name">Soutien Articulare — Nutra Flex</td><td>Articulações</td><td class="geo">🇫🇷 FR</td><td><span class="dot g"></span>Grey</td><td class="ads">7</td></tr>
+        <tr data-cls="b"><td class="name">Alimento Causador de Alzheimer — Neurovex</td><td>Memória</td><td class="geo">🇧🇷 PT</td><td><span class="dot b"></span>Black</td><td class="ads">5</td></tr>
+        <tr data-cls="w"><td class="name">Gut Protocol — Gundry MD</td><td>Digestão</td><td class="geo">🇺🇸 EN</td><td><span class="dot w"></span>White</td><td class="ads">3</td></tr>
+        <tr data-cls="w"><td class="name">Polyphenol Dark Spot — Gundry MD</td><td>Estética</td><td class="geo">🇺🇸 EN</td><td><span class="dot w"></span>White</td><td class="ads">3</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- ============ SCORE ============ -->
+  <section class="panel" id="p-score">
+    <div class="sec-label">Score de clonabilidade · o que subir primeiro <span class="tag">longevidade × volume × white × rede self-serve</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th>Oferta</th><th>Classe</th><th>Rede</th><th style="min-width:130px">Score</th></tr></thead>
+      <tbody>
+        <tr data-cls="w"><td class="ads">1</td><td class="name">Endless Eletricity</td><td><span class="dot w"></span>White</td><td>Taboola/Rev</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:85%"></div></div><span class="val">85</span></div></td></tr>
+        <tr data-cls="g"><td class="ads">2</td><td class="name">Bariatric Gelatin</td><td><span class="dot g"></span>Grey</td><td>Revcontent</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:78%"></div></div><span class="val">78</span></div></td></tr>
+        <tr data-cls="g"><td class="ads">3</td><td class="name">Pro Nail Complex</td><td><span class="dot g"></span>Grey</td><td>ClickBank</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:64%"></div></div><span class="val">64</span></div></td></tr>
+        <tr data-cls="w"><td class="ads">4</td><td class="name">Gut Protocol — Gundry MD</td><td><span class="dot w"></span>White</td><td>NewsBreak</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:63%"></div></div><span class="val">63</span></div></td></tr>
+        <tr data-cls="w"><td class="ads">5</td><td class="name">Polyphenol Dark Spot — Gundry MD</td><td><span class="dot w"></span>White</td><td>Yahoo/DSP</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:52%"></div></div><span class="val">52</span></div></td></tr>
+        <tr data-cls="b"><td class="ads">6</td><td class="name">Prostlosina / Tittanus</td><td><span class="dot b"></span>Black</td><td>Taboola+Yahoo</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:35%"></div></div><span class="val">35</span></div></td></tr>
+      </tbody>
+    </table></div>
+    <div class="notecols" style="margin-top:14px">
+      <div class="note"><h4>Como o score é calculado</h4><ul>
+        <li><b>Longevidade (30)</b> — mais tempo no ar = lucro mais provado.</li>
+        <li><b>Volume/velocidade (25)</b> — anúncios/criativos ÷ dias ativos.</li>
+        <li><b>White-ness (25)</b> — white puxa; black penaliza (risco de ban).</li>
+        <li><b>Rede self-serve (20)</b> — NewsBreak/Taboola abrem rápido; DSP/pools exigem gestor.</li>
+      </ul></div>
+      <div class="note"><h4>Recomendação</h4><p>Suba <b>1 oferta</b>. Compliance total → <b>Gundry MD / NewsBreak</b>. Maior prova de lucro + nicho menos concorrido → <b>Endless Eletricity</b>. Volume nutra → <b>Bariatric Gelatin</b> (recriar o domínio que caiu).</p></div>
+    </div>
+  </section>
+
+  <!-- ============ POR NICHO ============ -->
+  <section class="panel" id="p-niche">
+    <div class="sec-label">Explorador de nichos <span class="tag">20 big niches → micro-nichos · classificação revisada</span></div>
+    <div class="filterbar">
+      <div class="frow" id="bigChips"><span class="lbl">Big</span></div>
+      <div class="frow" id="microChips"><span class="lbl">Micro</span></div>
+    </div>
+    <div class="tbl-wrap" id="nicheTable"></div>
+    <p class="mono" style="color:var(--faint);font-size:11px;margin-top:12px">Classe <b>revisada</b> pela régua de prazo/promessa. <b>⚠</b> = nome sugere, mas precisa checar a copy do funil pra cravar. Big niche com <b>—</b> = sem oferta nesta amostra (estrutura pronta pra quando aparecer).</p>
+  </section>
+
+  <!-- ============ REDES ============ -->
+  <section class="panel" id="p-net">
+    <div class="sec-label">Segmentação por rede nativa <span class="tag">extraído dos parâmetros de rastreio</span></div>
+    <div class="nets">
+      <article class="net"><div class="net-h"><span class="net-b">NEWSBREAK</span><span class="net-geo mono">🇺🇸 EUA-only</span></div><ul><li data-cls="w"><span class="dot w"></span><b>Gut Protocol — Gundry MD</b><span class="obs">White · quiz · <span class="mono">nb_cid</span>. Self-serve, 100% US.</span></li></ul></article>
+      <article class="net"><div class="net-h"><span class="net-b">TABOOLA</span><span class="net-geo mono">🇧🇷 🇺🇸</span></div><ul>
+        <li data-cls="b"><span class="dot b"></span><b>Prostlosina / Tittanus</b><span class="obs">Black · <span class="mono">tblci</span> + Yahoo, desktop BR.</span></li>
+        <li data-cls="w"><span class="dot w"></span><b>Endless Eletricity</b><span class="obs">White · widget <span class="mono">Below Article</span> (Taboola/Rev), US.</span></li>
+      </ul></article>
+      <article class="net"><div class="net-h"><span class="net-b">REVCONTENT</span><span class="net-geo mono">🇺🇸</span></div><ul><li data-cls="g"><span class="dot g"></span><b>Bariatric Gelatin</b><span class="obs">Grey · <span class="mono">rtkcid</span> (firstminutejournal). 583 anúncios.</span></li></ul></article>
+      <article class="net"><div class="net-h"><span class="net-b">YAHOO / DSP</span><span class="net-geo mono">🇺🇸 🇧🇷</span></div><ul>
+        <li data-cls="w"><span class="dot w"></span><b>Polyphenol Dark Spot — Gundry MD</b><span class="obs">White · <span class="mono">dsp</span> + Everflow.</span></li>
+        <li data-cls="b"><span class="dot b"></span><b>Prostlosina</b><span class="obs">Yahoo (<span class="mono">YAN</span>) em paralelo ao Taboola.</span></li>
+      </ul></article>
+      <article class="net"><div class="net-h"><span class="net-b">OUTBRAIN / MGID</span><span class="net-geo mono">—</span></div><ul><li><span class="dot" style="background:var(--faint)"></span><span class="obs">Sem match confirmado nesta amostra. Posso aprofundar abrindo funis focando nessas redes.</span></li></ul></article>
+      <article class="net"><div class="net-h"><span class="net-b">CLICKBANK POOL</span><span class="net-geo mono">🇺🇸</span></div><ul><li data-cls="g"><span class="dot g"></span><b>Pro Nail Complex</b><span class="obs">Grey · hopId ClickBank. Rede exata não exposta; pool US.</span></li></ul></article>
+    </div>
+  </section>
+
+  <!-- ============ PÚBLICO (audience dossiê) ============ -->
+  <section class="panel" id="p-audience">
+    <div class="sec-label">Dossiê de público por rede nativa <span class="tag">deep research · <span style="color:var(--ok)">✓ verificado</span> · <span style="color:var(--warn)">~ fonte única</span> · <s style="color:var(--faint)">velho</s></span></div>
+
+    <div class="nets">
+      <article class="net"><div class="net-h"><span class="net-b">NEWSBREAK</span><span class="net-geo mono">🎯 mar azul · 🇺🇸-only</span></div><ul>
+        <li><span class="dot" style="background:var(--ok)"></span><b>40–45M+ usuários/mês</b> · <b>96,54% tráfego EUA</b><span class="obs"><span style="color:var(--ok)">✓ alta</span> · primário + SimilarWeb · inútil p/ BR/Europa</span></li>
+        <li><span class="dot" style="background:var(--ok)"></span><b>45+ (web 55–64) · ~60% mulheres · sem faculdade · suburbano/rural</b><span class="obs"><span style="color:var(--ok)">✓ alta</span> NBC News + SimilarWeb (split exato 64% refutado → use ~60/40)</span></li>
+        <li><span class="dot" style="background:var(--ok)"></span><b>Intenção local: 82% notícia · 56% negócio · 45% entret.</b><span class="obs"><span style="color:var(--warn)">✓ média</span> auto-reportado — ângulo "na sua região" converte</span></li>
+        <li><span class="dot" style="background:var(--accent)"></span><b>"Caro no Meta, ausente no TikTok"</b><span class="obs">alvo puro p/ saúde/Medicare/seguro/finanças do público maduro</span></li>
+      </ul></article>
+
+      <article class="net"><div class="net-h"><span class="net-b">TABOOLA</span><span class="net-geo mono">escala global</span></div><ul>
+        <li><span class="dot" style="background:var(--ok)"></span><b>~600M usuários ativos/dia · ~1,4–1,5 bi/mês</b> · 22k+ sites<span class="obs"><span style="color:var(--ok)">✓ alta</span> materiais de investidor + SEC (Q4 2024)</span></li>
+        <li><span class="dot" style="background:var(--bad)"></span><b>Gênero · idade · renda · reach por país</b><span class="obs"><span style="color:var(--bad)">✗ NÃO confirmado</span> — 60/40, 25–54, &gt;$75k, Brasil 64%, US 89% <b>foram refutados</b> (fonte velha/blog)</span></li>
+        <li><span class="dot" style="background:var(--faint)"></span><s>639M/86% (2015) · 43,6% (2017)</s><span class="obs">❌ comScore obsoleto — não usar</span></li>
+      </ul></article>
+
+      <article class="net"><div class="net-h"><span class="net-b">SAÚDE em native (verificado)</span><span class="net-geo mono">✓ transversal</span></div><ul>
+        <li><span class="dot" style="background:var(--ok)"></span><b>Native favorece público mais velho na saúde</b><span class="obs"><span style="color:var(--ok)">✓</span> Medicare/seguro miram <b>55–65+</b></span></li>
+        <li><span class="dot" style="background:var(--ok)"></span><b>Outbrain = renda mais alta</b><span class="obs"><span style="color:var(--ok)">✓</span> publishers premium → finanças/seguro premium</span></li>
+      </ul></article>
+
+      <article class="net"><div class="net-h"><span class="net-b">MGID</span><span class="net-geo mono">🇧🇷 challenger · barato</span></div><ul>
+        <li><span class="dot" style="background:var(--ok)"></span><b>850M+ visitantes/mês · 185B recs · 32k+ sites · 200+ países</b><span class="obs"><span style="color:var(--ok)">✓</span> forte em LatAm (17B imp/mês), Europa (30B), APAC (55B)</span></li>
+        <li><span class="dot" style="background:var(--ok)"></span><b>CPC 30–50% abaixo do Taboola · dep. mín. US$100</b><span class="obs"><span style="color:var(--ok)">✓</span> política de conteúdo mais permissiva · verticais: sweeps, dating, finanças, health&amp;beauty</span></li>
+        <li><span class="dot" style="background:var(--accent)"></span><b>Melhor alcance+custo pro BRASIL</b><span class="obs">a rede nativa recomendada pra começar no BR</span></li>
+      </ul></article>
+
+      <article class="net"><div class="net-h"><span class="net-b">OUTBRAIN / TEADS</span><span class="net-geo mono">🇪🇺 maior · + concorrida</span></div><ul>
+        <li><span class="dot" style="background:var(--ok)"></span><b>2,2 bi de consumidores · 10.000 publishers</b><span class="obs"><span style="color:var(--ok)">✓</span> fundiu c/ Teads (fev/2025) · SEC FY2024 · ~$1,7B ad spend</span></li>
+        <li><span class="dot" style="background:var(--ok)"></span><b>Forte na Europa (FR/DE/IT/ES)</b><span class="obs"><span style="color:var(--ok)">✓</span> via Ligatus: RTL, Le Monde, Stern · renda mais alta</span></li>
+        <li><span class="dot" style="background:var(--bad)"></span><b>A MAIS concorrida por afiliados</b><span class="obs">150k criativos · onboarding gerenciado · entrada cara</span></li>
+      </ul></article>
+
+      <article class="net"><div class="net-h"><span class="net-b">REVCONTENT · YAHOO</span><span class="net-geo mono">🎯 menos concorrência</span></div><ul>
+        <li><span class="dot" style="background:var(--ok)"></span><b>Revcontent = MENOR concorrência (23k criativos)</b><span class="obs"><span style="color:var(--ok)">✓</span> entrada barata · CPC US$0,01–0,20 · US · health/finance/nutra</span></li>
+        <li><span class="dot" style="background:var(--warn)"></span><b>Yahoo Native → via Taboola/Yahoo DSP</b><span class="obs"><span style="color:var(--warn)">~</span> ~900M usuários Yahoo · menor concorrência (14k) mas dado granular fraco</span></li>
+      </ul></article>
+
+      <article class="net"><div class="net-h"><span class="net-b">MEDIAGO (Baidu)</span><span class="net-geo mono">🇺🇸 DSP native</span></div><ul>
+        <li><span class="dot" style="background:var(--ok)"></span><b>30 bi+ impressões/mês · inventário native premium da MSN</b><span class="obs"><span style="color:var(--ok)">✓</span> DSP internacional da Baidu · CPC · 29 países · sobrepõe o Microsoft Audience Network (às vezes + barato)</span></li>
+        <li><span class="dot" style="background:var(--accent)"></span><b>Bom p/ finanças, seguros, casa, e-com</b><span class="obs">native feed + below-article · pouco explorado por afiliado</span></li>
+      </ul></article>
+
+      <article class="net"><div class="net-h"><span class="net-b">TRAFFIC JUNKY</span><span class="net-geo mono">🔞 adulto · 🎯 + barato</span></div><ul>
+        <li><span class="dot" style="background:var(--ok)"></span><b>~4 BILHÕES de impressões/DIA · 150M+ visitantes/dia</b><span class="obs"><span style="color:var(--ok)">✓</span> Aylo/MindGeek (Pornhub, YouPorn, RedTube) · 100+ sites adultos</span></li>
+        <li><span class="dot" style="background:var(--accent)"></span><b>Depósito mín. US$25 · CPM · Tier-1 (US/CA/JP/DE)</b><span class="obs">verticais: adult dating, gambling, sexual wellness, ED, health&amp;beauty · desktop-heavy</span></li>
+      </ul></article>
+
+      <article class="net"><div class="net-h"><span class="net-b">BING / MICROSOFT ADS</span><span class="net-geo mono">🇧🇷 ponte p/ BR</span></div><ul>
+        <li><span class="dot" style="background:var(--ok)"></span><b>Público ~45 anos · 41% renda &gt;US$100k · gasta 35% + online</b><span class="obs"><span style="color:var(--ok)">✓</span> search + Microsoft Audience Network (native) · CPC 30–60% + barato que Google · desktop</span></li>
+        <li><span class="dot" style="background:var(--accent)"></span><b>Única com presença no BRASIL (MAN desde mai/2022)</b><span class="obs">Bing ~8,5–10% de share de busca no BR · finanças/saúde/seguro/high-ticket US</span></li>
+      </ul></article>
+    </div>
+
+    <div class="sec-label">Concorrência de afiliados por rede <span class="tag">criativos rastreados · menos = mais mar azul</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Rede</th><th>Criativos rastreados</th><th>Concorrência</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Taboola</td><td class="ads">352.392</td><td><span class="dot b"></span>saturada</td></tr>
+        <tr><td class="name">Outbrain / Teads</td><td class="ads">150.462</td><td><span class="dot b"></span>alta</td></tr>
+        <tr><td class="name">MGID</td><td class="ads">96.139</td><td><span class="dot g"></span>média</td></tr>
+        <tr><td class="name">Revcontent</td><td class="ads">23.040</td><td><span class="dot w"></span>baixa 🎯</td></tr>
+        <tr><td class="name">Yahoo Native</td><td class="ads">14.389</td><td><span class="dot w"></span>menor 🎯</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="sec-label">Budgets de teste/dia &amp; CPC <span class="tag">~ estimativa de afiliado (NÃO verificado)</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Rede</th><th>Budget teste/dia</th><th>CPC (EUA)</th><th>Nota</th></tr></thead>
+      <tbody>
+        <tr><td class="name">MGID</td><td class="mono">US$ 50–200</td><td class="mono">$0,15–0,80</td><td>mais barato (blog — tratar como hipótese)</td></tr>
+        <tr><td class="name">Revcontent</td><td class="mono">US$ 100–300</td><td class="mono">$0,25–1,00</td><td>blog — hipótese</td></tr>
+        <tr><td class="name">NewsBreak</td><td class="mono">US$ 100–250</td><td class="mono">—</td><td>blog — hipótese</td></tr>
+        <tr><td class="name">Taboola</td><td class="mono">maior</td><td class="mono">$0,30–1,50</td><td>faixa de CPC <b>refutada</b> na verificação</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="sec-label">Matriz de cobertura <span class="tag">o que se sabe (✓) vs falta (✗) · 🔄 preenchendo via fóruns</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Rede</th><th>Reach</th><th>Gênero</th><th>Idade</th><th>Renda</th><th>Filhos/casado</th><th>Device</th><th>Daypart</th><th>Conteúdo</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Bing/Microsoft</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td></tr>
+        <tr><td class="name">NewsBreak</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td><td style="color:var(--warn)">~</td><td style="color:var(--bad)">✗</td><td style="color:var(--ok)">✓</td><td style="color:var(--warn)">~</td><td style="color:var(--ok)">✓</td></tr>
+        <tr><td class="name">Taboola</td><td style="color:var(--ok)">✓</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--warn)">~</td><td style="color:var(--warn)">~</td><td style="color:var(--ok)">✓</td></tr>
+        <tr><td class="name">Outbrain</td><td style="color:var(--ok)">✓</td><td style="color:var(--bad)">✗</td><td style="color:var(--warn)">~</td><td style="color:var(--ok)">✓</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--ok)">✓</td></tr>
+        <tr><td class="name">MGID</td><td style="color:var(--ok)">✓</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--ok)">✓</td></tr>
+        <tr><td class="name">Revcontent</td><td style="color:var(--ok)">✓</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--warn)">~</td><td style="color:var(--bad)">✗</td><td style="color:var(--ok)">✓</td></tr>
+        <tr><td class="name">MediaGo</td><td style="color:var(--ok)">✓</td><td style="color:var(--warn)">~</td><td style="color:var(--warn)">~</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--warn)">~</td><td style="color:var(--bad)">✗</td><td style="color:var(--ok)">✓</td></tr>
+        <tr><td class="name">Yahoo Native</td><td style="color:var(--ok)">✓</td><td style="color:var(--warn)">~</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--warn)">~</td><td style="color:var(--bad)">✗</td><td style="color:var(--ok)">✓</td></tr>
+        <tr><td class="name">Traffic Junky</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td><td style="color:var(--bad)">✗</td><td style="color:var(--bad)">✗</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td><td style="color:var(--ok)">✓</td></tr>
+      </tbody>
+    </table></div>
+    <div class="notecols" style="margin:8px 0 14px">
+      <div class="note"><h4>🔎 Dados preenchidos (fóruns + proxies · deep research)</h4><ul>
+        <li><b>Traffic Junky</b> <span style="color:var(--ok)">✓ proxy direto (é a rede da Pornhub):</span> <b>62% homens / 38% mulheres</b> · idade média <b>38</b> (18–34 = &gt;50%) · <b>~88% mobile</b> · pico <b>após 22h</b> (vale 3–5h, 2ª o dia mais forte).</li>
+        <li><b>MediaGo</b> <span style="color:var(--warn)">~ proxy MSN:</span> <b>56% homens / 44% mulheres</b> · faixa maior <b>45–54</b> · EUA 32%, depois DE/JP/FR.</li>
+        <li><b>Yahoo Native</b> <span style="color:var(--warn)">~ proxy finance.yahoo:</span> <b>64% homens / 36% mulheres</b> (vertical finanças).</li>
+      </ul></div>
+      <div class="note"><h4>🚫 O que NÃO existe público (verificado)</h4><ul>
+        <li><b>Taboola</b>: só mostra idade+gênero <b>ao anunciante dentro da plataforma</b> (Realize) — zero número agregado público. Claims antigos de renda/idade <b>refutados</b>.</li>
+        <li><b>MGID · Outbrain · Revcontent</b>: não publicam gênero/idade/device do público.</li>
+        <li><b>Renda · escolaridade · estado civil · filhos</b>: <b>sem dado público</b> pra praticamente todas (só o Bing publica). Nenhuma native ad network divulga isso sobre quem VÊ o anúncio.</li>
+      </ul></div>
+    </div>
+
+    <div class="sec-label">Daypart · Device · Formato <span class="tag">deep research #4 · verificado onde há dado</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Rede</th><th>Device</th><th>Daypart</th><th>Formato</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Bing / Microsoft</td><td><span style="color:var(--ok)">✓</span> desktop-heavy (~12% vs &lt;1% mobile)</td><td><span style="color:var(--ok)">✓</span> horário comercial ("Workday Consumer": 62% compram no expediente)</td><td>search + Audience Network (native MSN/Outlook/Edge)</td></tr>
+        <tr><td class="name">NewsBreak</td><td><span style="color:var(--ok)">✓</span> app/mobile-first</td><td><span style="color:var(--warn)">~</span> horário de leitura de notícia local (manhã/noite)</td><td>feed nativo no app</td></tr>
+        <tr><td class="name">Taboola / Outbrain</td><td>misto (Rev: separar desk/mob)</td><td><span style="color:var(--warn)">~</span> Taboola cita 11h–13h (não verificado)</td><td><span style="color:var(--ok)">✓</span> widget below-article (assinatura das duas)</td></tr>
+        <tr><td class="name">Traffic Junky</td><td>desktop-heavy (consumo adulto)</td><td><span style="color:var(--warn)">~</span> noite/madrugada (padrão adulto)</td><td>banner + popunder em sites adultos</td></tr>
+        <tr><td class="name">MGID · MediaGo · Revcontent</td><td colspan="3" style="color:var(--faint)">sem daypart/device granular público — usar proxy do país/vertical</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note" style="margin-top:12px"><h4>👤 Perfil do Bing (verificado — o mais documentado)</h4><p><b>~60–64% homens</b> · <b>73% abaixo de 45 anos</b> (maior coorte 25–34) · afluente/educado (~50% no quartil superior de renda, 34% com diploma) · <b>57% têm filhos em casa · 53% casados</b>. Desktop, horário comercial → ideal p/ <b>finanças, seguro, saúde e high-ticket</b>. 🇧🇷 No Brasil só há confirmação do lançamento da Microsoft Audience Network (mai/2022); sem device/horário granular ainda. <b>Dayparts por hora quase não existem publicamente</b> em nenhuma rede — o único sólido é o "horário comercial" do Bing.</p></div>
+
+    <div class="sec-label">Facebook → Native · que público joga em qual rede</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Público que você tem no FB</th><th>Melhor rede</th><th>Base</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Saúde/idoso 55+ (próstata, diabetes, articulação, memória, Medicare)</td><td><b style="color:var(--white-c)">NewsBreak</b> 🇺🇸</td><td><span style="color:var(--ok)">✓</span> 45+ suburbano, feminino, caro no Meta/ausente no TikTok</td></tr>
+        <tr><td class="name">Finanças/seguro premium</td><td><b style="color:var(--white-c)">Outbrain</b></td><td><span style="color:var(--ok)">✓</span> audiência de maior renda</td></tr>
+        <tr><td class="name">Qualquer oferta — escala máxima</td><td><b style="color:var(--white-c)">Taboola</b></td><td><span style="color:var(--ok)">✓</span> 600M/dia (mas segmente você mesmo — demografia não é pública)</td></tr>
+        <tr><td class="name">Validar barato / geo amplo</td><td><b style="color:var(--white-c)">MGID</b></td><td><span style="color:var(--warn)">~</span> reputação de barato (não verificado)</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="notecols" style="margin-top:14px">
+      <div class="note"><h4>🎯 Mar azul (verificado)</h4><p><b>Público:</b> NewsBreak + saúde/idoso 55+ (EUA) — mulher madura suburbana, cara no Meta, ausente no TikTok. <b>Menor concorrência:</b> <b>Revcontent</b> (23k) e <b>Yahoo</b> (14k) &gt; MGID &gt; Outbrain &gt; Taboola. <b>Entrada + barata:</b> <b>Traffic Junky</b> (US$25, adulto/ED/dating). <b>Para o Brasil:</b> <b>MGID</b> (native) e <b>Bing/Microsoft Audience Network</b> (única com presença local no BR). <b>Finanças/seguro/high-ticket:</b> Bing/MediaGo.</p></div>
+      <div class="note"><h4>⚠️ Leia antes de agir</h4><p>Verificação adversarial: <b>11 confirmados / 14 refutados</b> de 25 claims. O que caiu: toda a <b>demografia da Taboola</b>, <b>reach por país</b>, <b>dayparts</b> e <b>faixas de CPC</b> (fontes velhas/blog). Use só os <span style="color:var(--ok)">✓</span>. Números de rede são <b>auto-reportados e globais</b> — não segmentados por país.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ CARTPANDA / TOP FB VOLUME ============ -->
+  <section class="panel" id="p-cartpanda">
+    <div class="sec-label">Ofertas de alto volume (Facebook) &amp; CartPanda <span class="tag">candidatas a portar pro native</span></div>
+
+    <div class="insight" style="margin-bottom:16px"><h3>▲ Por que isso importa</h3><p>Ofertas grandes vendem muito no <b>Facebook</b> via checkout <b>CartPanda</b>/Hotmart. O CartPanda <b>não tem marketplace público</b> (cada lojista = subdomínio <span class="mono">*.mycartpanda.com</span> privado). A forma de "acessar" é pelo <b>spy → abrir a oferta → pegar o checkout</b>. Abaixo, os maiores volumes do FB e os checkouts que confirmei.</p></div>
+
+    <div class="sec-label">Top FB por volume de detecção <span class="tag">7.029 ofertas FB varridas</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Oferta</th><th>Nicho</th><th>Geo</th><th>Checkout</th><th style="text-align:right">Detecções</th></tr></thead>
+      <tbody>
+        <tr data-cls="b"><td class="name">Brazilian Trick — Power Up</td><td>Adulto/ED</td><td class="geo">🇺🇸 EN</td><td class="mono">—</td><td class="ads">9.060</td></tr>
+        <tr data-cls="b"><td class="name">Truque do Sal Azul da Pérsia — Power 66</td><td>Adulto</td><td class="geo">🇧🇷 PT</td><td class="mono">—</td><td class="ads">1.038</td></tr>
+        <tr data-cls="b"><td class="name">AI Lottery Prediction — Apollo</td><td>Dinheiro</td><td class="geo">🇺🇸 EN</td><td class="mono">—</td><td class="ads">986</td></tr>
+        <tr data-cls="b"><td class="name">Truque do Sal Azul — Burnzine</td><td>Emagrecimento</td><td class="geo">🇧🇷 PT</td><td class="mono" style="color:var(--warn)">Hotmart</td><td class="ads">964</td></tr>
+        <tr data-cls="g"><td class="name">Truque da Gelatina — Leanzene</td><td>Emagrecimento</td><td class="geo">🇬🇧 EN</td><td class="mono" style="color:var(--white-c)">CartPanda ✓</td><td class="ads">932</td></tr>
+        <tr data-cls="b"><td class="name">Parasita Diabético — 100 Glico</td><td>Diabetes</td><td class="geo">🇧🇷 PT</td><td class="mono">—</td><td class="ads">904</td></tr>
+        <tr data-cls="b"><td class="name">Truque do Cavalo — Erovitan</td><td>Adulto/ED</td><td class="geo">🇩🇪 DE</td><td class="mono">—</td><td class="ads">895</td></tr>
+        <tr data-cls="b"><td class="name">Truque do Bicarbonato</td><td>Adulto</td><td class="geo">🇪🇸 ES</td><td class="mono">—</td><td class="ads">735</td></tr>
+        <tr data-cls="b"><td class="name">Canto Sagrado</td><td>Dinheiro/espiritual</td><td class="geo">🇧🇷 PT</td><td class="mono">—</td><td class="ads">714</td></tr>
+        <tr data-cls="g"><td class="name">Truque do Café com Limão</td><td>Emagrecimento</td><td class="geo">🇪🇸 ES</td><td class="mono">—</td><td class="ads">709</td></tr>
+        <tr data-cls="g"><td class="name">Ritual de Canela</td><td>Emagrecimento</td><td class="geo">🇪🇸 ES</td><td class="mono">—</td><td class="ads">687</td></tr>
+        <tr data-cls="b"><td class="name">Blue Salt Trick</td><td>Adulto/ED</td><td class="geo">🇺🇸 EN</td><td class="mono">—</td><td class="ads">587</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="sec-label">Checkouts CartPanda confirmados</div>
+    <div class="nets">
+      <article class="net"><div class="net-h"><span class="net-b">mbm.mycartpanda.com</span><span class="net-geo mono">🇬🇧 escalando</span></div><ul>
+        <li data-cls="g"><span class="dot g"></span><b>Truque da Gelatina (EN/UK)</b><span class="obs">marcada <span class="mono">[ESCALA CBO V5]</span> · emagrecimento · 932 detecções</span></li>
+      </ul></article>
+      <article class="net"><div class="net-h"><span class="net-b">health-group.mycartpanda.com</span><span class="net-geo mono">🇺🇸</span></div><ul>
+        <li data-cls="g"><span class="dot g"></span><b>Bariatric Gelatin</b><span class="obs">native · 583 anúncios · checkout atual "shop closed" (rotação)</span></li>
+      </ul></article>
+      <article class="net"><div class="net-h"><span class="net-b">+ hosts CartPanda (gelatina EN)</b></span><span class="net-geo mono">🇬🇧🇺🇸</span></div><ul>
+        <li data-cls="g"><span class="dot g"></span><b>leanzene · gelatin-burn-6 · bheveraff</b><span class="obs">todos <span class="mono">.mycartpanda.com</span> · gelatina de emagrecimento internacional</span></li>
+      </ul></article>
+    </div>
+
+    <div class="notecols" style="margin-top:14px">
+      <div class="note"><h4>🔎 Padrão de checkout (confirmado abrindo os top FB)</h4><p><b>BR de alto volume → Hotmart / Kiwify / Payt</b> (não CartPanda). Ex.: Sal Azul Pérsia = Kiwify/Hotmart/Payt · Parasita Diabético = Payt · Café com Limão = Hotmart. <b>CartPanda = gelatinas internacionais (EN/UK/US)</b>. Plataformas vistas: CartPanda, Hotmart, Kiwify, Payt, ClickBank.</p></div>
+      <div class="note"><h4>🔎 O que portar pro native</h4><p>O volume do FB é <b>ED ("salt trick"/"cavalo") · emagrecimento (gelatina/café/canela) · dinheiro/espiritual</b>. As <b>portáveis com menor risco</b> = <b>emagrecimento por receita</b> (produto real, promessa plausível). ED e "parasita diabético/reverter" = black, evite.</p></div>
+    </div>
+  </section>
+
+  <!-- Cross-source + freshness -->
+  <div class="sec-label">Validação cruzada de fontes &amp; frescor</div>
+  <div class="notecols">
+    <div class="note"><h4>🔗 Os dois tools se sobrepõem</h4><p>O MonsterSwipe <b>agrega o Swipe Offers</b> — o código <span class="mono">SO</span> em "Fontes" é o Swipe Offers (+ AS, NS, SA). Ofertas em <b>2+ fontes</b> = sinal mais forte.</p></div>
+    <div class="note"><h4>📡 Para deixar a pesquisa "ao vivo"</h4><ul>
+      <li>Somar <b>Anstrex Native</b> e <b>AdSpy</b> (cobrem Outbrain/MGID).</li>
+      <li><b>Monitorar diário</b>: o que sobe em 48h é o mais quente.</li>
+      <li>Confirmar geo/device na <b>Taboola Ad Library</b>.</li>
+      <li><b>Salvar assets</b> (feito): domínios caem rápido.</li>
+    </ul></div>
+  </div>
+
+  <div class="sec-label">Critério de triagem White / Black <span class="tag">régua: promessa realista vs hiperbólica</span></div>
+  <div class="legend">
+    <div class="leg w"><h4><span class="dot w"></span>White</h4><p>Promessa <b>realista e verificável</b>, marca/produto legítimo, funil e checkout próprios ou mainstream, sem cloaking. Ex.: Gundry MD, Endless Eletricity.</p></div>
+    <div class="leg g"><h4><span class="dot g"></span>Grey / "quase black"</h4><p>Hook de <b>truque/natural</b>, agressivo — <b>mas NÃO promete transformação radical em prazo curto</b> (horas/dias/semanas/1 mês) nem cura de doença. Produto real e checkout sério. O "truque" sozinho não faz ser black. Ex.: Pro Nail (truque da meia), Bariatric.</p></div>
+    <div class="leg b"><h4><span class="dot b"></span>Black</h4><p>Promete <b>transformação irreal em prazo impossível</b> — "mudança de vida" em horas/semanas/1 mês, curar câncer / doença incurável, reverter Alzheimer/diabetes — ou ritual/prosperidade/medo/famoso. <b>Sinal de infra:</b> domínio <b>imitando notícia</b> (ex.: noticias-nobrasil, populares-noticias). Maioria do native.</p></div>
+  </div>
+  <div class="note" style="margin-top:14px"><h4>🔬 Sinal de infra (verificado abrindo 24 funis)</h4><p><b>GREY</b> = domínio de <b>marca própria</b> + checkout sério: <b>BuyGoods · ClickBank · Digistore24</b> (EN) · <b>Hotmart · Kiwify · Payt · Monetizze · YouShop</b> (BR) · marcas reais (<b>Doutor Nature, SuplyMaxi, Nutri Origines, Seren'Alpes</b>). <b>GREY-BLACK</b> = domínio <b>fake-news</b> imitando portal de notícia. Regra: o <b>nome "trick" não decide</b> — a <b>infra + a promessa</b> decidem.</p></div>
+
+  <div class="note" style="margin-top:14px"><b>Sobre "países / geo":</b> os spy tools não expõem o país exato. O geo é <b>inferido</b> por idioma, checkout (Yampi/CartPanda → BR) e rede (NewsBreak → US). Multi-idioma = multi-geo.</div>
+
+  <footer>
+    <strong>Metodologia:</strong> Swipe Offers (Native + tag White = 1/162) + MonsterSwipe (Native = 91). Contagem de criativos <b>exata</b>, deduplicada do payload de dados (pasta "Criativos"). Rede confirmada por parâmetro de rastreio. Funis testados ao vivo em 09/ago. Score e triagem White/Black manuais.<br>
+    <strong>Escala</strong> = anúncios detectados pelos swipes, não impressões. <strong>Snapshot:</strong> 09 ago 2026.
+  </footer>
+</div>
+  </div><!-- /page-ofertas -->
+
+  <div class="page" id="page-publico">
+    <div class="wrap">
+      <header>
+        <div>
+          <div class="eyebrow">Dossiê · Comportamento de Usuário</div>
+          <h1>Perfil de público das redes nativas</h1>
+          <p>Quem consome cada rede — idade, gênero, renda, dispositivo, dayparts e onde mora — pra portar ofertas do Facebook com assertividade.</p>
+        </div>
+        <div class="snapshot"><b>📚 DOSSIÊ · estático</b><br>(só atualiza sob demanda)<br>Deep research · 8 redes</div>
+      </header>
+      <div id="publico-mount"></div>
+    </div>
+  </div><!-- /page-publico -->
+
+  <div class="page" id="page-frescor">
+    <div class="wrap">
+      <header>
+        <div>
+          <div class="eyebrow">Rotina de Frescor · o que está entrando agora</div>
+          <h1>Frescor / Novidades</h1>
+          <p>Pegar oferta <b>antes de saturar</b> — <b>foco 100% em NATIVE</b>. Facebook/YouTube entram só como <b>complemento</b> (aviso antecipado do que pode migrar pro native). Use os filtros abaixo <b>2–3× por semana</b>.</p>
+        </div>
+        <div class="snapshot"><b style="color:var(--ok)">🟢 ÚLTIMA ATUALIZAÇÃO · 10 ago 2026</b><br>via firstSeenAt / lastSeenAt<br>+ status SCALING</div>
+      </header>
+
+      <div class="insight"><h3>▲ A rotina (5 min, direto no MonsterSwipe)</h3><p>1) <b>🆕 Novidades</b> (sort=firstSeenAt) + período <b>7 dias</b> → o que acabou de entrar. 2) <b>⏱ Última Atividade</b> (sort=lastSeenAt) → o que rodou nas últimas horas (ainda vivo). 3) Status <b>SCALING</b> → o que o tool marca escalando. <b>Sinal de compra:</b> firstSeen &lt; 7 dias · lastSeen = hoje · <b>2+ fontes</b> (SO/AS/NS) · sparkline com <b>cauda subindo</b>. Cruze: <b>escalando no FB + ainda pouca no native = mar azul pra portar</b>.</p></div>
+
+      <div class="sec-label">🔗 Atalhos (abrem no MonsterSwipe logado)</div>
+      <div class="links" style="margin-bottom:8px">
+        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=NATIVE&sort=firstSeenAt"><span class="i">🆕</span> Native · Novidades</a>
+        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=NATIVE&sort=lastSeenAt"><span class="i">⏱</span> Native · Última atividade</a>
+        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=FACEBOOK&sort=firstSeenAt"><span class="i">🆕</span> FB · Novidades</a>
+        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=FACEBOOK&sort=detections"><span class="i">🔥</span> FB · Mais escaladas</a>
+      </div>
+
+      <div class="sec-label">🆕 Novidades NATIVE <span class="tag">firstSeenAt · mais novas primeiro</span></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Entrou</th><th>Oferta</th><th>Nicho</th><th>Geo</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">06/ago</td><td class="name">Pink Salt Trick — Nervelin</td><td>Diabetes</td><td class="geo">🇺🇸 EN</td></tr>
+          <tr><td class="mono">04/ago</td><td class="name">Honey Based Ritual — Purelung+Hemoprime</td><td>Hipertensão</td><td class="geo">🇺🇸 EN</td></tr>
+          <tr><td class="mono">04/ago</td><td class="name">Viking Era Ritual — Dentabiome</td><td>Saúde bucal</td><td class="geo">🇺🇸 EN</td></tr>
+          <tr><td class="mono">20/jul</td><td class="name">Bedtime Mineral Ritual — PurDentix</td><td>Saúde bucal</td><td class="geo">🇺🇸 EN</td></tr>
+          <tr><td class="mono">18/jul</td><td class="name">Simple trick to reduce electricity Bills</td><td>Energia/DIY</td><td class="geo">🇺🇸 EN</td></tr>
+          <tr><td class="mono">15/jul</td><td class="name">Endless Eletricity</td><td>Energia/DIY</td><td class="geo">🇺🇸 EN</td></tr>
+          <tr><td class="mono">11/jul</td><td class="name">Spring Water Trick — Prostavive</td><td>Próstata</td><td class="geo">🇺🇸 EN</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="sec-label">📈 Crescimento de criativos por dia <span class="tag">dado extraído por oferta · responde "quando entraram criativos novos"</span></div>
+      <div class="notecols">
+        <div class="note"><h4>📊 Que dados eu extraio por oferta (cada sessão)</h4><p>Do payload do MonsterSwipe, por oferta: <b>Entrou em</b> (firstSeenAt) · <b>Última atividade</b> (lastSeenAt) · <b>Total de anúncios</b> · <b>Criativos hoje</b> (todaysCreatives) · e o <b>histórico datado de cada criativo</b> → dá pra montar "quantos criativos novos entraram em cada dia (xx/xx)".</p></div>
+        <div class="note"><h4>Exemplo real — Bariatric Gelatin</h4><p>Criativos novos por dia (extraído):<br><span class="mono">30/jun <b>+4</b> · 02/jul <b>+2</b> · 16/mai +1 · 14/mai +2 · 02/fev +1</span><br>→ pico de lançamento de criativos em <b>fim de jun/início de jul</b>. Nas ofertas que ainda têm 1 anúncio (recém-entradas), esse histórico é curto — o dado engrossa conforme escala.</p></div>
+      </div>
+
+      <div class="sec-label">🆕 Facebook — só COMPLEMENTO <span class="tag">10/ago · aviso antecipado do que pode migrar pro native</span></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Oferta</th><th>Nicho</th><th>Geo</th><th style="text-align:right">Ads</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Quiz Recetas Drenantes</td><td>Emagrecimento</td><td class="geo">🇪🇸 ES</td><td class="ads">82</td></tr>
+          <tr><td class="name">Quiz + VSL (WW)</td><td>Emagrecimento</td><td class="geo">🌎 EN</td><td class="ads">78</td></tr>
+          <tr><td class="name">Lowticket Latam</td><td>Vários</td><td class="geo">🌎 ES</td><td class="ads">58</td></tr>
+          <tr><td class="name">Inanição Macular — Oculen</td><td>Visão</td><td class="geo">🇺🇸 EN</td><td class="ads">1▲</td></tr>
+          <tr><td class="name">Teacher's Treasure Kit</td><td>Educação (pais/prof)</td><td class="geo">🌎 EN</td><td class="ads">29</td></tr>
+          <tr><td class="name">O Código da Imagem de Autoridade</td><td>Ticket/curso</td><td class="geo">🇧🇷 PT</td><td class="ads">1▲</td></tr>
+          <tr><td class="name">Lyfta — Gym Workout Tracker</td><td>App/fitness</td><td class="geo">🌎 EN</td><td class="ads">1▲</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="sec-label">📈 Subindo no FB <span class="tag">momentum do sparkline (7d)</span></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Oferta</th><th>Nicho</th><th>Geo</th><th>Momentum</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Truque do Bicarbonato</td><td>Adulto</td><td class="geo">🇪🇸 ES</td><td><span class="trend up">▲ +3</span></td></tr>
+          <tr><td class="name">Protocolo Ozempic Biológico</td><td>Emagrec./ticket</td><td class="geo">🇪🇸 ES</td><td><span class="trend up">▲ +2</span></td></tr>
+          <tr><td class="name">Truque da Casca de Melancia — Prostavex</td><td>Próstata</td><td class="geo">🇧🇷 PT</td><td><span class="trend up">▲ +2</span></td></tr>
+          <tr><td class="name">Truque do Vinagre de Maçã — GlucoSense</td><td>Diabetes</td><td class="geo">🇺🇸 EN</td><td><span class="trend up">▲ +1</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="notecols" style="margin-top:14px">
+        <div class="note"><h4>🧭 Leitura de frescor</h4><p>O native novo hoje é <b>ritual dental</b> (PurDentix/Dentabiome), <b>energia/DIY</b> (Endless & similar) e <b>próstata</b>. No FB, o que entra HOJE são <b>quizzes de emagrecimento</b> (ES/WW), <b>visão</b> (Oculen) e <b>educação</b> (Teacher's Kit — parenting/ensino, seu interesse). Esses são os candidatos a portar pro native <b>antes de todo mundo</b>.</p></div>
+        <div class="note"><h4>⚙️ Automatizar?</h4><p>Dá pra eu te montar um <b>lembrete recorrente</b> (ex.: toda 2ª/4ª/6ª) pra você abrir os 4 atalhos e revisar as novidades. Como o login do spy cai, a checagem em si é manual — mas o lembrete + o passo-a-passo deixam a rotina no automático. É só pedir.</p></div>
+      </div>
+    </div>
+  </div><!-- /page-frescor -->
+
+  <div class="page" id="page-portabilidade">
+    <div class="wrap">
+      <header>
+        <div>
+          <div class="eyebrow">Dossiê · Padrão de Portabilidade FB/YouTube → Native</div>
+          <h1>Onde está a maior chance de acertar</h1>
+          <p>Sobrepondo as ofertas dos 2 swipes (MonsterSwipe agrega o Swipe Offers). O que aparece <b>ao mesmo tempo no Facebook e no Native</b> = padrão <b>provado de portabilidade</b>. Separado por Brasil / EUA / Europa.</p>
+        </div>
+        <div class="snapshot"><b>📚 DOSSIÊ · estático</b><br>base: 2 swipes<br>native + FB varridos</div>
+      </header>
+
+      <div class="insight"><h3>▲ A tese em 1 frase</h3><p>A oferta que <b>copia-e-cola</b> do FB/YT pro native é a que já é <strong>advertorial de saúde/DIY com hook de "receita/truque"</strong>, produto físico ou infoproduto em <strong>checkout portável</strong> (ClickBank/BuyGoods/CartPanda/Hotmart), mirando <strong>público mass-market 45+</strong>. Native é contextual (below-article) — quem já roda advertorial no FB <b>não precisa reinventar</b>, só levar.</p></div>
+
+      <div class="sec-label">🧬 O padrão — os 5 fatores de portabilidade</div>
+      <div class="nets">
+        <article class="net"><div class="net-h"><span class="net-b">1 · FORMATO</span></div><ul><li><span class="dot w"></span><b>Já tem advertorial + VSL</b><span class="obs">o native exige advertorial (below-article). Oferta que só tem criativo de feed FB não porta bem.</span></li></ul></article>
+        <article class="net"><div class="net-h"><span class="net-b">2 · ÂNGULO</span></div><ul><li><span class="dot w"></span><b>Curiosidade "receita/truque/ritual"</b><span class="obs">"truque da gelatina", "salt trick", "1-min sock trick" — curiosidade converte no contexto de leitura do native.</span></li></ul></article>
+        <article class="net"><div class="net-h"><span class="net-b">3 · PÚBLICO</span></div><ul><li><span class="dot w"></span><b>Dor mass-market 45+</b><span class="obs">peso, glicose, próstata, memória, articulação, unha, energia. É o público que vive no native (não Gen-Z).</span></li></ul></article>
+        <article class="net"><div class="net-h"><span class="net-b">4 · CHECKOUT</span></div><ul><li><span class="dot w"></span><b>Plataforma portável</b><span class="obs">ClickBank/BuyGoods/Digistore (EN), CartPanda/Hotmart/Kiwify/Payt (BR) — independe do FB.</span></li></ul></article>
+        <article class="net"><div class="net-h"><span class="net-b">5 · VALIDAÇÃO</span></div><ul><li><span class="dot w"></span><b>Aparece nos 2 lugares</b><span class="obs">detectada em FB <b>e</b> native (ou 2+ fontes de swipe) = risco menor. O padrão-ouro.</span></li></ul></article>
+      </div>
+
+      <div class="sec-label">🔁 Overlaps PROVADOS (mesma família rodando em FB <b>e</b> Native)</div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Família / ângulo</th><th>No Facebook</th><th>No Native</th><th>Regiões</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Gelatina de emagrecimento</td><td>Truque da Gelatina (Leanzene), Real Gelatin (MeltDrops), Gelatina Slim</td><td>Bariatric Gelatin, Gelatine Slim, Lazy Way (MeltDrops)</td><td class="geo">🇺🇸 🇧🇷 🇬🇧</td></tr>
+          <tr><td class="name">"Salt trick" (glicose/ED/nervos)</td><td>Blue Salt Trick, Truque do Sal Azul</td><td>Pink Salt Trick — Nervelin</td><td class="geo">🇺🇸 🇧🇷</td></tr>
+          <tr><td class="name">Próstata (mineral/água)</td><td>Truque da Casca de Melancia (Prostavex)</td><td>Prostavive, VIGOPROST, Prostlosina, Prosticil</td><td class="geo">🇺🇸 🇧🇷 🇩🇪</td></tr>
+          <tr><td class="name">Diabetes / açúcar no sangue</td><td>Parasita Diabético, Vinagre de Maçã (GlucoSense)</td><td>Sugar Swith, GlicoTrin, Nervelin</td><td class="geo">🇺🇸 🇧🇷</td></tr>
+          <tr><td class="name">Memória / cognição</td><td>Solda Neural (MemoPryl)</td><td>Neurovex, Truque do Mel, Célibre Max</td><td class="geo">🇧🇷 🇺🇸</td></tr>
+          <tr><td class="name">Fungo de unha ("sock trick")</td><td>1 Minute Socks Trick</td><td>Pro Nail Complex</td><td class="geo">🇺🇸</td></tr>
+          <tr><td class="name">Articulações (gelatina/óleo)</td><td>Joint Jello / Biodynamix</td><td>Nutra Flex, Congelum Gel, Artiregen</td><td class="geo">🇫🇷 🇪🇸</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="sec-label">🌎 Por região — onde cada padrão vive</div>
+      <div class="nets">
+        <article class="net"><div class="net-h"><span class="net-b">🇺🇸 EUA (EN)</span><span class="net-geo mono">melhor infra + público ideal</span></div><ul>
+          <li><span class="dot w"></span><b>Nichos que portam:</b> emagrecimento (gelatin drops), diabetes, próstata, fungos, memória, energia/DIY</li>
+          <li><span class="dot g"></span><b>Checkout:</b> ClickBank · BuyGoods · Digistore (grey/white, política própria)</li>
+          <li><span class="dot" style="background:var(--accent)"></span><b>Redes:</b> Revcontent (menos concorrência) · NewsBreak (55+ saúde) · Taboola · MGID</li>
+          <li><span class="dot w"></span><b>Por quê ganha:</b> infra white/grey madura + público native 45+ + advertorial já pronto. <b>Maior nº de overlaps provados.</b></li>
+        </ul></article>
+
+        <article class="net"><div class="net-h"><span class="net-b">🇧🇷 BRASIL (PT)</span><span class="net-geo mono">volume gigante no FB</span></div><ul>
+          <li><span class="dot w"></span><b>Nichos que portam:</b> emagrecimento (gelatina/receita), próstata, diabetes, memória, adulto/ED</li>
+          <li><span class="dot g"></span><b>Checkout:</b> Hotmart · Kiwify · Payt · Monetizze (físico + infoproduto)</li>
+          <li><span class="dot" style="background:var(--accent)"></span><b>Redes:</b> Taboola BR · MGID (forte LatAm) · Bing/MAN (única com presença BR)</li>
+          <li><span class="dot b"></span><b>Cuidado:</b> BR native puxa mais pro black (fake-news/cloak). O portável grey = <b>gelatina/receita de marca real</b>.</li>
+        </ul></article>
+
+        <article class="net"><div class="net-h"><span class="net-b">🇪🇺 EUROPA (FR/DE/ES/IT)</span><span class="net-geo mono">🎯 mar azul (pouca concorrência)</span></div><ul>
+          <li><span class="dot w"></span><b>Nichos que portam:</b> articulações/dor, próstata, calvície, digestão — saúde do idoso</li>
+          <li><span class="dot g"></span><b>Checkout:</b> marca própria (Nutri Origines, Seren'Alpes) · Digistore</li>
+          <li><span class="dot" style="background:var(--accent)"></span><b>Redes:</b> Outbrain (forte Europa via Ligatus) · MGID</li>
+          <li><span class="dot w"></span><b>Por quê olhar:</b> <b>menos afiliado brigando</b> e menos dado público = mar azul — mas menos exemplos prontos pra copiar.</li>
+        </ul></article>
+      </div>
+
+      <div class="sec-label">🔀 CRUZAMENTO · País × Comportamento da plataforma × Oferta portável <span class="tag">o que casar com o quê</span></div>
+      <p class="mono" style="color:var(--faint);font-size:11px;margin:-4px 0 12px">Regra do casamento: a oferta vai pra rede cujo <b>público (idade/gênero/device/vertical)</b> bate com o alvo da oferta. <span style="color:var(--ok)">✓</span> = comportamento verificado no dossiê de Público.</p>
+
+      <div class="sec-label" style="font-size:13px;letter-spacing:.02em;color:var(--white-c)">🇺🇸 EUA</div>
+      <div class="tbl-wrap" style="margin-bottom:16px"><table>
+        <thead><tr><th>Oferta portável (FB/YT)</th><th>Alvo</th><th>Rede native ideal</th><th>Por quê (comportamento)</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Gelatina de emagrecimento (MeltDrops/Leanzene)</td><td>mulher 45+</td><td><b style="color:var(--white-c)">NewsBreak + Revcontent</b></td><td><span style="color:var(--ok)">✓</span> NewsBreak = 45+ feminino suburbano; Revcontent = nutra barato, menor concorrência</td></tr>
+          <tr><td class="name">Diabetes / glicose (salt/vinagre)</td><td>55+ misto</td><td><b style="color:var(--white-c)">NewsBreak + Taboola</b></td><td><span style="color:var(--ok)">✓</span> público idoso de saúde; Taboola below-article de notícia</td></tr>
+          <tr><td class="name">Próstata / fungos</td><td>homem 50+</td><td><b style="color:var(--white-c)">Taboola / Outbrain</b></td><td>homem maduro; below-article; Outbrain renda alta</td></tr>
+          <tr><td class="name">Finanças / seguro / high-ticket</td><td>afluente</td><td><b style="color:var(--white-c)">Bing + MediaGo</b></td><td><span style="color:var(--ok)">✓</span> Bing = desktop, 60% homem, afluente, "Workday" (horário comercial); MediaGo = finanças MSN</td></tr>
+          <tr><td class="name">Energia / DIY (Endless)</td><td>homem</td><td><b style="color:var(--white-c)">Taboola + Bing</b></td><td>DIY/casa, público masculino desktop</td></tr>
+          <tr><td class="name">Adulto / ED</td><td>homem</td><td><b style="color:var(--white-c)">Traffic Junky</b></td><td><span style="color:var(--ok)">✓</span> tráfego adulto, masculino, desktop, US$25 de entrada</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="sec-label" style="font-size:13px;letter-spacing:.02em;color:var(--white-c)">🇧🇷 BRASIL</div>
+      <div class="tbl-wrap" style="margin-bottom:16px"><table>
+        <thead><tr><th>Oferta portável (FB/YT)</th><th>Alvo</th><th>Rede native ideal</th><th>Por quê (comportamento)</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Gelatina / receita de emagrecimento</td><td>mulher 35+</td><td><b style="color:var(--white-c)">MGID + Taboola BR</b></td><td><span style="color:var(--ok)">✓</span> MGID forte LatAm, barato, vertical health&amp;beauty; Taboola BR = escala e leitura de notícia</td></tr>
+          <tr><td class="name">Próstata / diabetes / memória</td><td>homem/idoso 50+</td><td><b style="color:var(--white-c)">Taboola BR + MGID</b></td><td>público maduro BR; ~80% dos brasileiros leem notícia online (contexto native forte)</td></tr>
+          <tr><td class="name">Finanças / high-ticket / infoproduto</td><td>corporativo/afluente</td><td><b style="color:var(--white-c)">Bing / Microsoft Audience Network</b></td><td><span style="color:var(--ok)">✓</span> única das novas com presença formal no BR (mai/2022), público afluente</td></tr>
+          <tr><td class="name">Adulto / ED</td><td>homem</td><td><b style="color:var(--white-c)">Traffic Junky</b></td><td><span style="color:var(--ok)">✓</span> tráfego adulto Tier-1 inclui BR</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="sec-label" style="font-size:13px;letter-spacing:.02em;color:var(--white-c)">🇪🇺 EUROPA (FR/DE/ES/IT)</div>
+      <div class="tbl-wrap" style="margin-bottom:16px"><table>
+        <thead><tr><th>Oferta portável (FB/YT)</th><th>Alvo</th><th>Rede native ideal</th><th>Por quê (comportamento)</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Articulações / dor (gelatina/óleo)</td><td>55+ idoso</td><td><b style="color:var(--white-c)">Outbrain + MGID</b></td><td><span style="color:var(--ok)">✓</span> Outbrain forte na Europa (Ligatus: RTL, Le Monde, Stern), renda alta; MGID = Europa barato</td></tr>
+          <tr><td class="name">Próstata / calvície / digestão</td><td>homem/idoso</td><td><b style="color:var(--white-c)">Outbrain + MGID</b></td><td>saúde do idoso em publishers premium europeus</td></tr>
+          <tr><td class="name">Finanças / seguro premium</td><td>afluente</td><td><b style="color:var(--white-c)">Outbrain</b></td><td><span style="color:var(--ok)">✓</span> mix de publishers premium entrega maior poder de compra</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="notecols" style="margin-bottom:6px">
+        <div class="note"><h4>🎯 O combo vencedor de cada região</h4><p><b>🇺🇸 EUA:</b> gelatina de emagrecimento → <b>Revcontent/NewsBreak</b> (mulher 45+, barato, mar azul). <b>🇧🇷 BR:</b> gelatina/receita → <b>MGID</b> (LatAm barato, health&amp;beauty). <b>🇪🇺 Europa:</b> articulações → <b>Outbrain</b> (Ligatus, renda alta, pouca concorrência).</p></div>
+        <div class="note"><h4>⚠️ Anti-combos (não force)</h4><p>Emagrecimento feminino <b>no Bing</b> (público masculino/afluente) = desperdício. ED <b>no NewsBreak</b> (feminino 45+/local) = fora do público. Finanças high-ticket <b>na Traffic Junky</b> (adulto) = contexto errado. <b>Casar público é 50% da briga.</b></p></div>
+      </div>
+
+      <div class="sec-label">📑 Justificativa com DADOS — por que cada combo <span class="tag">✓ = verificado</span></div>
+
+      <article class="card" data-cls="w" style="margin-bottom:12px">
+        <div class="card-top"><div><h3>#1 · 🇺🇸 EUA · Gelatina de emagrecimento → Revcontent (+NewsBreak)</h3><div class="prod">a maior probabilidade calculada</div></div><span class="score-badge" style="color:var(--white-c)"><b>92</b>/100</span></div>
+        <div class="intel">
+          <div class="cell"><div class="k">Prova de demanda</div><div class="v"><span style="color:var(--ok)">✓</span> Emagrecimento = <b>maior nicho</b> (893 ofertas na base). FB: Truque da Gelatina/Leanzene <b>932 ads</b> · Sal Azul/Burnzine <b>967</b>. Native: Bariatric <b>589 ads, ATIVA hoje</b>, 7 meses no ar.</div></div>
+          <div class="cell"><div class="k">Overlap (portabilidade)</div><div class="v"><span style="color:var(--ok)">✓</span> <b>3+ produtos de gelatina em CADA canal</b> (FB e native), US/BR/UK — o overlap mais forte do inventário.</div></div>
+          <div class="cell"><div class="k">Por que o público casa</div><div class="v"><span style="color:var(--ok)">✓</span> comprador = <b>mulher 45+</b>. NewsBreak = 45+ suburbano <b>feminino</b>, "caro no Meta / ausente no TikTok" (só o native alcança barato).</div></div>
+          <div class="cell"><div class="k">Por que a rede (Revcontent)</div><div class="v"><span style="color:var(--ok)">✓</span> <b>MENOR concorrência</b>: 23.040 criativos vs Taboola 352.392. CPC <b>US$0,01–0,20</b>. Vertical nutra. = mar azul barato.</div></div>
+          <div class="cell"><div class="k">Infra / checkout</div><div class="v">BuyGoods · CartPanda (checkout US legítimo, política própria) — <b>portável</b>, independe do FB.</div></div>
+          <div class="cell"><div class="k">Baseado em</div><div class="v mono">MonsterSwipe (10/ago) · OpenAdLibrary · NBC News · deep research verificado</div></div>
+        </div>
+      </article>
+
+      <article class="card" data-cls="g" style="margin-bottom:12px">
+        <div class="card-top"><div><h3>#2 · 🇧🇷 Brasil · Gelatina/receita → MGID (+Taboola BR)</h3><div class="prod">volume monstro no FB brasileiro</div></div><span class="score-badge" style="color:var(--grey-c)"><b>85</b>/100</span></div>
+        <div class="intel">
+          <div class="cell"><div class="k">Prova de demanda</div><div class="v"><span style="color:var(--ok)">✓</span> Emagrecimento = <b>#1 nicho BR</b>. FB: Gelatina Slim, Truque da Gelatina, Truque do Café com Limão (720), Ritual de Canela (703). Native: Bariatric, Gelatine Slim, Lazy Way.</div></div>
+          <div class="cell"><div class="k">Por que o público casa</div><div class="v">alvo = <b>mulher 35+</b>. <span style="color:var(--ok)">✓</span> Brasil = <b>#1 do mundo</b> em leitura de notícia online (~80%) → contexto native (advertorial) fértil.</div></div>
+          <div class="cell"><div class="k">Por que a rede (MGID)</div><div class="v"><span style="color:var(--ok)">✓</span> forte <b>LatAm</b> (17 bi impressões/mês), CPC <b>30–50% abaixo</b> do Taboola, vertical <b>health&amp;beauty</b>, política permissiva, depósito mín. US$100.</div></div>
+          <div class="cell"><div class="k">Infra / checkout</div><div class="v">Hotmart · Kiwify · Payt · Monetizze (físico + infoproduto BR).</div></div>
+          <div class="cell"><div class="k">Por que MGID e não Taboola</div><div class="v">mais barato + menos concorrência + permissivo = ideal pra <b>validar barato</b> antes de escalar.</div></div>
+          <div class="cell"><div class="k">Baseado em</div><div class="v mono">MonsterSwipe FB/native · Meio&amp;Mensagem (BR news) · deep research MGID verificado</div></div>
+        </div>
+      </article>
+
+      <article class="card" data-cls="w" style="margin-bottom:12px">
+        <div class="card-top"><div><h3>#3 · 🇪🇺 Europa · Articulações/dor → Outbrain (+MGID)</h3><div class="prod">mar azul — pouca concorrência</div></div><span class="score-badge" style="color:var(--white-c)"><b>66</b>/100</span></div>
+        <div class="intel">
+          <div class="cell"><div class="k">Prova de demanda</div><div class="v"><span style="color:var(--ok)">✓</span> Native FR/ES: <b>Nutra Flex, Congelum Gel, Artiregen</b> — marcas reais (Seren'Alpes, Nutri Origines), checkout próprio/Digistore.</div></div>
+          <div class="cell"><div class="k">Por que o público casa</div><div class="v">alvo = <b>55+ com dor articular</b>. <span style="color:var(--ok)">✓</span> Outbrain entrega <b>audiência de maior renda</b> (publishers premium).</div></div>
+          <div class="cell"><div class="k">Por que a rede (Outbrain)</div><div class="v"><span style="color:var(--ok)">✓</span> <b>dono do inventário europeu</b> via Ligatus: 1.400+ publishers premium (RTL, Le Monde, Stern) em FR/DE/ES/IT. 2,2 bi de consumidores.</div></div>
+          <div class="cell"><div class="k">Por que é mar azul</div><div class="v"><span style="color:var(--ok)">✓</span> Europa = <b>menos afiliado brigando</b> + menos dado público (menos gente olhando) = oportunidade menos disputada.</div></div>
+          <div class="cell"><div class="k">Infra / checkout</div><div class="v">marca própria europeia + Digistore24 (marketplace legítimo).</div></div>
+          <div class="cell"><div class="k">Baseado em</div><div class="v mono">MonsterSwipe native EU · SEC/Outbrain (Ligatus) · deep research verificado</div></div>
+        </div>
+      </article>
+
+      <div class="sec-label">🎯 Score de portabilidade <span class="tag">overlap provado × infra × fit de público × rede mar-azul</span></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>#</th><th>Região + Nicho</th><th>Overlap FB↔Native</th><th style="min-width:120px">Chance</th></tr></thead>
+        <tbody>
+          <tr><td class="ads">1</td><td class="name">🇺🇸 Emagrecimento (gelatin drops)</td><td>forte (3+ famílias)</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:92%"></div></div><span class="val">92</span></div></td></tr>
+          <tr><td class="ads">2</td><td class="name">🇧🇷 Emagrecimento (gelatina/receita)</td><td>forte</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:85%"></div></div><span class="val">85</span></div></td></tr>
+          <tr><td class="ads">3</td><td class="name">🇺🇸 Diabetes / glicose</td><td>forte (salt/vinagre)</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:80%"></div></div><span class="val">80</span></div></td></tr>
+          <tr><td class="ads">4</td><td class="name">🇺🇸 Próstata / fungos</td><td>médio-forte</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:76%"></div></div><span class="val">76</span></div></td></tr>
+          <tr><td class="ads">5</td><td class="name">🇧🇷 Próstata / memória</td><td>médio</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:70%"></div></div><span class="val">70</span></div></td></tr>
+          <tr><td class="ads">6</td><td class="name">🇪🇺 Articulações / próstata (mar azul)</td><td>médio (menos dado)</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:66%"></div></div><span class="val">66</span></div></td></tr>
+          <tr><td class="ads">7</td><td class="name">🇺🇸 Energia / DIY (Endless)</td><td>baixo overlap, mas white+evergreen</td><td><div class="scorebar"><div class="track"><div class="fill" style="width:63%"></div></div><span class="val">63</span></div></td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="notecols" style="margin-top:14px">
+        <div class="note"><h4>🏆 A resposta calculada — onde apostar</h4><p><b>#1 EUA + Emagrecimento (gelatin drops):</b> mais overlaps provados FB↔native, melhor infra (ClickBank/BuyGoods), público native perfeito (45+), e rede mar-azul (Revcontent/NewsBreak). <b>#2 Brasil + gelatina/receita:</b> volume monstro no FB, checkout Hotmart, Taboola/MGID BR. <b>#3 Europa + articulações:</b> mar azul de concorrência.</p></div>
+        <div class="note"><h4>🧠 Como usar com o sócio</h4><p>Isto é o <b>mapa de aposta</b>: cada linha do score = uma "casa" pra colocar ficha. Comece pela #1 (maior probabilidade), escolha <b>1 oferta gelatina EN</b> já rodando em FB <b>e</b> native (ex.: MeltDrops/Leanzene ↔ Bariatric), clone o advertorial e suba na Revcontent. Overlap = risco menor porque <b>já foi validado nos dois canais</b>.</p></div>
+      </div>
+
+      <div class="note" style="margin-top:12px"><b>Metodologia:</b> "overlap provado" = mesma família de produto/ângulo detectada em Facebook <b>e</b> em Native nos swipes (MonsterSwipe agrega Swipe Offers via fonte <span class="mono">SO</span>). Score pondera: nº de overlaps · maturidade da infra de checkout · fit do público native (45+) · nível de concorrência da rede (mar azul). Dossiê estático — peça pra atualizar quando quiser.</div>
+    </div>
+  </div><!-- /page-portabilidade -->
+  </main>
+</div><!-- /app -->
+
+<script>
+  const tabs=[...document.querySelectorAll('.tab')];
+  const panels={offers:document.getElementById('p-offers'),land:document.getElementById('p-land'),score:document.getElementById('p-score'),niche:document.getElementById('p-niche'),net:document.getElementById('p-net'),cartpanda:document.getElementById('p-cartpanda')};
+
+  /* ===== sidebar: multi-page nav + relocate audience dossier ===== */
+  (function(){
+    const mount=document.getElementById('publico-mount'), aud=document.getElementById('p-audience');
+    if(mount&&aud){ aud.classList.add('active'); mount.appendChild(aud); }
+    const items=[...document.querySelectorAll('.navitem')];
+    const pages={ofertas:document.getElementById('page-ofertas'),publico:document.getElementById('page-publico'),frescor:document.getElementById('page-frescor'),portabilidade:document.getElementById('page-portabilidade')};
+    items.forEach(b=>b.addEventListener('click',()=>{
+      items.forEach(x=>x.setAttribute('aria-current', x===b));
+      Object.entries(pages).forEach(([k,p])=>p.classList.toggle('active',k===b.dataset.page));
+      window.scrollTo(0,0);
+    }));
+  })();
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.setAttribute('aria-selected',x===t));
+    Object.entries(panels).forEach(([k,p])=>p.classList.toggle('active',k===t.dataset.panel));
+  }));
+
+  let netF='all', nicheF='all';
+  const chips=[...document.querySelectorAll('.chip')];
+  chips.forEach(c=>c.addEventListener('click',()=>{
+    const f=c.dataset.f, v=c.dataset.v;
+    chips.filter(x=>x.dataset.f===f).forEach(x=>x.setAttribute('aria-pressed', x===c));
+    if(f==='net') netF=v; else nicheF=v;
+    applyFilters();
+  }));
+  const wtc=document.getElementById('wtc'), wt=document.getElementById('wt');
+  wtc.addEventListener('change',()=>{document.body.classList.toggle('only-white',wtc.checked);wt.classList.toggle('on',wtc.checked);applyFilters();renderNicheTable();});
+
+  function applyFilters(){
+    let shown=0;
+    document.querySelectorAll('#offerGrid .card').forEach(card=>{
+      const nets=(card.dataset.net||'').split(' ');
+      const okNet = netF==='all' || nets.includes(netF);
+      const okNiche = nicheF==='all' || card.dataset.niche===nicheF;
+      const okWhite = !wtc.checked || card.dataset.cls!=='b';
+      const show = okNet && okNiche && okWhite;
+      card.style.display = show ? '' : 'none';
+      if(show) shown++;
+    });
+    document.getElementById('emptyMsg').style.display = shown===0 ? 'block' : 'none';
+  }
+
+  /* ===== Explorador de nichos (20 big → micro) ===== */
+  const TAX=[
+    {b:'Emagrecimento',m:['GLP-1 / Mounjaro natural','Gelatina / receita','Queima de gordura','Detox / anti-inchaço']},
+    {b:'Diabetes / Glicose',m:['Controle glicêmico','Neuropatia diabética','Açúcar no sangue']},
+    {b:'Saúde do Homem',m:['Próstata','Disfunção erétil','Testosterona / libido']},
+    {b:'Saúde da Mulher',m:['Menopausa','Hormonal','Microbioma vaginal']},
+    {b:'Cognição / Memória',m:['Memória','Alzheimer / demência','Foco']},
+    {b:'Saúde Bucal',m:['Gengiva','Dentes']},
+    {b:'Visão',m:['Catarata','Visão embaçada']},
+    {b:'Audição',m:['Zumbido','Perda auditiva']},
+    {b:'Articulações / Dor',m:['Artrite / joelho','Ciática / coluna','Nervos']},
+    {b:'Cabelo / Calvície',m:['Queda / regrow','Grisalhos']},
+    {b:'Pele / Estética',m:['Manchas (dark spot)','Anti-idade','Celulite']},
+    {b:'Unhas / Fungos',m:['Fungo de unha','Pé de atleta']},
+    {b:'Coração / Pressão',m:['Hipertensão','Colesterol','Circulação / varizes']},
+    {b:'Fígado / Detox',m:['Gordura no fígado','Detox hepático']},
+    {b:'Digestão / Intestino',m:['Microbioma','Inchaço / gases','Refluxo / constipação']},
+    {b:'Sono / Ansiedade',m:['Insônia','Ansiedade / estresse']},
+    {b:'Energia / Survival (DIY)',m:['Gerador caseiro / solar','Off-grid / preparação']},
+    {b:'Dinheiro / Renda Online',m:['Biz opp / apps','Cripto','IA / ferramentas']},
+    {b:'Espiritualidade / Prosperidade',m:['Oração / cristão','Anjos / leitura','Manifestação / astrologia']},
+    {b:'Relacionamento / Sedução',m:['Reconquista','Sedução']},
+  ];
+  const OFF=[
+    {n:'Bariatric Gelatin',b:'Emagrecimento',mi:'Gelatina / receita',c:'g',g:'🇺🇸',s:'now',a:583},
+    {n:'Gelatine Slim',b:'Emagrecimento',mi:'Gelatina / receita',c:'g',g:'🇧🇷',s:'past',a:8,f:1},
+    {n:'LipoVive',b:'Emagrecimento',mi:'Queima de gordura',c:'g',g:'🇺🇸',s:'now',a:5,f:1},
+    {n:'Queima de Gordura Abdominal',b:'Emagrecimento',mi:'Queima de gordura',c:'g',g:'🇧🇷',s:'now',a:6,f:1},
+    {n:'Slimsy',b:'Emagrecimento',mi:'Queima de gordura',c:'g',g:'🇧🇷',s:'now',a:1,f:1},
+    {n:'OzenVitta',b:'Emagrecimento',mi:'Queima de gordura',c:'g',g:'🇧🇷',s:'now',a:1,f:1},
+    {n:'Redux+',b:'Emagrecimento',mi:'Queima de gordura',c:'g',g:'🇧🇷',s:'past',a:1,f:1},
+    {n:'MounjaRosa',b:'Emagrecimento',mi:'GLP-1 / Mounjaro natural',c:'b',g:'🇧🇷',s:'now',a:2},
+    {n:'Pink Salt Trick — Nervelin',b:'Diabetes / Glicose',mi:'Neuropatia diabética',c:'b',g:'🇺🇸',s:'now',a:3},
+    {n:'Prize Nobel — NerveCalm',b:'Diabetes / Glicose',mi:'Neuropatia diabética',c:'b',g:'🇺🇸',s:'past',a:8},
+    {n:'GlicoTrin',b:'Diabetes / Glicose',mi:'Controle glicêmico',c:'b',g:'🇧🇷',s:'now',a:1},
+    {n:'Glicelidina',b:'Diabetes / Glicose',mi:'Controle glicêmico',c:'b',g:'🇧🇷',s:'now',a:1},
+    {n:'GlicoJax',b:'Diabetes / Glicose',mi:'Controle glicêmico',c:'b',g:'🇧🇷',s:'past',a:1},
+    {n:'Sugar Swith',b:'Diabetes / Glicose',mi:'Açúcar no sangue',c:'b',g:'🇺🇸',s:'now',a:1},
+    {n:'Prostlosina / Tittanus',b:'Saúde do Homem',mi:'Próstata',c:'b',g:'🇧🇷',s:'past',a:12},
+    {n:'VIGOPROST',b:'Saúde do Homem',mi:'Próstata',c:'b',g:'🇧🇷',s:'now',a:1,f:1},
+    {n:'Prosticil',b:'Saúde do Homem',mi:'Próstata',c:'b',g:'🇩🇪',s:'now',a:1,f:1},
+    {n:'Ritual Noturno — Virimax',b:'Saúde do Homem',mi:'Disfunção erétil',c:'b',g:'🇧🇷',s:'past',a:4},
+    {n:'Truque do Mel — Clarify',b:'Cognição / Memória',mi:'Memória',c:'b',g:'🇧🇷',s:'past',a:31},
+    {n:'Alimento Causador de Alzheimer — Neurovex',b:'Cognição / Memória',mi:'Alzheimer / demência',c:'b',g:'🇧🇷',s:'past',a:5},
+    {n:'Célibre Max',b:'Cognição / Memória',mi:'Memória',c:'g',g:'🇧🇷',s:'now',a:1},
+    {n:'Soutien Articulare — Nutra Flex',b:'Articulações / Dor',mi:'Nervos',c:'g',g:'🇫🇷',s:'past',a:7},
+    {n:'Congelum Gel',b:'Articulações / Dor',mi:'Artrite / joelho',c:'g',g:'🇪🇸',s:'past',a:4},
+    {n:'Regrow (Truque 7 Segundos)',b:'Cabelo / Calvície',mi:'Queda / regrow',c:'b',g:'🇺🇸',s:'past',a:4},
+    {n:'Folix',b:'Cabelo / Calvície',mi:'Queda / regrow',c:'g',g:'🇧🇷',s:'now',a:1},
+    {n:'Polyphenol Dark Spot — Gundry MD',b:'Pele / Estética',mi:'Manchas (dark spot)',c:'w',g:'🇺🇸',s:'past',a:3},
+    {n:'Revi Lift',b:'Pele / Estética',mi:'Anti-idade',c:'g',g:'🇧🇷',s:'now',a:1,f:1},
+    {n:'RenaVie',b:'Pele / Estética',mi:'Anti-idade',c:'g',g:'🇧🇷',s:'now',a:1},
+    {n:'Pro Nail Complex',b:'Unhas / Fungos',mi:'Fungo de unha',c:'g',g:'🇺🇸',s:'now',a:92},
+    {n:'Xô Veia',b:'Coração / Pressão',mi:'Circulação / varizes',c:'g',g:'🇧🇷',s:'now',a:3},
+    {n:'Nature H50+',b:'Coração / Pressão',mi:'Hipertensão',c:'g',g:'🇧🇷',s:'now',a:2},
+    {n:'HepaLiv',b:'Fígado / Detox',mi:'Gordura no fígado',c:'g',g:'🇩🇪',s:'now',a:11,f:1},
+    {n:'Gut Protocol — Gundry MD',b:'Digestão / Intestino',mi:'Microbioma',c:'w',g:'🇺🇸',s:'past',a:3},
+    {n:'NutraDigest',b:'Digestão / Intestino',mi:'Inchaço / gases',c:'g',g:'🇫🇷',s:'past',a:5},
+    {n:'Receita Caseira anti inchaço',b:'Digestão / Intestino',mi:'Inchaço / gases',c:'g',g:'🇺🇸',s:'past',a:4,f:1},
+    {n:'Endless Eletricity',b:'Energia / Survival (DIY)',mi:'Gerador caseiro / solar',c:'w',g:'🇺🇸',s:'now',a:'—'},
+    {n:'Cell Phone Profits',b:'Dinheiro / Renda Online',mi:'Biz opp / apps',c:'b',g:'🇺🇸',s:'past',a:2},
+    {n:'FAQ Protocol / Blast Proof',b:'Dinheiro / Renda Online',mi:'Biz opp / apps',c:'b',g:'🇺🇸',s:'past',a:2},
+    {n:'The Angel Whisperer',b:'Espiritualidade / Prosperidade',mi:'Anjos / leitura',c:'b',g:'🇺🇸',s:'now',a:6},
+    {n:'Free Angel Reading',b:'Espiritualidade / Prosperidade',mi:'Anjos / leitura',c:'b',g:'🇺🇸',s:'now',a:2},
+    {n:'The Secrets of Lourdes',b:'Espiritualidade / Prosperidade',mi:'Oração / cristão',c:'b',g:'🇺🇸',s:'now',a:9},
+    {n:'Harmony App',b:'Espiritualidade / Prosperidade',mi:'Manifestação / astrologia',c:'b',g:'🇺🇸',s:'now',a:2},
+    {n:'Oração da Prosperidade',b:'Espiritualidade / Prosperidade',mi:'Oração / cristão',c:'b',g:'🇧🇷',s:'past',a:10},
+    {n:'Vitala',b:'Espiritualidade / Prosperidade',mi:'Manifestação / astrologia',c:'b',g:'🇧🇷',s:'now',a:1},
+  ];
+  const CN={w:'White',g:'Grey',b:'Black'};
+  const bigWrap=document.getElementById('bigChips'), microWrap=document.getElementById('microChips'), nTable=document.getElementById('nicheTable');
+  let curBig=TAX[0].b, curMicro='all';
+  function nfor(b){return OFF.filter(o=>o.b===b);}
+  function mkChip(wrap,label,active,count,onclick){const el=document.createElement('button');el.className='chip';el.setAttribute('aria-pressed',active);el.innerHTML=count!=null?`${label} <span class="n">${count}</span>`:label;el.onclick=()=>{[...wrap.querySelectorAll('.chip')].forEach(x=>x.setAttribute('aria-pressed',x===el));onclick();};wrap.appendChild(el);}
+  function renderBigChips(){[...bigWrap.querySelectorAll('.chip')].forEach(x=>x.remove());TAX.forEach(t=>{const c=nfor(t.b).length;mkChip(bigWrap,t.b,t.b===curBig,c||'—',()=>{curBig=t.b;curMicro='all';renderMicroChips();renderNicheTable();});});}
+  function renderMicroChips(){[...microWrap.querySelectorAll('.chip')].forEach(x=>x.remove());const t=TAX.find(x=>x.b===curBig);mkChip(microWrap,'Todos','all'===curMicro,nfor(curBig).length,()=>{curMicro='all';renderNicheTable();});t.m.forEach(m=>{const cnt=OFF.filter(o=>o.b===curBig&&o.mi===m).length;mkChip(microWrap,m,m===curMicro,cnt,()=>{curMicro=m;renderNicheTable();});});}
+  function renderNicheTable(){if(!nTable)return;const list=OFF.filter(o=>o.b===curBig&&(curMicro==='all'||o.mi===curMicro)&&(!wtc.checked||o.c!=='b'));if(!list.length){nTable.innerHTML='<div style="padding:28px;text-align:center;color:var(--faint);font-size:13px">Sem oferta desse nicho na amostra atual. (Estrutura pronta — some ofertas aqui ao ampliar as fontes.)</div>';return;}const rows=list.map(o=>`<tr><td class="name">${o.n} ${o.f?'<span title="checar copy do funil" style="color:var(--warn)">⚠</span>':''}</td><td>${o.mi}</td><td class="geo">${o.g}</td><td>${o.s==='now'?'🔥 agora':'🕒 já escalou'}</td><td><span class="dot ${o.c}"></span>${CN[o.c]}</td><td class="ads">${o.a}</td></tr>`).join('');nTable.innerHTML=`<table><thead><tr><th>Oferta</th><th>Micro-nicho</th><th>Geo</th><th>Status</th><th>Classe</th><th style="text-align:right">Anúncios</th></tr></thead><tbody>${rows}</tbody></table>`;}
+  renderBigChips();renderMicroChips();renderNicheTable();
+</script>
+</body></html>
