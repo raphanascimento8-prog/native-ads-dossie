@@ -258,6 +258,10 @@
   .theme-toggle{margin-top:12px;appearance:none;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;padding:10px 12px;border-radius:8px;cursor:pointer;width:100%;text-align:left;display:flex;align-items:center;gap:8px;transition:border-color .15s,color .15s;}
   .theme-toggle:hover{border-color:var(--border2);color:var(--text);}
   .theme-toggle .tdot{width:9px;height:9px;border-radius:50%;border:1px solid currentColor;background:linear-gradient(90deg,currentColor 50%,transparent 50%);flex:none;}
+
+  .pub-tabs{display:inline-flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:14px;}
+  .ptab{appearance:none;border:0;background:transparent;color:var(--muted);font-family:var(--sans);font-size:12.5px;font-weight:500;padding:8px 15px;border-radius:7px;cursor:pointer;}
+  .ptab[aria-selected="true"]{background:var(--surface2);color:var(--text);box-shadow:inset 0 0 0 1px var(--border2);}
 </style>
 
 <div class="app">
@@ -531,10 +535,17 @@
 
   <!-- ============ PÚBLICO (audience dossiê) ============ -->
   <section class="panel" id="p-audience">
+    <div class="pub-tabs">
+      <button class="ptab" type="button" data-v="perfil" aria-selected="true">Perfil por rede</button>
+      <button class="ptab" type="button" data-v="comparativo" aria-selected="false">Visão geral · comparativo</button>
+    </div>
+    <div id="pub-perfil" class="pub-view">
     <div class="sec-label">Perfil por plataforma <span class="tag">selecione uma rede · dados por região</span></div>
     <div class="filterbar"><div class="frow" id="platChips"><span class="lbl">Rede</span></div></div>
     <div id="platDetail" style="margin-bottom:6px"></div>
 
+    </div>
+    <div id="pub-comparativo" class="pub-view" style="display:none">
     <div class="sec-label">Matriz de cobertura <span class="tag">o que se sabe (✓) vs falta (✗) · preenchendo via fóruns</span></div>
     <div class="tbl-wrap"><table>
       <thead><tr><th>Rede</th><th>Reach</th><th>Gênero</th><th>Idade</th><th>Renda</th><th>Filhos/casado</th><th>Device</th><th>Daypart</th><th>Conteúdo</th></tr></thead>
@@ -590,6 +601,7 @@
     <div class="notecols" style="margin-top:14px">
       <div class="note"><h4>Mar azul (verificado)</h4><p><b>Público:</b> NewsBreak + saúde/idoso 55+ (EUA) — mulher madura suburbana, cara no Meta, ausente no TikTok. <b>Menor concorrência:</b> <b>Revcontent</b> (23k) e <b>Yahoo</b> (14k) &gt; MGID &gt; Outbrain &gt; Taboola. <b>Entrada + barata:</b> <b>Traffic Junky</b> (US$25, adulto/ED/dating). <b>Para o Brasil:</b> <b>MGID</b> (native) e <b>Bing/Microsoft Audience Network</b> (única com presença local no BR). <b>Finanças/seguro/high-ticket:</b> Bing/MediaGo.</p></div>
       <div class="note"><h4>Leia antes de agir</h4><p>Verificação adversarial: <b>11 confirmados / 14 refutados</b> de 25 claims. O que caiu: toda a <b>demografia da Taboola</b>, <b>reach por país</b>, <b>dayparts</b> e <b>faixas de CPC</b> (fontes velhas/blog). Use só os <span style="color:var(--ok)">✓</span>. Números de rede são <b>auto-reportados e globais</b> — não segmentados por país.</p></div>
+    </div>
     </div>
   </section>
 
@@ -1074,5 +1086,15 @@
       chips.appendChild(b);
     });
     render(PLATS[0]);
+  })();
+
+  /* ===== sub-abas do Comportamento de Usuário ===== */
+  (function(){
+    const tabs=document.querySelectorAll(".ptab"); if(!tabs.length) return;
+    const views={perfil:document.getElementById("pub-perfil"),comparativo:document.getElementById("pub-comparativo")};
+    tabs.forEach(function(t){ t.addEventListener("click", function(){
+      tabs.forEach(function(x){ x.setAttribute("aria-selected", x===t?"true":"false"); });
+      for(var k in views){ if(views[k]) views[k].style.display = (k===t.dataset.v)?"":"none"; }
+    }); });
   })();
 </script></body></html>
