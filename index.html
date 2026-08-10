@@ -1252,6 +1252,37 @@
         + '<div class="reg-row" style="border-top:1px solid var(--border2)"><span class="reg-k" style="color:var(--accent)">Veredito</span><span class="reg-v"><b>'+esc(o.verdict)+'</b></span></div></article>';
     };
 
+    /* fatos por nicho a partir do banco real (pra oferta NOVA) */
+    function ckPlat(u){ if(!u) return null; u=u.toLowerCase();
+      if(/payt/.test(u))return"Payt"; if(/kiwify/.test(u))return"Kiwify"; if(/hotmart/.test(u))return"Hotmart"; if(/monetizze/.test(u))return"Monetizze"; if(/yampi/.test(u))return"Yampi"; if(/mycartpanda|cartpanda/.test(u))return"CartPanda"; if(/buygoods/.test(u))return"BuyGoods"; if(/clickbank|ds24|checkout-ds24/.test(u))return"ClickBank"; if(/digistore24/.test(u))return"Digistore24"; if(/jvzoo/.test(u))return"JVZoo"; if(/pagah/.test(u))return"Pagah"; if(/youshop/.test(u))return"Youshop"; if(/onprofit/.test(u))return"Onprofit"; if(/fanbasis/.test(u))return"Fanbasis";
+      var h=(u.split('/')[2]||'').replace('www.',''); return h||null; }
+    window.nicheBrief=function(nk,nlabel){
+      var C=(window.NKB||[]).filter(function(o){return o.nk===nk;}); if(!C.length) return '';
+      var nv=0,ni=0,ads=[],w=0,g=0,b=0,cks={},geos={},top=null,longest=0;
+      C.forEach(function(o){ nv+=o.nv||0; ni+=o.ni||0; ads.push(o.ads||0); if(o.cls==='w')w++;else if(o.cls==='b')b++;else g++;
+        if(o.checkout){ var p=ckPlat(o.checkout); if(p) cks[p]=(cks[p]||0)+1; }
+        geos[o.geo]=(geos[o.geo]||0)+1; if(!top||o.ads>top.ads) top=o;
+        if(o.first&&o.last){ var d=(new Date(o.last)-new Date(o.first))/864e5; if(d>longest) longest=Math.round(d); } });
+      var totC=nv+ni, vp=totC?Math.round(nv/totC*100):0;
+      ads.sort(function(a,b){return a-b;}); var med=ads[Math.floor(ads.length/2)]||0, maxA=ads[ads.length-1]||0;
+      var ckTop=Object.keys(cks).sort(function(a,b){return cks[b]-cks[a];}).slice(0,4);
+      var geoTop=Object.keys(geos).sort(function(a,b){return geos[b]-geos[a];}).join(' ');
+      function R(k,v){ return '<div class="reg-row"><span class="reg-k">'+k+'</span><span class="reg-v">'+v+'</span></div>'; }
+      var creline = totC? (vp>=55? ('<b>Vídeo</b> domina — '+vp+'% dos criativos do nicho são vídeo ('+nv+'v/'+ni+'i)') : vp<=45? ('<b>Imagem</b> forte — só '+vp+'% vídeo ('+nv+'v/'+ni+'i)') : ('misto — '+vp+'% vídeo ('+nv+'v/'+ni+'i)')) : 'sem criativos salvos no nicho';
+      var ckLine = ckTop.length? ('<b>'+ckTop.join('</b> · <b>')+'</b> <span class="mono" style="color:var(--faint)">(checkouts portáveis reais do nicho)</span>') : 'sem checkout capturado';
+      var clsLine = '<span class="pill cls-w">'+w+' white</span> <span class="pill cls-g">'+g+' grey</span> <span class="pill cls-b">'+b+' black</span>';
+      var brief = '<div class="sec-label">Brief de modelagem <span class="tag" style="color:var(--ok)">baseado em '+C.length+' ofertas reais de '+nlabel+' no banco</span></div><div class="regcards"><article class="regcard">'
+        + '<div class="regcard-h"><span class="regcard-t">Fatos do nicho: '+nlabel+'</span><span class="regcard-sub">'+C.length+' comparáveis · '+geoTop+'</span></div>'
+        + R("Criativo (o que o nicho usa)", creline)
+        + R("Checkout / portabilidade", ckLine)
+        + R("Escala (benchmark real)", '<b>'+maxA+'</b> anúncios no líder · mediana <b>'+med+'</b> · maior longevidade ~'+longest+'d no ar')
+        + R("Classe típica (risco)", clsLine)
+        + R("Líder do nicho pra modelar", top? ('<b>'+top.name+'</b> — '+top.ads+' anúncios · '+top.geo) : '—')
+        + '</article></div>';
+      brief += top? ('<div class="sec-label">Líder do nicho — clone de referência</div><div class="regcards">'+window.renderOffer(top)+'</div>') : '';
+      return brief;
+    };
+
     /* Analisador */
     (function(){
       var btn=document.getElementById("anaRun"), out=document.getElementById("anaOutput"); if(!btn||!out) return;
@@ -1279,7 +1310,7 @@
           +row("Criativo","<b>"+cre[0]+"</b> — "+cre[1])+row("Portabilidade","overlap FB↔native: "+n.port)+row("Daypart",day)+row("Risco",risco)
           +'<div class="reg-row" style="border-top:1px solid var(--border2)"><span class="reg-k" style="color:var(--accent)">Veredito</span><span class="reg-v"><b>Rodar em '+n1+' ('+REGLABEL[reg]+'), criativo em '+cre[0].toLowerCase()+'.</b></span></div></article></div>';
         var html = kb ? ('<div class="sec-label">Oferta no banco <span class="tag" style="color:var(--ok)">✓ dados reais (MonsterSwipe)</span></div><div class="regcards">'+window.renderOffer(kb)+'</div>'+rules)
-          : ('<div class="osr-note" style="margin-bottom:10px">Não está no banco native — recomendação inferida. No próximo refresh, se aparecer, vira dado real.</div>'+rules);
+          : ((window.nicheBrief?window.nicheBrief(nk,n.label):'') + '<div class="osr-note" style="margin:14px 0 10px">Esta oferta não está no banco (ainda) — o brief acima usa os <b>fatos reais do nicho</b>; abaixo, a recomendação por regras de rede/criativo.</div>'+rules);
         out.innerHTML=html; out.scrollIntoView({behavior:"smooth",block:"start"});
       });
     })();
