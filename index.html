@@ -262,6 +262,22 @@
   .pub-tabs{display:inline-flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:14px;}
   .ptab{appearance:none;border:0;background:transparent;color:var(--muted);font-family:var(--sans);font-size:12.5px;font-weight:500;padding:8px 15px;border-radius:7px;cursor:pointer;}
   .ptab[aria-selected="true"]{background:var(--surface2);color:var(--text);box-shadow:inset 0 0 0 1px var(--border2);}
+
+  /* ===== item dourado cintilante (Análises de Ofertas) ===== */
+  .navitem.gold{
+    color:#2b2109; font-weight:600; border:1px solid #caa64e;
+    background:linear-gradient(100deg,#7d611f 0%,#b98f38 16%,#e7c96f 34%,#f7e7ac 50%,#e7c96f 66%,#b98f38 84%,#7d611f 100%);
+    background-size:220% 100%;
+    box-shadow:0 3px 14px -5px rgba(201,162,74,.55), inset 0 1px 0 rgba(255,255,255,.35);
+    animation:goldShine 3.4s linear infinite;
+    text-shadow:0 1px 0 rgba(255,245,210,.35);
+  }
+  .navitem.gold:hover,.navitem.gold[aria-current="true"]{ color:#2b2109; border-color:#e7c96f;
+    background:linear-gradient(100deg,#7d611f 0%,#b98f38 16%,#e7c96f 34%,#f7e7ac 50%,#e7c96f 66%,#b98f38 84%,#7d611f 100%);
+    background-size:220% 100%; animation:goldShine 3.4s linear infinite; }
+  .navitem.gold[aria-current="true"]::before{ background:#4a3a12; }
+  @keyframes goldShine{ 0%{background-position:220% 0} 100%{background-position:-220% 0} }
+  @media (prefers-reduced-motion:reduce){ .navitem.gold{animation:none; background-position:50% 0;} }
 </style>
 
 <div class="app">
@@ -280,7 +296,7 @@
     </nav>
     <div class="nav-sec">Ferramentas</div>
     <nav>
-      <button class="navitem" data-page="analises" aria-current="false">Análises de Ofertas</button>
+      <button class="navitem gold" data-page="analises" aria-current="false">Análises de Ofertas</button>
     </nav>
     <button id="themeToggle" class="theme-toggle" type="button"><span class="tdot"></span><span id="themeLabel">Modo claro</span></button>
     <div class="nav-soon">Atualizado: <b>10/ago/2026</b><br>Páginas de ofertas/criativos/VSL são atualizadas a cada acesso. Dossiês só sob demanda.</div>
