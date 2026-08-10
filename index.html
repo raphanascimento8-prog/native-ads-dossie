@@ -2,31 +2,38 @@
 <title>Native Ads — Inteligência de Ofertas White</title>
 <style>
   :root{
-    --bg:#0e1116;--bg2:#12161d;--surface:#171c25;--surface2:#1d2430;
-    --border:#28303c;--border2:#333d4c;
-    --text:#e7ecf3;--muted:#95a1b2;--faint:#6b7686;
-    --white-c:#34d399;--white-bg:#0f3d31;
-    --grey-c:#f5b544;--grey-bg:#3d2f0f;
-    --black-c:#f0576b;--black-bg:#3d1620;
-    --accent:#ff8a3d;--accent-soft:#2a2016;--link:#5fb0ff;
-    --ok:#34d399;--warn:#f5b544;--bad:#f0576b;
-    --shadow:0 1px 0 rgba(255,255,255,.02),0 8px 24px -12px rgba(0,0,0,.6);
+    --bg:#14110d;--bg2:#1a1611;--surface:#1c1813;--surface2:#221d17;
+    --border:#2e2820;--border2:#3a332a;
+    --text:#ece4d6;--muted:#a79b88;--faint:#766e5f;
+    --white-c:#9dbba6;--white-bg:#15211a;
+    --grey-c:#c2a98a;--grey-bg:#241e13;
+    --black-c:#c08a80;--black-bg:#241615;
+    --accent:#c7a667;--accent-soft:#241e14;--link:#c7a667;
+    --ok:#9dbba6;--warn:#d2b473;--bad:#c08a80;
+    --shadow:0 1px 0 rgba(255,255,255,.015),0 24px 50px -32px rgba(0,0,0,.75);
     --mono:ui-monospace,"SF Mono","Cascadia Code","Roboto Mono",Consolas,monospace;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
   }
   @media (prefers-color-scheme: light){:root{
-    --bg:#f4f6f9;--bg2:#eef1f6;--surface:#fff;--surface2:#f6f8fb;
-    --border:#e0e5ec;--border2:#d2d9e3;--text:#141a22;--muted:#586474;--faint:#8792a2;
-    --white-bg:#e2f7ee;--grey-bg:#fbf1da;--black-bg:#fde4e8;--accent:#e0600f;--accent-soft:#fbeadb;--link:#1667c8;
-    --shadow:0 1px 2px rgba(20,26,34,.04),0 10px 30px -18px rgba(20,26,34,.25);}}
+    --bg:#f6f2ea;--bg2:#efeae0;--surface:#fcfaf5;--surface2:#f3eee4;
+    --border:#e5dece;--border2:#d6cdba;--text:#2a241b;--muted:#6f6555;--faint:#9a8f7c;
+    --white-c:#5e7e67;--grey-c:#9a7e4e;--black-c:#a65b4e;
+    --white-bg:#e8efe6;--grey-bg:#f3ecdb;--black-bg:#f5e4df;--accent:#a8843c;--accent-soft:#f1e9d6;--link:#a8843c;
+    --ok:#5e7e67;--warn:#a8843c;--bad:#a65b4e;
+    --shadow:0 1px 2px rgba(40,32,20,.04),0 24px 48px -34px rgba(40,32,20,.16);}}
   :root[data-theme="dark"]{
-    --bg:#0e1116;--bg2:#12161d;--surface:#171c25;--surface2:#1d2430;--border:#28303c;--border2:#333d4c;
-    --text:#e7ecf3;--muted:#95a1b2;--faint:#6b7686;--white-bg:#0f3d31;--grey-bg:#3d2f0f;--black-bg:#3d1620;
-    --accent:#ff8a3d;--accent-soft:#2a2016;--link:#5fb0ff;--shadow:0 1px 0 rgba(255,255,255,.02),0 8px 24px -12px rgba(0,0,0,.6);}
+    --bg:#14110d;--bg2:#1a1611;--surface:#1c1813;--surface2:#221d17;--border:#2e2820;--border2:#3a332a;
+    --text:#ece4d6;--muted:#a79b88;--faint:#766e5f;--white-c:#9dbba6;--grey-c:#c2a98a;--black-c:#c08a80;
+    --white-bg:#15211a;--grey-bg:#241e13;--black-bg:#241615;
+    --accent:#c7a667;--accent-soft:#241e14;--link:#c7a667;--ok:#9dbba6;--warn:#d2b473;--bad:#c08a80;
+    --shadow:0 1px 0 rgba(255,255,255,.015),0 24px 50px -32px rgba(0,0,0,.75);}
   :root[data-theme="light"]{
-    --bg:#f4f6f9;--bg2:#eef1f6;--surface:#fff;--surface2:#f6f8fb;--border:#e0e5ec;--border2:#d2d9e3;
-    --text:#141a22;--muted:#586474;--faint:#8792a2;--white-bg:#e2f7ee;--grey-bg:#fbf1da;--black-bg:#fde4e8;
-    --accent:#e0600f;--accent-soft:#fbeadb;--link:#1667c8;--shadow:0 1px 2px rgba(20,26,34,.04),0 10px 30px -18px rgba(20,26,34,.25);}
+    --bg:#f6f2ea;--bg2:#efeae0;--surface:#fcfaf5;--surface2:#f3eee4;--border:#e5dece;--border2:#d6cdba;
+    --text:#2a241b;--muted:#6f6555;--faint:#9a8f7c;--white-c:#5e7e67;--grey-c:#9a7e4e;--black-c:#a65b4e;
+    --white-bg:#e8efe6;--grey-bg:#f3ecdb;--black-bg:#f5e4df;
+    --accent:#a8843c;--accent-soft:#f1e9d6;--link:#a8843c;--ok:#5e7e67;--warn:#a8843c;--bad:#a65b4e;
+    --shadow:0 1px 2px rgba(40,32,20,.04),0 24px 48px -34px rgba(40,32,20,.16);}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;}
   .wrap{max-width:1140px;margin:0 auto;padding:32px 22px 80px;}
@@ -187,6 +194,44 @@
   .reg-v{font-size:12.5px;line-height:1.5;color:var(--text);}
   .reg-v b{color:var(--white-c);}
   @media(max-width:520px){.reg-row{grid-template-columns:1fr;gap:3px;}.reg-k{color:var(--accent);}}
+
+  /* ============================================================
+     QUIET LUXURY — camada editorial (sobrepõe o base)
+     ============================================================ */
+  body{letter-spacing:.004em;}
+  h1,h2{font-family:var(--serif);font-weight:600;letter-spacing:-.006em;}
+  header h1{font-size:33px;line-height:1.14;font-weight:600;}
+  header p{max-width:62ch;font-size:14px;color:var(--muted);}
+  .eyebrow{color:var(--accent);font-weight:600;font-size:10.5px;letter-spacing:.22em;}
+  .card h3,.regcard-t,.leg h4,.note h4,.net-b{font-family:var(--serif);font-weight:600;letter-spacing:0;}
+  .net-b{font-size:14px;text-transform:none;color:var(--text);}
+  .kpi .n,.score-badge b,.scorebar .val{font-family:var(--serif);}
+  .kpi .n{font-weight:600;}
+  /* eyebrows / section labels — mais discretos e tracked */
+  .sec-label{color:var(--faint);font-size:10px;letter-spacing:.22em;margin:30px 0 15px;}
+  .sec-label::after{background:var(--border);}
+  .sec-label .tag{letter-spacing:.02em;}
+  /* cards flat, fio de cabelo — remove barra grossa e sombra pesada */
+  .card::before{display:none;}
+  .kpi,.card,.net,.leg,.note,.regcard,.tbl-wrap,.filterbar,.insight{box-shadow:none;}
+  .kpi,.card,.net,.leg,.note{border-radius:10px;}
+  .regcard{border-top-width:1px;border-top-color:var(--border)!important;}
+  .regcard-t{font-size:16px;}
+  /* insight: card sóbrio (sem gradiente/barra) */
+  .insight{background:var(--surface);border:1px solid var(--border);border-left:1px solid var(--border);border-radius:10px;}
+  .insight h3{font-family:var(--serif);text-transform:none;letter-spacing:0;font-size:14.5px;color:var(--accent);font-weight:600;}
+  .insight strong{color:var(--white-c);}
+  /* pills e chips mais quietos */
+  .pill{font-weight:500;}
+  .src{letter-spacing:.06em;}
+  /* tabelas arejadas, editoriais */
+  tbody td{padding:12px 16px;}
+  thead th{padding:12px 16px;letter-spacing:.14em;}
+  /* sidebar: wordmark serifado, sóbrio */
+  .sidebar .brand{font-family:var(--serif);font-weight:600;color:var(--text);letter-spacing:0;font-size:17px;}
+  .navitem{font-weight:500;}
+  .navitem[aria-current="true"]{background:var(--accent-soft);color:var(--text);}
+  .navitem[aria-current="true"]::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none;}
 </style>
 
 <div class="app">
