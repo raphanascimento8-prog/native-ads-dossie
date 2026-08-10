@@ -174,6 +174,18 @@
     .sidebar{position:static;height:auto;width:auto;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:0;border-bottom:1px solid var(--border);padding:12px 14px;gap:8px;}
     .sidebar .brand{margin:0 12px 0 0;} .nav-sec{display:none;} .sidebar nav{flex-direction:row;flex-wrap:wrap;} .nav-soon{display:none;}
   }
+  /* ===== region cards (portabilidade) ===== */
+  .regcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;}
+  .regcard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:2px 16px 14px;box-shadow:var(--shadow);border-top:3px solid var(--border2);}
+  .regcard.us{border-top-color:var(--white-c);} .regcard.br{border-top-color:var(--grey-c);} .regcard.eu{border-top-color:var(--accent);}
+  .regcard-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:13px 0 5px;flex-wrap:wrap;}
+  .regcard-t{font-weight:800;font-size:15.5px;letter-spacing:-.01em;}
+  .regcard-sub{font-family:var(--mono);font-size:10px;color:var(--faint);}
+  .reg-row{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--border);align-items:baseline;}
+  .reg-k{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);}
+  .reg-v{font-size:12.5px;line-height:1.5;color:var(--text);}
+  .reg-v b{color:var(--white-c);}
+  @media(max-width:520px){.reg-row{grid-template-columns:1fr;gap:3px;}.reg-k{color:var(--accent);}}
 </style>
 
 <div class="app">
@@ -778,27 +790,28 @@
       </table></div>
 
       <div class="sec-label">🌎 Por região — onde cada padrão vive</div>
-      <div class="nets">
-        <article class="net"><div class="net-h"><span class="net-b">🇺🇸 EUA (EN)</span><span class="net-geo mono">melhor infra + público ideal</span></div><ul>
-          <li><span class="dot w"></span><b>Nichos que portam:</b> emagrecimento (gelatin drops), diabetes, próstata, fungos, memória, energia/DIY</li>
-          <li><span class="dot g"></span><b>Checkout:</b> ClickBank · BuyGoods · Digistore (grey/white, política própria)</li>
-          <li><span class="dot" style="background:var(--accent)"></span><b>Redes:</b> Revcontent (menos concorrência) · NewsBreak (55+ saúde) · Taboola · MGID</li>
-          <li><span class="dot w"></span><b>Por quê ganha:</b> infra white/grey madura + público native 45+ + advertorial já pronto. <b>Maior nº de overlaps provados.</b></li>
-        </ul></article>
-
-        <article class="net"><div class="net-h"><span class="net-b">🇧🇷 BRASIL (PT)</span><span class="net-geo mono">volume gigante no FB</span></div><ul>
-          <li><span class="dot w"></span><b>Nichos que portam:</b> emagrecimento (gelatina/receita), próstata, diabetes, memória, adulto/ED</li>
-          <li><span class="dot g"></span><b>Checkout:</b> Hotmart · Kiwify · Payt · Monetizze (físico + infoproduto)</li>
-          <li><span class="dot" style="background:var(--accent)"></span><b>Redes:</b> Taboola BR · MGID (forte LatAm) · Bing/MAN (única com presença BR)</li>
-          <li><span class="dot b"></span><b>Cuidado:</b> BR native puxa mais pro black (fake-news/cloak). O portável grey = <b>gelatina/receita de marca real</b>.</li>
-        </ul></article>
-
-        <article class="net"><div class="net-h"><span class="net-b">🇪🇺 EUROPA (FR/DE/ES/IT)</span><span class="net-geo mono">🎯 mar azul (pouca concorrência)</span></div><ul>
-          <li><span class="dot w"></span><b>Nichos que portam:</b> articulações/dor, próstata, calvície, digestão — saúde do idoso</li>
-          <li><span class="dot g"></span><b>Checkout:</b> marca própria (Nutri Origines, Seren'Alpes) · Digistore</li>
-          <li><span class="dot" style="background:var(--accent)"></span><b>Redes:</b> Outbrain (forte Europa via Ligatus) · MGID</li>
-          <li><span class="dot w"></span><b>Por quê olhar:</b> <b>menos afiliado brigando</b> e menos dado público = mar azul — mas menos exemplos prontos pra copiar.</li>
-        </ul></article>
+      <div class="regcards">
+        <article class="regcard us">
+          <div class="regcard-h"><span class="regcard-t">🇺🇸 EUA</span><span class="regcard-sub">melhor infra + público ideal</span></div>
+          <div class="reg-row"><span class="reg-k">Nichos</span><span class="reg-v">emagrecimento (gelatin drops), diabetes, próstata, fungos, memória, energia/DIY</span></div>
+          <div class="reg-row"><span class="reg-k">Checkout</span><span class="reg-v">ClickBank · BuyGoods · Digistore <span style="color:var(--faint)">(grey/white)</span></span></div>
+          <div class="reg-row"><span class="reg-k">Redes</span><span class="reg-v"><b>Revcontent</b> (menos concorrência) · NewsBreak (55+) · Taboola · MGID</span></div>
+          <div class="reg-row"><span class="reg-k">Por quê</span><span class="reg-v">infra white/grey madura + público 45+ + advertorial já pronto. <b>Maior nº de overlaps.</b></span></div>
+        </article>
+        <article class="regcard br">
+          <div class="regcard-h"><span class="regcard-t">🇧🇷 Brasil</span><span class="regcard-sub">volume gigante no FB</span></div>
+          <div class="reg-row"><span class="reg-k">Nichos</span><span class="reg-v">emagrecimento (gelatina/receita), próstata, diabetes, memória, adulto/ED</span></div>
+          <div class="reg-row"><span class="reg-k">Checkout</span><span class="reg-v">Hotmart · Kiwify · Payt · Monetizze <span style="color:var(--faint)">(físico + info)</span></span></div>
+          <div class="reg-row"><span class="reg-k">Redes</span><span class="reg-v">Taboola BR · <b>MGID</b> (forte LatAm) · Bing/MAN (presença BR)</span></div>
+          <div class="reg-row"><span class="reg-k">Cuidado</span><span class="reg-v">BR native puxa pro black (fake-news). O portável grey = gelatina/receita de <b>marca real</b>.</span></div>
+        </article>
+        <article class="regcard eu">
+          <div class="regcard-h"><span class="regcard-t">🇪🇺 Europa</span><span class="regcard-sub">🎯 mar azul</span></div>
+          <div class="reg-row"><span class="reg-k">Nichos</span><span class="reg-v">articulações/dor, próstata, calvície, digestão — saúde do idoso</span></div>
+          <div class="reg-row"><span class="reg-k">Checkout</span><span class="reg-v">marca própria (Nutri Origines, Seren'Alpes) · Digistore</span></div>
+          <div class="reg-row"><span class="reg-k">Redes</span><span class="reg-v"><b>Outbrain</b> (forte Europa via Ligatus) · MGID</span></div>
+          <div class="reg-row"><span class="reg-k">Por quê</span><span class="reg-v"><b>menos afiliado brigando</b> + menos dado público = mar azul; menos exemplos prontos.</span></div>
+        </article>
       </div>
 
       <div class="sec-label">🔀 CRUZAMENTO · País × Comportamento da plataforma × Oferta portável <span class="tag">o que casar com o quê</span></div>
