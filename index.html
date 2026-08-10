@@ -232,23 +232,44 @@
   .navitem{font-weight:500;}
   .navitem[aria-current="true"]{background:var(--accent-soft);color:var(--text);}
   .navitem[aria-current="true"]::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none;}
+
+  /* ===== layout — quiet luxury / museu (respiro e ritmo) ===== */
+  body{line-height:1.6;}
+  .wrap{max-width:1080px;padding:52px 48px 96px;}
+  header{padding-bottom:30px;margin-bottom:34px;border-bottom:1px solid var(--border);}
+  header h1{font-size:37px;margin-top:12px;}
+  .kpis{gap:18px;margin-bottom:34px;}
+  .kpi{padding:20px 22px;}
+  .insight{padding:22px 26px;margin-bottom:34px;}
+  .sec-label{margin:44px 0 20px;}
+  .cards,.nets,.regcards,.legend,.notecols{gap:18px;}
+  .card{padding:24px 24px 20px;gap:15px;}
+  .net{padding:20px 22px;}
+  .regcard{padding:6px 24px 20px;}
+  .note,.leg{padding:18px 20px;}
+  .tbl-wrap{border-radius:10px;}
+  tbody td{padding:13px 18px;}
+  thead th{padding:13px 18px;}
+  .intel{gap:12px;padding-top:15px;}
+  .cell{padding:11px 13px;}
+  @media(max-width:860px){.wrap{padding:30px 20px 72px;}header h1{font-size:30px;}}
 </style>
 
 <div class="app">
   <aside class="sidebar">
-    <div class="brand">🐀 Native Intel</div>
+    <div class="brand">Native Intel</div>
     <div class="nav-sec">Dossiês</div>
-    <div class="nav-sec" style="margin-top:0">🟢 Dados vivos</div>
+    <div class="nav-sec" style="margin-top:0">Dados vivos</div>
     <nav>
-      <button class="navitem" data-page="ofertas" aria-current="true">🎯 Inteligência de Ofertas</button>
-      <button class="navitem" data-page="frescor" aria-current="false">🔥 Frescor / Novidades</button>
+      <button class="navitem" data-page="ofertas" aria-current="true">Inteligência de Ofertas</button>
+      <button class="navitem" data-page="frescor" aria-current="false">Frescor / Novidades</button>
     </nav>
-    <div class="nav-sec">📚 Dossiês (estáticos)</div>
+    <div class="nav-sec">Dossiês (estáticos)</div>
     <nav>
-      <button class="navitem" data-page="publico" aria-current="false">🌍 Comportamento de Usuário</button>
-      <button class="navitem" data-page="portabilidade" aria-current="false">🧭 Padrão de Portabilidade</button>
+      <button class="navitem" data-page="publico" aria-current="false">Comportamento de Usuário</button>
+      <button class="navitem" data-page="portabilidade" aria-current="false">Padrão de Portabilidade</button>
     </nav>
-    <div class="nav-soon">🟢 Atualizado: <b>10/ago/2026</b><br>Páginas de ofertas/criativos/VSL são atualizadas a cada acesso. Dossiês só sob demanda.</div>
+    <div class="nav-soon">Atualizado: <b>10/ago/2026</b><br>Páginas de ofertas/criativos/VSL são atualizadas a cada acesso. Dossiês só sob demanda.</div>
   </aside>
   <main class="main">
   <div class="page active" id="page-ofertas">
@@ -259,7 +280,7 @@
       <h1>Ofertas em native — dossiê de modelagem</h1>
       <p>Filtre por <b>rede</b> (Taboola, NewsBreak…) e por <b>nicho</b> para ver só as ofertas certas, com criativos, funil, economia e score de clonabilidade.</p>
     </div>
-    <div class="snapshot"><b style="color:var(--ok)">🟢 ÚLTIMA ATUALIZAÇÃO · 10 ago 2026</b><br>FONTES · Swipe Offers + MonsterSwipe<br>NATIVE VARRIDAS · 253 ofertas</div>
+    <div class="snapshot"><b style="color:var(--ok)">ÚLTIMA ATUALIZAÇÃO · 10 ago 2026</b><br>FONTES · Swipe Offers + MonsterSwipe<br>NATIVE VARRIDAS · 253 ofertas</div>
   </header>
 
   <div class="kpis">
@@ -276,12 +297,12 @@
 
   <div class="controls">
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" aria-selected="true" data-panel="offers">🗂 Ofertas + criativos</button>
-      <button class="tab" role="tab" aria-selected="false" data-panel="land">📊 Landscape</button>
-      <button class="tab" role="tab" aria-selected="false" data-panel="score">🎯 Score</button>
-      <button class="tab" role="tab" aria-selected="false" data-panel="niche">🧬 Nichos (20)</button>
-      <button class="tab" role="tab" aria-selected="false" data-panel="net">📡 Redes</button>
-      <button class="tab" role="tab" aria-selected="false" data-panel="cartpanda">🛒 CartPanda</button>
+      <button class="tab" role="tab" aria-selected="true" data-panel="offers">Ofertas + criativos</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="land">Landscape</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="score">Score</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="niche">Nichos (20)</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="net">Redes</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="cartpanda">CartPanda</button>
     </div>
     <div class="spacer"></div>
     <label class="toggle" id="wt"><input type="checkbox" id="wtc"><span>Só white / grey</span></label>
@@ -314,11 +335,11 @@
       <!-- ENDLESS -->
       <article class="card" data-cls="w" data-net="taboola" data-niche="energia" data-status="now">
         <div class="card-top"><div><h3>Endless Eletricity</h3><div class="prod">Easy DIY Power Plan · Energia/DIY</div></div><span class="score-badge" style="color:var(--white-c)"><b>85</b>/100</span></div>
-        <div class="pills"><span class="pill cls-w">● White</span><span class="pill now">🔥 escalando</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">Taboola / Revcontent</span><span class="src">SWIPE&nbsp;OFFERS</span></div>
+        <div class="pills"><span class="pill cls-w">● White</span><span class="pill now">escalando</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">Taboola / Revcontent</span><span class="src">SWIPE&nbsp;OFFERS</span></div>
         <p class="angle"><b>Ângulo:</b> professor de geografia anônimo (pen-name Ryan Taylor) inventa gerador caseiro. Headline nativa: <b>"Home Invasion Leads to Breakthrough Solar Discovery (12x Better Than Panels)"</b>.</p>
         <div class="intel">
           <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend up">▲ Evergreen</span> · 4+ anos, Estável</div></div>
-          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 1 vídeo (VSL) · 🖼 1 imagem</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">1 vídeo (VSL) · 1 imagem</div></div>
           <div class="cell"><div class="k">Economia</div><div class="v mono">ClickBank · one-time + upsells</div></div>
           <div class="cell"><div class="k">Funil (ao vivo?)</div><div class="v"><span class="status live">VSL no ar</span></div></div>
         </div>
@@ -331,46 +352,46 @@
       <!-- BARIATRIC -->
       <article class="card" data-cls="g" data-net="revcontent" data-niche="emagrecimento" data-status="now">
         <div class="card-top"><div><h3>Bariatric Gelatin</h3><div class="prod">Emagrecimento (gelatina) · nutra</div></div><span class="score-badge" style="color:var(--grey-c)"><b>78</b>/100</span></div>
-        <div class="pills"><span class="pill cls-g">● Grey/white</span><span class="pill now">🔥 escalando</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">Revcontent (RTK)</span><span class="pill heat">589 anúncios · 🔥 hoje</span><span class="src">MONSTERSWIPE</span></div>
+        <div class="pills"><span class="pill cls-g">● Grey/white</span><span class="pill now">escalando</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">Revcontent (RTK)</span><span class="pill heat">589 anúncios · hoje</span><span class="src">MONSTERSWIPE</span></div>
         <p class="angle"><b>Ângulo:</b> "gelatina bariátrica" que imita efeito de cirurgia/GLP-1. Maior volume do inventário native, 5 meses no ar.</p>
         <div class="intel">
           <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend up">▲ Alta</span> · ~3,8/dia (152d)</div></div>
-          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 38 vídeos · 🖼 9 imagens</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">38 vídeos · 9 imagens</div></div>
           <div class="cell"><div class="k">Economia</div><div class="v mono">CartPanda · físico + upsell</div></div>
-          <div class="cell"><div class="k">Status (10/ago)</div><div class="v"><span class="status live">🔥 ativa hoje</span> · domínio rotaciona</div></div>
+          <div class="cell"><div class="k">Status (10/ago)</div><div class="v"><span class="status live">ativa hoje</span> · domínio rotaciona</div></div>
         </div>
         <div class="links">
           <a class="lnk" target="_blank" rel="noopener" href="https://firstminutejournal.com/gela2/"><span class="i">◈</span> Abrir Pressel</a>
-          <a class="lnk" target="_blank" rel="noopener" href="https://pub-8dbfef0507e44a919f83629bd86cf9ce.r2.dev/offers/SM2KY2iinM5CvsNSHiBS/criativos/0_1771686085137_36ca0fbe_9daedb72-3a9e-447b-a54f-a0b5c1a3202c_comprimido.mp4"><span class="i">🎬</span> Criativo (vídeo)</a>
-          <a class="lnk" target="_blank" rel="noopener" href="https://pub-8dbfef0507e44a919f83629bd86cf9ce.r2.dev/offers/f8e74a28-a04e-4275-896a-c27898a00cf1/creatives/880ca398-7c29-47ba-a04e-df1fc95c7651.png"><span class="i">🖼</span> Criativo (imagem)</a>
+          <a class="lnk" target="_blank" rel="noopener" href="https://pub-8dbfef0507e44a919f83629bd86cf9ce.r2.dev/offers/SM2KY2iinM5CvsNSHiBS/criativos/0_1771686085137_36ca0fbe_9daedb72-3a9e-447b-a54f-a0b5c1a3202c_comprimido.mp4"><span class="i"></span> Criativo (vídeo)</a>
+          <a class="lnk" target="_blank" rel="noopener" href="https://pub-8dbfef0507e44a919f83629bd86cf9ce.r2.dev/offers/f8e74a28-a04e-4275-896a-c27898a00cf1/creatives/880ca398-7c29-47ba-a04e-df1fc95c7651.png"><span class="i"></span> Criativo (imagem)</a>
         </div>
       </article>
 
       <!-- PRO NAIL -->
       <article class="card" data-cls="g" data-net="clickbank" data-niche="fungos" data-status="now">
         <div class="card-top"><div><h3>Pro Nail Complex</h3><div class="prod">Fungos (unha) · nutra ClickBank</div></div><span class="score-badge" style="color:var(--grey-c)"><b>64</b>/100</span></div>
-        <div class="pills"><span class="pill cls-g">● Grey/white</span><span class="pill now">🔥 escalando</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">ClickBank pool US</span><span class="pill heat">94 anúncios · 🔥 hoje</span><span class="src">MONSTERSWIPE</span></div>
+        <div class="pills"><span class="pill cls-g">● Grey/white</span><span class="pill now">escalando</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">ClickBank pool US</span><span class="pill heat">94 anúncios · hoje</span><span class="src">MONSTERSWIPE</span></div>
         <p class="angle"><b>Ângulo:</b> "1-Minute Sock Trick" — hook de curiosidade sobre truque da meia contra fungo. Produto ClickBank consolidado.</p>
         <div class="intel">
           <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend up">▲ Subindo</span> · ~1,7/dia (54d)</div></div>
-          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 1 vídeo · 🖼 1 imagem</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">1 vídeo · 1 imagem</div></div>
           <div class="cell"><div class="k">Economia</div><div class="v mono">ClickBank (item 302)</div></div>
           <div class="cell"><div class="k">Funil (ao vivo?)</div><div class="v"><span class="status gate">VSL gated</span></div></div>
         </div>
         <div class="links">
           <a class="lnk" target="_blank" rel="noopener" href="https://pronailcomplex.com/video.php"><span class="i">▶</span> Abrir VSL / Oferta</a>
-          <a class="lnk" target="_blank" rel="noopener" href="https://pub-8dbfef0507e44a919f83629bd86cf9ce.r2.dev/offers/937f8a76-9317-479e-ab82-7dd057841f3f/creatives/bb2812ba-b9cd-4b3a-a157-9366f038aff1.mp4"><span class="i">🎬</span> Criativo (vídeo)</a>
+          <a class="lnk" target="_blank" rel="noopener" href="https://pub-8dbfef0507e44a919f83629bd86cf9ce.r2.dev/offers/937f8a76-9317-479e-ab82-7dd057841f3f/creatives/bb2812ba-b9cd-4b3a-a157-9366f038aff1.mp4"><span class="i"></span> Criativo (vídeo)</a>
         </div>
       </article>
 
       <!-- GUT GUNDRY -->
       <article class="card" data-cls="w" data-net="newsbreak" data-niche="digestao" data-status="past">
         <div class="card-top"><div><h3>Gut Protocol — Gundry MD</h3><div class="prod">Nutracêutico · marca real (Dr. Gundry)</div></div><span class="score-badge" style="color:var(--white-c)"><b>63</b>/100</span></div>
-        <div class="pills"><span class="pill cls-w">● White</span><span class="pill past">🕒 já escalou</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">NewsBreak</span><span class="src">MONSTERSWIPE</span></div>
+        <div class="pills"><span class="pill cls-w">● White</span><span class="pill past">já escalou</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">NewsBreak</span><span class="src">MONSTERSWIPE</span></div>
         <p class="angle"><b>Ângulo:</b> quiz de saúde intestinal da Gundry MD no NewsBreak (<span class="mono">nb_cid</span>). White de manual: marca médica real, sem cloaking.</p>
         <div class="intel">
           <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend down">▼ Esfriou</span> · parou em jun</div></div>
-          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 0 vídeo · 🖼 1 imagem</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">0 vídeo · 1 imagem</div></div>
           <div class="cell"><div class="k">Economia</div><div class="v mono">Assinatura (6-un) · NewsBreak</div></div>
           <div class="cell"><div class="k">Funil (ao vivo?)</div><div class="v"><span class="status gate">quiz próprio</span></div></div>
         </div>
@@ -380,11 +401,11 @@
       <!-- POLYPHENOL GUNDRY -->
       <article class="card" data-cls="w" data-net="yahoo" data-niche="estetica" data-status="past">
         <div class="card-top"><div><h3>Polyphenol Dark Spot — Gundry MD</h3><div class="prod">Estética/pele · marca real</div></div><span class="score-badge" style="color:var(--white-c)"><b>52</b>/100</span></div>
-        <div class="pills"><span class="pill cls-w">● White</span><span class="pill past">🕒 já escalou</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">Yahoo / DSP · Everflow</span><span class="src">MONSTERSWIPE</span></div>
+        <div class="pills"><span class="pill cls-w">● White</span><span class="pill past">já escalou</span><span class="pill meta">🇺🇸 EUA</span><span class="pill meta">Yahoo / DSP · Everflow</span><span class="src">MONSTERSWIPE</span></div>
         <p class="angle"><b>Ângulo:</b> "Dark Spot Diminisher" via advertorial nativo (healthclubjournal), rede DSP com afiliação Everflow.</p>
         <div class="intel">
           <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend down">▼ Curto</span> · ~27 dias</div></div>
-          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 0 vídeo · 🖼 1 imagem</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">0 vídeo · 1 imagem</div></div>
           <div class="cell"><div class="k">Economia</div><div class="v mono">Assinatura (3-un) · Everflow</div></div>
           <div class="cell"><div class="k">Funil (ao vivo?)</div><div class="v"><span class="status gate">advertorial próprio</span></div></div>
         </div>
@@ -394,11 +415,11 @@
       <!-- PROSTLOSINA -->
       <article class="card" data-cls="b" data-net="taboola yahoo" data-niche="prostata" data-status="past">
         <div class="card-top"><div><h3>Prostlosina / Tittanus</h3><div class="prod">Próstata · nutra BR</div></div><span class="score-badge" style="color:var(--black-c)"><b>35</b>/100</span></div>
-        <div class="pills"><span class="pill cls-b">● Black</span><span class="pill past">🕒 já escalou</span><span class="pill meta">🇧🇷 Brasil</span><span class="pill meta">Taboola + Yahoo</span><span class="src">MONSTERSWIPE</span></div>
+        <div class="pills"><span class="pill cls-b">● Black</span><span class="pill past">já escalou</span><span class="pill meta">🇧🇷 Brasil</span><span class="pill meta">Taboola + Yahoo</span><span class="src">MONSTERSWIPE</span></div>
         <p class="angle"><b>Ângulo:</b> próstata BR com advertorial e claims agressivos. Multi-rede: <span class="mono">tblci</span> (Taboola) + Yahoo, desktop.</p>
         <div class="intel">
           <div class="cell"><div class="k">Tendência</div><div class="v"><span class="trend down">▼ Parou</span> · baixa velocidade</div></div>
-          <div class="cell"><div class="k">Criativos salvos</div><div class="v">🎬 0 vídeo · 🖼 1 imagem</div></div>
+          <div class="cell"><div class="k">Criativos salvos</div><div class="v">0 vídeo · 1 imagem</div></div>
           <div class="cell"><div class="k">Economia</div><div class="v mono">Yampi (BR) · one-time</div></div>
           <div class="cell"><div class="k">Funil (ao vivo?)</div><div class="v"><span class="status gate">advertorial BR</span></div></div>
         </div>
@@ -480,7 +501,7 @@
       <div class="frow" id="microChips"><span class="lbl">Micro</span></div>
     </div>
     <div class="tbl-wrap" id="nicheTable"></div>
-    <p class="mono" style="color:var(--faint);font-size:11px;margin-top:12px">Classe <b>revisada</b> pela régua de prazo/promessa. <b>⚠</b> = nome sugere, mas precisa checar a copy do funil pra cravar. Big niche com <b>—</b> = sem oferta nesta amostra (estrutura pronta pra quando aparecer).</p>
+    <p class="mono" style="color:var(--faint);font-size:11px;margin-top:12px">Classe <b>revisada</b> pela régua de prazo/promessa. <b></b> = nome sugere, mas precisa checar a copy do funil pra cravar. Big niche com <b>—</b> = sem oferta nesta amostra (estrutura pronta pra quando aparecer).</p>
   </section>
 
   <!-- ============ REDES ============ -->
@@ -507,7 +528,7 @@
     <div class="sec-label">Dossiê de público por rede nativa <span class="tag">deep research · <span style="color:var(--ok)">✓ verificado</span> · <span style="color:var(--warn)">~ fonte única</span> · <s style="color:var(--faint)">velho</s></span></div>
 
     <div class="nets">
-      <article class="net"><div class="net-h"><span class="net-b">NEWSBREAK</span><span class="net-geo mono">🎯 mar azul · 🇺🇸-only</span></div><ul>
+      <article class="net"><div class="net-h"><span class="net-b">NEWSBREAK</span><span class="net-geo mono">mar azul · 🇺🇸-only</span></div><ul>
         <li><span class="dot" style="background:var(--ok)"></span><b>40–45M+ usuários/mês</b> · <b>96,54% tráfego EUA</b><span class="obs"><span style="color:var(--ok)">✓ alta</span> · primário + SimilarWeb · inútil p/ BR/Europa</span></li>
         <li><span class="dot" style="background:var(--ok)"></span><b>45+ (web 55–64) · ~60% mulheres · sem faculdade · suburbano/rural</b><span class="obs"><span style="color:var(--ok)">✓ alta</span> NBC News + SimilarWeb (split exato 64% refutado → use ~60/40)</span></li>
         <li><span class="dot" style="background:var(--ok)"></span><b>Intenção local: 82% notícia · 56% negócio · 45% entret.</b><span class="obs"><span style="color:var(--warn)">✓ média</span> auto-reportado — ângulo "na sua região" converte</span></li>
@@ -517,7 +538,7 @@
       <article class="net"><div class="net-h"><span class="net-b">TABOOLA</span><span class="net-geo mono">escala global</span></div><ul>
         <li><span class="dot" style="background:var(--ok)"></span><b>~600M usuários ativos/dia · ~1,4–1,5 bi/mês</b> · 22k+ sites<span class="obs"><span style="color:var(--ok)">✓ alta</span> materiais de investidor + SEC (Q4 2024)</span></li>
         <li><span class="dot" style="background:var(--bad)"></span><b>Gênero · idade · renda · reach por país</b><span class="obs"><span style="color:var(--bad)">✗ NÃO confirmado</span> — 60/40, 25–54, &gt;$75k, Brasil 64%, US 89% <b>foram refutados</b> (fonte velha/blog)</span></li>
-        <li><span class="dot" style="background:var(--faint)"></span><s>639M/86% (2015) · 43,6% (2017)</s><span class="obs">❌ comScore obsoleto — não usar</span></li>
+        <li><span class="dot" style="background:var(--faint)"></span><s>639M/86% (2015) · 43,6% (2017)</s><span class="obs">comScore obsoleto — não usar</span></li>
       </ul></article>
 
       <article class="net"><div class="net-h"><span class="net-b">SAÚDE em native (verificado)</span><span class="net-geo mono">✓ transversal</span></div><ul>
@@ -537,7 +558,7 @@
         <li><span class="dot" style="background:var(--bad)"></span><b>A MAIS concorrida por afiliados</b><span class="obs">150k criativos · onboarding gerenciado · entrada cara</span></li>
       </ul></article>
 
-      <article class="net"><div class="net-h"><span class="net-b">REVCONTENT · YAHOO</span><span class="net-geo mono">🎯 menos concorrência</span></div><ul>
+      <article class="net"><div class="net-h"><span class="net-b">REVCONTENT · YAHOO</span><span class="net-geo mono">menos concorrência</span></div><ul>
         <li><span class="dot" style="background:var(--ok)"></span><b>Revcontent = MENOR concorrência (23k criativos)</b><span class="obs"><span style="color:var(--ok)">✓</span> entrada barata · CPC US$0,01–0,20 · US · health/finance/nutra</span></li>
         <li><span class="dot" style="background:var(--warn)"></span><b>Yahoo Native → via Taboola/Yahoo DSP</b><span class="obs"><span style="color:var(--warn)">~</span> ~900M usuários Yahoo · menor concorrência (14k) mas dado granular fraco</span></li>
       </ul></article>
@@ -547,7 +568,7 @@
         <li><span class="dot" style="background:var(--accent)"></span><b>Bom p/ finanças, seguros, casa, e-com</b><span class="obs">native feed + below-article · pouco explorado por afiliado</span></li>
       </ul></article>
 
-      <article class="net"><div class="net-h"><span class="net-b">TRAFFIC JUNKY</span><span class="net-geo mono">🔞 adulto · 🎯 + barato</span></div><ul>
+      <article class="net"><div class="net-h"><span class="net-b">TRAFFIC JUNKY</span><span class="net-geo mono">adulto · + barato</span></div><ul>
         <li><span class="dot" style="background:var(--ok)"></span><b>~4 BILHÕES de impressões/DIA · 150M+ visitantes/dia</b><span class="obs"><span style="color:var(--ok)">✓</span> Aylo/MindGeek (Pornhub, YouPorn, RedTube) · 100+ sites adultos</span></li>
         <li><span class="dot" style="background:var(--accent)"></span><b>Depósito mín. US$25 · CPM · Tier-1 (US/CA/JP/DE)</b><span class="obs">verticais: adult dating, gambling, sexual wellness, ED, health&amp;beauty · desktop-heavy</span></li>
       </ul></article>
@@ -565,8 +586,8 @@
         <tr><td class="name">Taboola</td><td class="ads">352.392</td><td><span class="dot b"></span>saturada</td></tr>
         <tr><td class="name">Outbrain / Teads</td><td class="ads">150.462</td><td><span class="dot b"></span>alta</td></tr>
         <tr><td class="name">MGID</td><td class="ads">96.139</td><td><span class="dot g"></span>média</td></tr>
-        <tr><td class="name">Revcontent</td><td class="ads">23.040</td><td><span class="dot w"></span>baixa 🎯</td></tr>
-        <tr><td class="name">Yahoo Native</td><td class="ads">14.389</td><td><span class="dot w"></span>menor 🎯</td></tr>
+        <tr><td class="name">Revcontent</td><td class="ads">23.040</td><td><span class="dot w"></span>baixa </td></tr>
+        <tr><td class="name">Yahoo Native</td><td class="ads">14.389</td><td><span class="dot w"></span>menor </td></tr>
       </tbody>
     </table></div>
 
@@ -581,7 +602,7 @@
       </tbody>
     </table></div>
 
-    <div class="sec-label">Matriz de cobertura <span class="tag">o que se sabe (✓) vs falta (✗) · 🔄 preenchendo via fóruns</span></div>
+    <div class="sec-label">Matriz de cobertura <span class="tag">o que se sabe (✓) vs falta (✗) · preenchendo via fóruns</span></div>
     <div class="tbl-wrap"><table>
       <thead><tr><th>Rede</th><th>Reach</th><th>Gênero</th><th>Idade</th><th>Renda</th><th>Filhos/casado</th><th>Device</th><th>Daypart</th><th>Conteúdo</th></tr></thead>
       <tbody>
@@ -597,12 +618,12 @@
       </tbody>
     </table></div>
     <div class="notecols" style="margin:8px 0 14px">
-      <div class="note"><h4>🔎 Dados preenchidos (fóruns + proxies · deep research)</h4><ul>
+      <div class="note"><h4>Dados preenchidos (fóruns + proxies · deep research)</h4><ul>
         <li><b>Traffic Junky</b> <span style="color:var(--ok)">✓ proxy direto (é a rede da Pornhub):</span> <b>62% homens / 38% mulheres</b> · idade média <b>38</b> (18–34 = &gt;50%) · <b>~88% mobile</b> · pico <b>após 22h</b> (vale 3–5h, 2ª o dia mais forte).</li>
         <li><b>MediaGo</b> <span style="color:var(--warn)">~ proxy MSN:</span> <b>56% homens / 44% mulheres</b> · faixa maior <b>45–54</b> · EUA 32%, depois DE/JP/FR.</li>
         <li><b>Yahoo Native</b> <span style="color:var(--warn)">~ proxy finance.yahoo:</span> <b>64% homens / 36% mulheres</b> (vertical finanças).</li>
       </ul></div>
-      <div class="note"><h4>🚫 O que NÃO existe público (verificado)</h4><ul>
+      <div class="note"><h4>O que NÃO existe público (verificado)</h4><ul>
         <li><b>Taboola</b>: só mostra idade+gênero <b>ao anunciante dentro da plataforma</b> (Realize) — zero número agregado público. Claims antigos de renda/idade <b>refutados</b>.</li>
         <li><b>MGID · Outbrain · Revcontent</b>: não publicam gênero/idade/device do público.</li>
         <li><b>Renda · escolaridade · estado civil · filhos</b>: <b>sem dado público</b> pra praticamente todas (só o Bing publica). Nenhuma native ad network divulga isso sobre quem VÊ o anúncio.</li>
@@ -620,7 +641,7 @@
         <tr><td class="name">MGID · MediaGo · Revcontent</td><td colspan="3" style="color:var(--faint)">sem daypart/device granular público — usar proxy do país/vertical</td></tr>
       </tbody>
     </table></div>
-    <div class="note" style="margin-top:12px"><h4>👤 Perfil do Bing (verificado — o mais documentado)</h4><p><b>~60–64% homens</b> · <b>73% abaixo de 45 anos</b> (maior coorte 25–34) · afluente/educado (~50% no quartil superior de renda, 34% com diploma) · <b>57% têm filhos em casa · 53% casados</b>. Desktop, horário comercial → ideal p/ <b>finanças, seguro, saúde e high-ticket</b>. 🇧🇷 No Brasil só há confirmação do lançamento da Microsoft Audience Network (mai/2022); sem device/horário granular ainda. <b>Dayparts por hora quase não existem publicamente</b> em nenhuma rede — o único sólido é o "horário comercial" do Bing.</p></div>
+    <div class="note" style="margin-top:12px"><h4>Perfil do Bing (verificado — o mais documentado)</h4><p><b>~60–64% homens</b> · <b>73% abaixo de 45 anos</b> (maior coorte 25–34) · afluente/educado (~50% no quartil superior de renda, 34% com diploma) · <b>57% têm filhos em casa · 53% casados</b>. Desktop, horário comercial → ideal p/ <b>finanças, seguro, saúde e high-ticket</b>. 🇧🇷 No Brasil só há confirmação do lançamento da Microsoft Audience Network (mai/2022); sem device/horário granular ainda. <b>Dayparts por hora quase não existem publicamente</b> em nenhuma rede — o único sólido é o "horário comercial" do Bing.</p></div>
 
     <div class="sec-label">Facebook → Native · que público joga em qual rede</div>
     <div class="tbl-wrap"><table>
@@ -634,8 +655,8 @@
     </table></div>
 
     <div class="notecols" style="margin-top:14px">
-      <div class="note"><h4>🎯 Mar azul (verificado)</h4><p><b>Público:</b> NewsBreak + saúde/idoso 55+ (EUA) — mulher madura suburbana, cara no Meta, ausente no TikTok. <b>Menor concorrência:</b> <b>Revcontent</b> (23k) e <b>Yahoo</b> (14k) &gt; MGID &gt; Outbrain &gt; Taboola. <b>Entrada + barata:</b> <b>Traffic Junky</b> (US$25, adulto/ED/dating). <b>Para o Brasil:</b> <b>MGID</b> (native) e <b>Bing/Microsoft Audience Network</b> (única com presença local no BR). <b>Finanças/seguro/high-ticket:</b> Bing/MediaGo.</p></div>
-      <div class="note"><h4>⚠️ Leia antes de agir</h4><p>Verificação adversarial: <b>11 confirmados / 14 refutados</b> de 25 claims. O que caiu: toda a <b>demografia da Taboola</b>, <b>reach por país</b>, <b>dayparts</b> e <b>faixas de CPC</b> (fontes velhas/blog). Use só os <span style="color:var(--ok)">✓</span>. Números de rede são <b>auto-reportados e globais</b> — não segmentados por país.</p></div>
+      <div class="note"><h4>Mar azul (verificado)</h4><p><b>Público:</b> NewsBreak + saúde/idoso 55+ (EUA) — mulher madura suburbana, cara no Meta, ausente no TikTok. <b>Menor concorrência:</b> <b>Revcontent</b> (23k) e <b>Yahoo</b> (14k) &gt; MGID &gt; Outbrain &gt; Taboola. <b>Entrada + barata:</b> <b>Traffic Junky</b> (US$25, adulto/ED/dating). <b>Para o Brasil:</b> <b>MGID</b> (native) e <b>Bing/Microsoft Audience Network</b> (única com presença local no BR). <b>Finanças/seguro/high-ticket:</b> Bing/MediaGo.</p></div>
+      <div class="note"><h4>Leia antes de agir</h4><p>Verificação adversarial: <b>11 confirmados / 14 refutados</b> de 25 claims. O que caiu: toda a <b>demografia da Taboola</b>, <b>reach por país</b>, <b>dayparts</b> e <b>faixas de CPC</b> (fontes velhas/blog). Use só os <span style="color:var(--ok)">✓</span>. Números de rede são <b>auto-reportados e globais</b> — não segmentados por país.</p></div>
     </div>
   </section>
 
@@ -678,16 +699,16 @@
     </div>
 
     <div class="notecols" style="margin-top:14px">
-      <div class="note"><h4>🔎 Padrão de checkout (confirmado abrindo os top FB)</h4><p><b>BR de alto volume → Hotmart / Kiwify / Payt</b> (não CartPanda). Ex.: Sal Azul Pérsia = Kiwify/Hotmart/Payt · Parasita Diabético = Payt · Café com Limão = Hotmart. <b>CartPanda = gelatinas internacionais (EN/UK/US)</b>. Plataformas vistas: CartPanda, Hotmart, Kiwify, Payt, ClickBank.</p></div>
-      <div class="note"><h4>🔎 O que portar pro native</h4><p>O volume do FB é <b>ED ("salt trick"/"cavalo") · emagrecimento (gelatina/café/canela) · dinheiro/espiritual</b>. As <b>portáveis com menor risco</b> = <b>emagrecimento por receita</b> (produto real, promessa plausível). ED e "parasita diabético/reverter" = black, evite.</p></div>
+      <div class="note"><h4>Padrão de checkout (confirmado abrindo os top FB)</h4><p><b>BR de alto volume → Hotmart / Kiwify / Payt</b> (não CartPanda). Ex.: Sal Azul Pérsia = Kiwify/Hotmart/Payt · Parasita Diabético = Payt · Café com Limão = Hotmart. <b>CartPanda = gelatinas internacionais (EN/UK/US)</b>. Plataformas vistas: CartPanda, Hotmart, Kiwify, Payt, ClickBank.</p></div>
+      <div class="note"><h4>O que portar pro native</h4><p>O volume do FB é <b>ED ("salt trick"/"cavalo") · emagrecimento (gelatina/café/canela) · dinheiro/espiritual</b>. As <b>portáveis com menor risco</b> = <b>emagrecimento por receita</b> (produto real, promessa plausível). ED e "parasita diabético/reverter" = black, evite.</p></div>
     </div>
   </section>
 
   <!-- Cross-source + freshness -->
   <div class="sec-label">Validação cruzada de fontes &amp; frescor</div>
   <div class="notecols">
-    <div class="note"><h4>🔗 Os dois tools se sobrepõem</h4><p>O MonsterSwipe <b>agrega o Swipe Offers</b> — o código <span class="mono">SO</span> em "Fontes" é o Swipe Offers (+ AS, NS, SA). Ofertas em <b>2+ fontes</b> = sinal mais forte.</p></div>
-    <div class="note"><h4>📡 Para deixar a pesquisa "ao vivo"</h4><ul>
+    <div class="note"><h4>Os dois tools se sobrepõem</h4><p>O MonsterSwipe <b>agrega o Swipe Offers</b> — o código <span class="mono">SO</span> em "Fontes" é o Swipe Offers (+ AS, NS, SA). Ofertas em <b>2+ fontes</b> = sinal mais forte.</p></div>
+    <div class="note"><h4>Para deixar a pesquisa "ao vivo"</h4><ul>
       <li>Somar <b>Anstrex Native</b> e <b>AdSpy</b> (cobrem Outbrain/MGID).</li>
       <li><b>Monitorar diário</b>: o que sobe em 48h é o mais quente.</li>
       <li>Confirmar geo/device na <b>Taboola Ad Library</b>.</li>
@@ -701,7 +722,7 @@
     <div class="leg g"><h4><span class="dot g"></span>Grey / "quase black"</h4><p>Hook de <b>truque/natural</b>, agressivo — <b>mas NÃO promete transformação radical em prazo curto</b> (horas/dias/semanas/1 mês) nem cura de doença. Produto real e checkout sério. O "truque" sozinho não faz ser black. Ex.: Pro Nail (truque da meia), Bariatric.</p></div>
     <div class="leg b"><h4><span class="dot b"></span>Black</h4><p>Promete <b>transformação irreal em prazo impossível</b> — "mudança de vida" em horas/semanas/1 mês, curar câncer / doença incurável, reverter Alzheimer/diabetes — ou ritual/prosperidade/medo/famoso. <b>Sinal de infra:</b> domínio <b>imitando notícia</b> (ex.: noticias-nobrasil, populares-noticias). Maioria do native.</p></div>
   </div>
-  <div class="note" style="margin-top:14px"><h4>🔬 Sinal de infra (verificado abrindo 24 funis)</h4><p><b>GREY</b> = domínio de <b>marca própria</b> + checkout sério: <b>BuyGoods · ClickBank · Digistore24</b> (EN) · <b>Hotmart · Kiwify · Payt · Monetizze · YouShop</b> (BR) · marcas reais (<b>Doutor Nature, SuplyMaxi, Nutri Origines, Seren'Alpes</b>). <b>GREY-BLACK</b> = domínio <b>fake-news</b> imitando portal de notícia. Regra: o <b>nome "trick" não decide</b> — a <b>infra + a promessa</b> decidem.</p></div>
+  <div class="note" style="margin-top:14px"><h4>Sinal de infra (verificado abrindo 24 funis)</h4><p><b>GREY</b> = domínio de <b>marca própria</b> + checkout sério: <b>BuyGoods · ClickBank · Digistore24</b> (EN) · <b>Hotmart · Kiwify · Payt · Monetizze · YouShop</b> (BR) · marcas reais (<b>Doutor Nature, SuplyMaxi, Nutri Origines, Seren'Alpes</b>). <b>GREY-BLACK</b> = domínio <b>fake-news</b> imitando portal de notícia. Regra: o <b>nome "trick" não decide</b> — a <b>infra + a promessa</b> decidem.</p></div>
 
   <div class="note" style="margin-top:14px"><b>Sobre "países / geo":</b> os spy tools não expõem o país exato. O geo é <b>inferido</b> por idioma, checkout (Yampi/CartPanda → BR) e rede (NewsBreak → US). Multi-idioma = multi-geo.</div>
 
@@ -720,7 +741,7 @@
           <h1>Perfil de público das redes nativas</h1>
           <p>Quem consome cada rede — idade, gênero, renda, dispositivo, dayparts e onde mora — pra portar ofertas do Facebook com assertividade.</p>
         </div>
-        <div class="snapshot"><b>📚 DOSSIÊ · estático</b><br>(só atualiza sob demanda)<br>Deep research · 8 redes</div>
+        <div class="snapshot"><b>DOSSIÊ · estático</b><br>(só atualiza sob demanda)<br>Deep research · 8 redes</div>
       </header>
       <div id="publico-mount"></div>
     </div>
@@ -734,20 +755,20 @@
           <h1>Frescor / Novidades</h1>
           <p>Pegar oferta <b>antes de saturar</b> — <b>foco 100% em NATIVE</b>. Facebook/YouTube entram só como <b>complemento</b> (aviso antecipado do que pode migrar pro native). Use os filtros abaixo <b>2–3× por semana</b>.</p>
         </div>
-        <div class="snapshot"><b style="color:var(--ok)">🟢 ÚLTIMA ATUALIZAÇÃO · 10 ago 2026</b><br>via firstSeenAt / lastSeenAt<br>+ status SCALING</div>
+        <div class="snapshot"><b style="color:var(--ok)">ÚLTIMA ATUALIZAÇÃO · 10 ago 2026</b><br>via firstSeenAt / lastSeenAt<br>+ status SCALING</div>
       </header>
 
-      <div class="insight"><h3>▲ A rotina (5 min, direto no MonsterSwipe)</h3><p>1) <b>🆕 Novidades</b> (sort=firstSeenAt) + período <b>7 dias</b> → o que acabou de entrar. 2) <b>⏱ Última Atividade</b> (sort=lastSeenAt) → o que rodou nas últimas horas (ainda vivo). 3) Status <b>SCALING</b> → o que o tool marca escalando. <b>Sinal de compra:</b> firstSeen &lt; 7 dias · lastSeen = hoje · <b>2+ fontes</b> (SO/AS/NS) · sparkline com <b>cauda subindo</b>. Cruze: <b>escalando no FB + ainda pouca no native = mar azul pra portar</b>.</p></div>
+      <div class="insight"><h3>▲ A rotina (5 min, direto no MonsterSwipe)</h3><p>1) <b>Novidades</b> (sort=firstSeenAt) + período <b>7 dias</b> → o que acabou de entrar. 2) <b>Última Atividade</b> (sort=lastSeenAt) → o que rodou nas últimas horas (ainda vivo). 3) Status <b>SCALING</b> → o que o tool marca escalando. <b>Sinal de compra:</b> firstSeen &lt; 7 dias · lastSeen = hoje · <b>2+ fontes</b> (SO/AS/NS) · sparkline com <b>cauda subindo</b>. Cruze: <b>escalando no FB + ainda pouca no native = mar azul pra portar</b>.</p></div>
 
-      <div class="sec-label">🔗 Atalhos (abrem no MonsterSwipe logado)</div>
+      <div class="sec-label">Atalhos (abrem no MonsterSwipe logado)</div>
       <div class="links" style="margin-bottom:8px">
-        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=NATIVE&sort=firstSeenAt"><span class="i">🆕</span> Native · Novidades</a>
-        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=NATIVE&sort=lastSeenAt"><span class="i">⏱</span> Native · Última atividade</a>
-        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=FACEBOOK&sort=firstSeenAt"><span class="i">🆕</span> FB · Novidades</a>
-        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=FACEBOOK&sort=detections"><span class="i">🔥</span> FB · Mais escaladas</a>
+        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=NATIVE&sort=firstSeenAt"><span class="i"></span> Native · Novidades</a>
+        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=NATIVE&sort=lastSeenAt"><span class="i"></span> Native · Última atividade</a>
+        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=FACEBOOK&sort=firstSeenAt"><span class="i"></span> FB · Novidades</a>
+        <a class="lnk" target="_blank" rel="noopener" href="https://www.monsterswipe.com/pt/app/offers?platform=FACEBOOK&sort=detections"><span class="i"></span> FB · Mais escaladas</a>
       </div>
 
-      <div class="sec-label">🆕 Novidades NATIVE <span class="tag">firstSeenAt · mais novas primeiro</span></div>
+      <div class="sec-label">Novidades NATIVE <span class="tag">firstSeenAt · mais novas primeiro</span></div>
       <div class="tbl-wrap"><table>
         <thead><tr><th>Entrou</th><th>Oferta</th><th>Nicho</th><th>Geo</th></tr></thead>
         <tbody>
@@ -761,27 +782,27 @@
         </tbody>
       </table></div>
 
-      <div class="sec-label">📈 Crescimento de criativos por dia <span class="tag">dado extraído por oferta · responde "quando entraram criativos novos"</span></div>
+      <div class="sec-label">Crescimento de criativos por dia <span class="tag">dado extraído por oferta · responde "quando entraram criativos novos"</span></div>
       <div class="notecols">
-        <div class="note"><h4>📊 Que dados eu extraio por oferta (cada sessão)</h4><p>Do payload do MonsterSwipe, por oferta: <b>Entrou em</b> (firstSeenAt) · <b>Última atividade</b> (lastSeenAt) · <b>Total de anúncios</b> · <b>Criativos hoje</b> (todaysCreatives) · e o <b>histórico datado de cada criativo</b> → dá pra montar "quantos criativos novos entraram em cada dia (xx/xx)".</p></div>
+        <div class="note"><h4>Que dados eu extraio por oferta (cada sessão)</h4><p>Do payload do MonsterSwipe, por oferta: <b>Entrou em</b> (firstSeenAt) · <b>Última atividade</b> (lastSeenAt) · <b>Total de anúncios</b> · <b>Criativos hoje</b> (todaysCreatives) · e o <b>histórico datado de cada criativo</b> → dá pra montar "quantos criativos novos entraram em cada dia (xx/xx)".</p></div>
         <div class="note"><h4>Exemplo real — Bariatric Gelatin</h4><p>Criativos novos por dia (extraído):<br><span class="mono">30/jun <b>+4</b> · 02/jul <b>+2</b> · 16/mai +1 · 14/mai +2 · 02/fev +1</span><br>→ pico de lançamento de criativos em <b>fim de jun/início de jul</b>. Nas ofertas que ainda têm 1 anúncio (recém-entradas), esse histórico é curto — o dado engrossa conforme escala.</p></div>
       </div>
 
-      <div class="sec-label">🆕 Facebook — só COMPLEMENTO <span class="tag">10/ago · aviso antecipado do que pode migrar pro native</span></div>
+      <div class="sec-label">Facebook — só COMPLEMENTO <span class="tag">10/ago · aviso antecipado do que pode migrar pro native</span></div>
       <div class="tbl-wrap"><table>
         <thead><tr><th>Oferta</th><th>Nicho</th><th>Geo</th><th style="text-align:right">Ads</th></tr></thead>
         <tbody>
           <tr><td class="name">Quiz Recetas Drenantes</td><td>Emagrecimento</td><td class="geo">🇪🇸 ES</td><td class="ads">82</td></tr>
-          <tr><td class="name">Quiz + VSL (WW)</td><td>Emagrecimento</td><td class="geo">🌎 EN</td><td class="ads">78</td></tr>
-          <tr><td class="name">Lowticket Latam</td><td>Vários</td><td class="geo">🌎 ES</td><td class="ads">58</td></tr>
+          <tr><td class="name">Quiz + VSL (WW)</td><td>Emagrecimento</td><td class="geo">EN</td><td class="ads">78</td></tr>
+          <tr><td class="name">Lowticket Latam</td><td>Vários</td><td class="geo">ES</td><td class="ads">58</td></tr>
           <tr><td class="name">Inanição Macular — Oculen</td><td>Visão</td><td class="geo">🇺🇸 EN</td><td class="ads">1▲</td></tr>
-          <tr><td class="name">Teacher's Treasure Kit</td><td>Educação (pais/prof)</td><td class="geo">🌎 EN</td><td class="ads">29</td></tr>
+          <tr><td class="name">Teacher's Treasure Kit</td><td>Educação (pais/prof)</td><td class="geo">EN</td><td class="ads">29</td></tr>
           <tr><td class="name">O Código da Imagem de Autoridade</td><td>Ticket/curso</td><td class="geo">🇧🇷 PT</td><td class="ads">1▲</td></tr>
-          <tr><td class="name">Lyfta — Gym Workout Tracker</td><td>App/fitness</td><td class="geo">🌎 EN</td><td class="ads">1▲</td></tr>
+          <tr><td class="name">Lyfta — Gym Workout Tracker</td><td>App/fitness</td><td class="geo">EN</td><td class="ads">1▲</td></tr>
         </tbody>
       </table></div>
 
-      <div class="sec-label">📈 Subindo no FB <span class="tag">momentum do sparkline (7d)</span></div>
+      <div class="sec-label">Subindo no FB <span class="tag">momentum do sparkline (7d)</span></div>
       <div class="tbl-wrap"><table>
         <thead><tr><th>Oferta</th><th>Nicho</th><th>Geo</th><th>Momentum</th></tr></thead>
         <tbody>
@@ -793,8 +814,8 @@
       </table></div>
 
       <div class="notecols" style="margin-top:14px">
-        <div class="note"><h4>🧭 Leitura de frescor</h4><p>O native novo hoje é <b>ritual dental</b> (PurDentix/Dentabiome), <b>energia/DIY</b> (Endless & similar) e <b>próstata</b>. No FB, o que entra HOJE são <b>quizzes de emagrecimento</b> (ES/WW), <b>visão</b> (Oculen) e <b>educação</b> (Teacher's Kit — parenting/ensino, seu interesse). Esses são os candidatos a portar pro native <b>antes de todo mundo</b>.</p></div>
-        <div class="note"><h4>⚙️ Automatizar?</h4><p>Dá pra eu te montar um <b>lembrete recorrente</b> (ex.: toda 2ª/4ª/6ª) pra você abrir os 4 atalhos e revisar as novidades. Como o login do spy cai, a checagem em si é manual — mas o lembrete + o passo-a-passo deixam a rotina no automático. É só pedir.</p></div>
+        <div class="note"><h4>Leitura de frescor</h4><p>O native novo hoje é <b>ritual dental</b> (PurDentix/Dentabiome), <b>energia/DIY</b> (Endless & similar) e <b>próstata</b>. No FB, o que entra HOJE são <b>quizzes de emagrecimento</b> (ES/WW), <b>visão</b> (Oculen) e <b>educação</b> (Teacher's Kit — parenting/ensino, seu interesse). Esses são os candidatos a portar pro native <b>antes de todo mundo</b>.</p></div>
+        <div class="note"><h4>Automatizar?</h4><p>Dá pra eu te montar um <b>lembrete recorrente</b> (ex.: toda 2ª/4ª/6ª) pra você abrir os 4 atalhos e revisar as novidades. Como o login do spy cai, a checagem em si é manual — mas o lembrete + o passo-a-passo deixam a rotina no automático. É só pedir.</p></div>
       </div>
     </div>
   </div><!-- /page-frescor -->
@@ -807,12 +828,12 @@
           <h1>Onde está a maior chance de acertar</h1>
           <p>Sobrepondo as ofertas dos 2 swipes (MonsterSwipe agrega o Swipe Offers). O que aparece <b>ao mesmo tempo no Facebook e no Native</b> = padrão <b>provado de portabilidade</b>. Separado por Brasil / EUA / Europa.</p>
         </div>
-        <div class="snapshot"><b>📚 DOSSIÊ · estático</b><br>base: 2 swipes<br>native + FB varridos</div>
+        <div class="snapshot"><b>DOSSIÊ · estático</b><br>base: 2 swipes<br>native + FB varridos</div>
       </header>
 
       <div class="insight"><h3>▲ A tese em 1 frase</h3><p>A oferta que <b>copia-e-cola</b> do FB/YT pro native é a que já é <strong>advertorial de saúde/DIY com hook de "receita/truque"</strong>, produto físico ou infoproduto em <strong>checkout portável</strong> (ClickBank/BuyGoods/CartPanda/Hotmart), mirando <strong>público mass-market 45+</strong>. Native é contextual (below-article) — quem já roda advertorial no FB <b>não precisa reinventar</b>, só levar.</p></div>
 
-      <div class="sec-label">🧬 O padrão — os 5 fatores de portabilidade</div>
+      <div class="sec-label">O padrão — os 5 fatores de portabilidade</div>
       <div class="nets">
         <article class="net"><div class="net-h"><span class="net-b">1 · FORMATO</span></div><ul><li><span class="dot w"></span><b>Já tem advertorial + VSL</b><span class="obs">o native exige advertorial (below-article). Oferta que só tem criativo de feed FB não porta bem.</span></li></ul></article>
         <article class="net"><div class="net-h"><span class="net-b">2 · ÂNGULO</span></div><ul><li><span class="dot w"></span><b>Curiosidade "receita/truque/ritual"</b><span class="obs">"truque da gelatina", "salt trick", "1-min sock trick" — curiosidade converte no contexto de leitura do native.</span></li></ul></article>
@@ -821,7 +842,7 @@
         <article class="net"><div class="net-h"><span class="net-b">5 · VALIDAÇÃO</span></div><ul><li><span class="dot w"></span><b>Aparece nos 2 lugares</b><span class="obs">detectada em FB <b>e</b> native (ou 2+ fontes de swipe) = risco menor. O padrão-ouro.</span></li></ul></article>
       </div>
 
-      <div class="sec-label">🔁 Overlaps PROVADOS (mesma família rodando em FB <b>e</b> Native)</div>
+      <div class="sec-label">Overlaps PROVADOS (mesma família rodando em FB <b>e</b> Native)</div>
       <div class="tbl-wrap"><table>
         <thead><tr><th>Família / ângulo</th><th>No Facebook</th><th>No Native</th><th>Regiões</th></tr></thead>
         <tbody>
@@ -835,7 +856,7 @@
         </tbody>
       </table></div>
 
-      <div class="sec-label">🌎 Por região — onde cada padrão vive</div>
+      <div class="sec-label">Por região — onde cada padrão vive</div>
       <div class="regcards">
         <article class="regcard us">
           <div class="regcard-h"><span class="regcard-t">🇺🇸 EUA</span><span class="regcard-sub">melhor infra + público ideal</span></div>
@@ -852,7 +873,7 @@
           <div class="reg-row"><span class="reg-k">Cuidado</span><span class="reg-v">BR native puxa pro black (fake-news). O portável grey = gelatina/receita de <b>marca real</b>.</span></div>
         </article>
         <article class="regcard eu">
-          <div class="regcard-h"><span class="regcard-t">🇪🇺 Europa</span><span class="regcard-sub">🎯 mar azul</span></div>
+          <div class="regcard-h"><span class="regcard-t">🇪🇺 Europa</span><span class="regcard-sub">mar azul</span></div>
           <div class="reg-row"><span class="reg-k">Nichos</span><span class="reg-v">articulações/dor, próstata, calvície, digestão — saúde do idoso</span></div>
           <div class="reg-row"><span class="reg-k">Checkout</span><span class="reg-v">marca própria (Nutri Origines, Seren'Alpes) · Digistore</span></div>
           <div class="reg-row"><span class="reg-k">Redes</span><span class="reg-v"><b>Outbrain</b> (forte Europa via Ligatus) · MGID</span></div>
@@ -860,7 +881,7 @@
         </article>
       </div>
 
-      <div class="sec-label">🔀 CRUZAMENTO · País × Comportamento da plataforma × Oferta portável <span class="tag">o que casar com o quê</span></div>
+      <div class="sec-label">CRUZAMENTO · País × Comportamento da plataforma × Oferta portável <span class="tag">o que casar com o quê</span></div>
       <p class="mono" style="color:var(--faint);font-size:11px;margin:-4px 0 12px">Regra do casamento: a oferta vai pra rede cujo <b>público (idade/gênero/device/vertical)</b> bate com o alvo da oferta. <span style="color:var(--ok)">✓</span> = comportamento verificado no dossiê de Público.</p>
 
       <div class="sec-label" style="font-size:13px;letter-spacing:.02em;color:var(--white-c)">🇺🇸 EUA</div>
@@ -898,11 +919,11 @@
       </table></div>
 
       <div class="notecols" style="margin-bottom:6px">
-        <div class="note"><h4>🎯 O combo vencedor de cada região</h4><p><b>🇺🇸 EUA:</b> gelatina de emagrecimento → <b>Revcontent/NewsBreak</b> (mulher 45+, barato, mar azul). <b>🇧🇷 BR:</b> gelatina/receita → <b>MGID</b> (LatAm barato, health&amp;beauty). <b>🇪🇺 Europa:</b> articulações → <b>Outbrain</b> (Ligatus, renda alta, pouca concorrência).</p></div>
-        <div class="note"><h4>⚠️ Anti-combos (não force)</h4><p>Emagrecimento feminino <b>no Bing</b> (público masculino/afluente) = desperdício. ED <b>no NewsBreak</b> (feminino 45+/local) = fora do público. Finanças high-ticket <b>na Traffic Junky</b> (adulto) = contexto errado. <b>Casar público é 50% da briga.</b></p></div>
+        <div class="note"><h4>O combo vencedor de cada região</h4><p><b>🇺🇸 EUA:</b> gelatina de emagrecimento → <b>Revcontent/NewsBreak</b> (mulher 45+, barato, mar azul). <b>🇧🇷 BR:</b> gelatina/receita → <b>MGID</b> (LatAm barato, health&amp;beauty). <b>🇪🇺 Europa:</b> articulações → <b>Outbrain</b> (Ligatus, renda alta, pouca concorrência).</p></div>
+        <div class="note"><h4>Anti-combos (não force)</h4><p>Emagrecimento feminino <b>no Bing</b> (público masculino/afluente) = desperdício. ED <b>no NewsBreak</b> (feminino 45+/local) = fora do público. Finanças high-ticket <b>na Traffic Junky</b> (adulto) = contexto errado. <b>Casar público é 50% da briga.</b></p></div>
       </div>
 
-      <div class="sec-label">📑 Justificativa com DADOS — por que cada combo <span class="tag">✓ = verificado</span></div>
+      <div class="sec-label">Justificativa com DADOS — por que cada combo <span class="tag">✓ = verificado</span></div>
 
       <article class="card" data-cls="w" style="margin-bottom:12px">
         <div class="card-top"><div><h3>#1 · 🇺🇸 EUA · Gelatina de emagrecimento → Revcontent (+NewsBreak)</h3><div class="prod">a maior probabilidade calculada</div></div><span class="score-badge" style="color:var(--white-c)"><b>92</b>/100</span></div>
@@ -940,7 +961,7 @@
         </div>
       </article>
 
-      <div class="sec-label">🎯 Score de portabilidade <span class="tag">overlap provado × infra × fit de público × rede mar-azul</span></div>
+      <div class="sec-label">Score de portabilidade <span class="tag">overlap provado × infra × fit de público × rede mar-azul</span></div>
       <div class="tbl-wrap"><table>
         <thead><tr><th>#</th><th>Região + Nicho</th><th>Overlap FB↔Native</th><th style="min-width:120px">Chance</th></tr></thead>
         <tbody>
@@ -955,8 +976,8 @@
       </table></div>
 
       <div class="notecols" style="margin-top:14px">
-        <div class="note"><h4>🏆 A resposta calculada — onde apostar</h4><p><b>#1 EUA + Emagrecimento (gelatin drops):</b> mais overlaps provados FB↔native, melhor infra (ClickBank/BuyGoods), público native perfeito (45+), e rede mar-azul (Revcontent/NewsBreak). <b>#2 Brasil + gelatina/receita:</b> volume monstro no FB, checkout Hotmart, Taboola/MGID BR. <b>#3 Europa + articulações:</b> mar azul de concorrência.</p></div>
-        <div class="note"><h4>🧠 Como usar com o sócio</h4><p>Isto é o <b>mapa de aposta</b>: cada linha do score = uma "casa" pra colocar ficha. Comece pela #1 (maior probabilidade), escolha <b>1 oferta gelatina EN</b> já rodando em FB <b>e</b> native (ex.: MeltDrops/Leanzene ↔ Bariatric), clone o advertorial e suba na Revcontent. Overlap = risco menor porque <b>já foi validado nos dois canais</b>.</p></div>
+        <div class="note"><h4>A resposta calculada — onde apostar</h4><p><b>#1 EUA + Emagrecimento (gelatin drops):</b> mais overlaps provados FB↔native, melhor infra (ClickBank/BuyGoods), público native perfeito (45+), e rede mar-azul (Revcontent/NewsBreak). <b>#2 Brasil + gelatina/receita:</b> volume monstro no FB, checkout Hotmart, Taboola/MGID BR. <b>#3 Europa + articulações:</b> mar azul de concorrência.</p></div>
+        <div class="note"><h4>Como usar com o sócio</h4><p>Isto é o <b>mapa de aposta</b>: cada linha do score = uma "casa" pra colocar ficha. Comece pela #1 (maior probabilidade), escolha <b>1 oferta gelatina EN</b> já rodando em FB <b>e</b> native (ex.: MeltDrops/Leanzene ↔ Bariatric), clone o advertorial e suba na Revcontent. Overlap = risco menor porque <b>já foi validado nos dois canais</b>.</p></div>
       </div>
 
       <div class="note" style="margin-top:12px"><b>Metodologia:</b> "overlap provado" = mesma família de produto/ângulo detectada em Facebook <b>e</b> em Native nos swipes (MonsterSwipe agrega Swipe Offers via fonte <span class="mono">SO</span>). Score pondera: nº de overlaps · maturidade da infra de checkout · fit do público native (45+) · nível de concorrência da rede (mar azul). Dossiê estático — peça pra atualizar quando quiser.</div>
@@ -1087,7 +1108,7 @@
   function mkChip(wrap,label,active,count,onclick){const el=document.createElement('button');el.className='chip';el.setAttribute('aria-pressed',active);el.innerHTML=count!=null?`${label} <span class="n">${count}</span>`:label;el.onclick=()=>{[...wrap.querySelectorAll('.chip')].forEach(x=>x.setAttribute('aria-pressed',x===el));onclick();};wrap.appendChild(el);}
   function renderBigChips(){[...bigWrap.querySelectorAll('.chip')].forEach(x=>x.remove());TAX.forEach(t=>{const c=nfor(t.b).length;mkChip(bigWrap,t.b,t.b===curBig,c||'—',()=>{curBig=t.b;curMicro='all';renderMicroChips();renderNicheTable();});});}
   function renderMicroChips(){[...microWrap.querySelectorAll('.chip')].forEach(x=>x.remove());const t=TAX.find(x=>x.b===curBig);mkChip(microWrap,'Todos','all'===curMicro,nfor(curBig).length,()=>{curMicro='all';renderNicheTable();});t.m.forEach(m=>{const cnt=OFF.filter(o=>o.b===curBig&&o.mi===m).length;mkChip(microWrap,m,m===curMicro,cnt,()=>{curMicro=m;renderNicheTable();});});}
-  function renderNicheTable(){if(!nTable)return;const list=OFF.filter(o=>o.b===curBig&&(curMicro==='all'||o.mi===curMicro)&&(!wtc.checked||o.c!=='b'));if(!list.length){nTable.innerHTML='<div style="padding:28px;text-align:center;color:var(--faint);font-size:13px">Sem oferta desse nicho na amostra atual. (Estrutura pronta — some ofertas aqui ao ampliar as fontes.)</div>';return;}const rows=list.map(o=>`<tr><td class="name">${o.n} ${o.f?'<span title="checar copy do funil" style="color:var(--warn)">⚠</span>':''}</td><td>${o.mi}</td><td class="geo">${o.g}</td><td>${o.s==='now'?'🔥 agora':'🕒 já escalou'}</td><td><span class="dot ${o.c}"></span>${CN[o.c]}</td><td class="ads">${o.a}</td></tr>`).join('');nTable.innerHTML=`<table><thead><tr><th>Oferta</th><th>Micro-nicho</th><th>Geo</th><th>Status</th><th>Classe</th><th style="text-align:right">Anúncios</th></tr></thead><tbody>${rows}</tbody></table>`;}
+  function renderNicheTable(){if(!nTable)return;const list=OFF.filter(o=>o.b===curBig&&(curMicro==='all'||o.mi===curMicro)&&(!wtc.checked||o.c!=='b'));if(!list.length){nTable.innerHTML='<div style="padding:28px;text-align:center;color:var(--faint);font-size:13px">Sem oferta desse nicho na amostra atual. (Estrutura pronta — some ofertas aqui ao ampliar as fontes.)</div>';return;}const rows=list.map(o=>`<tr><td class="name">${o.n} ${o.f?'<span title="checar copy do funil" style="color:var(--warn)"></span>':''}</td><td>${o.mi}</td><td class="geo">${o.g}</td><td>${o.s==='now'?'agora':'já escalou'}</td><td><span class="dot ${o.c}"></span>${CN[o.c]}</td><td class="ads">${o.a}</td></tr>`).join('');nTable.innerHTML=`<table><thead><tr><th>Oferta</th><th>Micro-nicho</th><th>Geo</th><th>Status</th><th>Classe</th><th style="text-align:right">Anúncios</th></tr></thead><tbody>${rows}</tbody></table>`;}
   renderBigChips();renderMicroChips();renderNicheTable();
 </script>
 </body></html>
