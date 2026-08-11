@@ -1159,6 +1159,7 @@
       <div id="detErro" class="note" hidden></div>
       <div id="detOut"></div>
 
+      <div class="note" style="margin-top:16px"><h4>Inteligência acumulada</h4><div id="detIntel"><p>—</p></div></div>
       <div class="note" style="margin-top:16px"><h4>Vigilância — o que mudou nos alvos</h4><div id="detVigia"><p>—</p></div></div>
       <div class="note" style="margin-top:16px"><h4>Histórico</h4><div id="detHist"><p>—</p></div></div>
     </div>
@@ -1550,7 +1551,7 @@
       if(j.proxy){ hint.textContent="Proxy ativo em "+(j.geosComProxy||0)+" geo(s) — o alvo vê o IP do proxy."; hint.className="det-hint"; }
       else if(j.exigirProxy){ hint.innerHTML='<b>Proxy obrigatório e nenhum configurado</b> — investigação bloqueada de propósito, para não expor seu IP.'; hint.className="det-hint alerta"; }
       else { hint.innerHTML='<b>Sem proxy</b> — o alvo vê seu IP real. Ligue <code>exigirProxy</code> na config para bloquear isso.'; hint.className="det-hint alerta"; }
-      hist(); vigia();
+      hist(); vigia(); intel();
     }).catch(function(){ setStatus(false,"Motor desligado"); });
   }
 
@@ -1693,6 +1694,28 @@
         return "<li><b>"+esc((e.quando||"").slice(0,16).replace("T"," "))+"</b> — "+esc(e.nome||e.url)+
           "<br>"+(e.diffs||[]).map(function(d){return '<span class="det-badge off">'+esc(d)+"</span>";}).join(" ")+"</li>";
       }).join("")+"</ul>";
+    }).catch(function(){});
+  }
+
+  /* O que o Detetive já sabe. Cresce sozinho: cada investigação alimenta as
+     assinaturas, e o aprender.mjs extrai a máquina de mutação dos alvos. */
+  function intel(){
+    fetch(API+"/inteligencia",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      var el=$("detIntel"); if(!el||!j) return;
+      var linhas=[];
+      linhas.push(["Assinaturas",esc(j.assinaturas.total)+" padrões em "+esc(j.assinaturas.categorias.length)+" categorias"]);
+      var apr=j.assinaturas.categorias.filter(function(c){return c.aprendido});
+      if(apr.length) linhas.push(["Aprendido em campo",apr.map(function(c){return '<span class="det-badge on">'+esc(c.nome)+" · "+esc(c.padroes)+"</span>";}).join(" ")]);
+      if(j.maquinas&&j.maquinas.length){
+        linhas.push(["Máquinas mapeadas",j.maquinas.map(function(m){
+          return '<div style="margin-bottom:5px">'+link(m.url)+"<br>"+
+            m.maquina.map(function(h){return '<span class="det-badge">'+esc(h)+"</span>";}).join("")+"</div>";
+        }).join("")]);
+      }
+      var cl=Object.keys(j.cloakers||{});
+      if(cl.length) linhas.push(["Cloakers no banco",cl.map(function(k){return '<span class="det-badge">'+esc(k)+": "+esc(j.cloakers[k])+"</span>";}).join(" ")]);
+      linhas.push(["Sob vigia",esc(j.vigia.alvos)+" alvo(s) · "+esc(j.vigia.eventos)+" mudança(s) registrada(s)"]);
+      el.innerHTML='<dl class="det-kv">'+linhas.map(function(l){return "<dt>"+esc(l[0])+"</dt><dd>"+l[1]+"</dd>";}).join("")+"</dl>";
     }).catch(function(){});
   }
 
