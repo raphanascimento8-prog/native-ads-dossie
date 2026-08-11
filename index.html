@@ -330,6 +330,13 @@
   .det-badge{display:inline-block;font-size:10.5px;font-family:var(--mono);border:1px solid var(--border2);border-radius:5px;padding:1px 7px;margin:2px 4px 0 0;color:var(--muted);}
   .det-badge.on{color:var(--ok);border-color:var(--ok);}
   .det-badge.off{color:#c2554e;border-color:#c2554e;}
+  .det-av{margin:-2px 0 2px;}
+  .det-av summary{font-size:11.5px;color:var(--faint);cursor:pointer;list-style:none;}
+  .det-av summary::-webkit-details-marker{display:none;}
+  .det-av summary::before{content:"▸ ";}
+  .det-av[open] summary::before{content:"▾ ";}
+  .det-av summary:hover{color:var(--muted);}
+  .det-av .det-grid{margin-top:10px;}
 
 
   .ana-form{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:18px;display:flex;flex-direction:column;gap:14px;}
@@ -1095,9 +1102,9 @@
         <div>
           <div class="eyebrow">Ferramenta · Investigação de Funil</div>
           <h1>O Detetive</h1>
-          <p>Cole a URL de um advertorial e ele percorre o funil inteiro: página, VSL, criativos, saídas monetizadas, cadeia de tracker e a oferta no fim. Roda na sua máquina — nada do que for investigado é publicado.</p>
+          <p>Cole o link que o criativo aponta. Ele descobre sozinho a rede, o geo e o device a partir do próprio link, atravessa o cloaker que fica entre criativo e advertorial, e mapeia o resto do funil: advertorial, VSL, saídas, tracker e checkout. Roda na sua máquina — nada do que for investigado é publicado.</p>
         </div>
-        <div class="snapshot"><b id="detStatus">Verificando o motor…</b><br>investigação local<br>advertorial · VSL · oferta</div>
+        <div class="snapshot"><b id="detStatus">Verificando o motor…</b><br>investigação local<br>criativo → advertorial → VSL → checkout</div>
       </header>
 
       <div class="det-offline" id="detOffline" hidden>
@@ -1108,13 +1115,16 @@
       </div>
 
       <form class="det-form" id="detForm">
-        <label>URL do advertorial
-          <input type="url" id="detUrl" placeholder="https://exemplo.com/18800025.php" required></label>
-        <div class="det-grid">
-          <label>Geo<select id="detGeo"></select></label>
-          <label>Device<select id="detDevice"></select></label>
-          <label>Origem<select id="detRef"></select></label>
-        </div>
+        <label>Link que o criativo aponta
+          <input type="url" id="detUrl" placeholder="cole o destino do criativo — tracker, redirect ou advertorial" required></label>
+        <details class="det-av">
+          <summary>Geo, device e origem saem do próprio link — abrir para forçar manualmente</summary>
+          <div class="det-grid">
+            <label>Geo<select id="detGeo"></select></label>
+            <label>Device<select id="detDevice"></select></label>
+            <label>Origem<select id="detRef"></select></label>
+          </div>
+        </details>
         <div class="det-actions">
           <button type="submit" class="det-go" id="detGo">Investigar</button>
           <span class="det-hint" id="detHint">Sem proxy configurado, o alvo vê seu IP real.</span>
@@ -1504,7 +1514,9 @@
 
   function fill(id,arr,def){
     var s=$(id); if(!s||!arr||s.options.length) return;
-    s.innerHTML=arr.map(function(v){return '<option value="'+esc(v)+'"'+(v===def?" selected":"")+">"+esc(v)+"</option>";}).join("");
+    // vazio = automatico: o motor deduz do proprio link
+    s.innerHTML='<option value="" selected>(detectar do link)</option>'+
+      arr.map(function(v){return '<option value="'+esc(v)+'">'+esc(v)+"</option>";}).join("");
   }
 
   function card(t,body){ return '<div class="det-card"><h3>'+esc(t)+"</h3>"+body+"</div>"; }
@@ -1512,6 +1524,19 @@
 
   function render(d){
     var out=[];
+
+    // o que ele deduziu sozinho do link do criativo
+    var desc=d.descoberta;
+    if(desc){
+      var ch=desc.chave||{}, tent=desc.tentativas||[];
+      out.push(card("Descoberto a partir do link",kv([
+        ["Rede",'<b>'+esc(desc.origem.rede||"não identificada")+"</b> "+'<span class="det-badge">'+esc(desc.origem.confianca)+"</span>"],
+        ["Chave que abriu",'<span class="det-badge on">'+esc(ch.geo)+"</span>"+'<span class="det-badge on">'+esc(ch.device)+"</span>"+'<span class="det-badge on">'+esc(ch.ref)+"</span>"],
+        desc.macros&&desc.macros.length?["Macros preenchidas",desc.macros.map(function(m){return '<span class="det-badge">'+esc(m)+"</span>";}).join("")]:null,
+        tent.length>1?["Tentativas",esc(tent.length)+" — "+esc(tent.map(function(t){return t.geo+"/"+t.device;}).join(" · "))]:null
+      ])));
+    }
+
     var a=d.advertorial||{};
     out.push(card("Advertorial",kv([
       ["Título",esc(a.titulo||"—")],
@@ -1580,10 +1605,20 @@
   $("detForm").addEventListener("submit",function(e){
     e.preventDefault();
     $("detBusy").hidden=false; $("detErro").hidden=true; $("detOut").innerHTML=""; $("detGo").disabled=true;
-    fetch(API+"/investigar",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-      url:$("detUrl").value, geo:$("detGeo").value, device:$("detDevice").value, ref:$("detRef").value
-    })}).then(function(r){return r.json();}).then(function(j){
-      if(j.erro){ $("detErro").innerHTML="<h4>Não deu</h4><p>"+esc(j.erro)+"</p>"; $("detErro").hidden=false; }
+    var corpo={url:$("detUrl").value};
+    if($("detGeo").value) corpo.geo=$("detGeo").value;
+    if($("detDevice").value) corpo.device=$("detDevice").value;
+    if($("detRef").value) corpo.ref=$("detRef").value;
+    fetch(API+"/investigar",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(corpo)})
+    .then(function(r){return r.json();}).then(function(j){
+      if(j.erro){
+        var d=j.diagnostico||{}, t=(d.tentativas||[]);
+        $("detErro").innerHTML="<h4>Não deu</h4><p>"+esc(j.erro)+"</p>"+
+          (d.origem&&d.origem.rede?"<p>Rede lida no link: <b>"+esc(d.origem.rede)+"</b></p>":"")+
+          (d.precisaProxy?"<p><b>Precisa de proxy no país</b> — o bloqueio é por IP, header não resolve.</p>":"")+
+          (t.length?'<ul class="det-chain">'+t.map(function(x){return "<li>"+esc(x.geo+"/"+x.device+"/"+x.ref)+" → "+esc(x.status+" "+x.verdict)+(x.bloqueio?" · "+esc(x.bloqueio):"")+"</li>";}).join("")+"</ul>":"");
+        $("detErro").hidden=false;
+      }
       else { render(j); hist(); }
     }).catch(function(err){
       $("detErro").innerHTML="<h4>Motor não respondeu</h4><p>"+esc(err&&err.message||err)+"</p>"; $("detErro").hidden=false;
