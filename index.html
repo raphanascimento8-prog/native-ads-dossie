@@ -1750,7 +1750,24 @@
         $("detErro").innerHTML="<h4>Não deu</h4><p>"+esc(j.erro)+"</p>"+
           (d.origem&&d.origem.rede?"<p>Rede lida no link: <b>"+esc(d.origem.rede)+"</b></p>":"")+
           (d.precisaProxy?"<p><b>Precisa de proxy no país</b> — o bloqueio é por IP, header não resolve.</p>":"")+
-          (t.length?'<ul class="det-chain">'+t.map(function(x){return "<li>"+esc(x.geo+"/"+x.device+"/"+x.ref)+" → "+esc(x.status+" "+x.verdict)+(x.bloqueio?" · "+esc(x.bloqueio):"")+"</li>";}).join("")+"</ul>":"");
+          (t.length?'<ul class="det-chain">'+t.map(function(x){return "<li>"+esc(x.geo+"/"+x.device+"/"+x.ref)+" → "+esc(x.status+" "+x.verdict)+(x.bloqueio?" · "+esc(x.bloqueio):"")+"</li>";}).join("")+"</ul>":"")+
+          /* colhido onde o cloaker não manda: arquivo, publicado, certificado */
+          (function(){
+            var pv=d.passivo; if(!pv) return "";
+            var l=[];
+            if(pv.arquivo&&pv.arquivo.disponivel&&pv.arquivo.capturas.length)
+              l.push(["Arquivo (Wayback)",pv.arquivo.capturas.slice(0,5).map(function(c){
+                return link(c.link,c.quando+" · "+Math.round(c.bytes/1024)+"kb")+(c.exato?' <span class="det-badge on">caminho exato</span>':"");
+              }).join("<br>")]);
+            if(pv.publicado&&pv.publicado.sitemap&&pv.publicado.sitemap.length)
+              l.push(["Sitemap do próprio site",pv.publicado.sitemap.slice(0,6).map(function(u){return link(u)}).join("<br>")]);
+            if(pv.vizinhos&&pv.vizinhos.encontrados&&pv.vizinhos.encontrados.length)
+              l.push(["Vizinhos no certificado",pv.vizinhos.encontrados.slice(0,10).map(function(v){return '<span class="det-badge">'+esc(v)+"</span>"}).join(" ")+
+                '<div class="muted">via '+esc(pv.vizinhos.fonte||"?")+" — outras propriedades da mesma operação</div>"]);
+            if(!l.length) return '<p class="muted" style="margin-top:10px">Vias passivas consultadas, nada encontrado.</p>';
+            return '<div style="margin-top:12px"><div class="aud-h">colhido sem passar pela porta</div>'+
+              '<dl class="det-kv">'+l.map(function(x){return "<dt>"+esc(x[0])+"</dt><dd>"+x[1]+"</dd>"}).join("")+"</dl></div>";
+          })();
         $("detErro").hidden=false;
       }
       else { render(j); hist(); }
