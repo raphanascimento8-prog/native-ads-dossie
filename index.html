@@ -1612,6 +1612,13 @@
     if(d.vsl&&d.vsl.capa) inv.push(item("Capa da VSL",d.vsl.capa,"cover.jpg"));
     if(d.vsl&&d.vsl.config) inv.push(item("Config do player",d.vsl.config,"player.js"));
     (d.trilhaClique||[]).forEach(function(u,i){ inv.push(item("Passo "+(i+1)+" (clique)",u)); });
+    // rede + conta do afiliado, deduzidas do que o funil vaza (sem precisar do checkout)
+    if(d.monetizacao){
+      var mo=d.monetizacao, mtxt=[];
+      if(mo.rede) mtxt.push('<span class="det-badge on">'+esc(mo.rede)+"</span>");
+      (mo.contas||[]).forEach(function(c){ mtxt.push('<span class="det-badge">'+esc(c)+"</span>"); });
+      if(mtxt.length) inv.push('<div class="inv-l"><span>Afiliado (vazado)</span><div>'+mtxt.join(" ")+'</div></div>');
+    }
     if(d.oferta&&d.oferta.url) inv.push(item("Oferta",d.oferta.url));
     ((d.oferta&&d.oferta.dados&&d.oferta.dados.checkouts)||[]).forEach(function(u){ inv.push(item("Checkout",u)); });
     var imgs=((d.criativos||{}).ogImage?[d.criativos.ogImage]:[]).concat(((d.criativos||{}).imagens)||[]).slice(0,12);
