@@ -279,6 +279,58 @@
   .navitem.gold[aria-current="true"]::before{ background:#4a3a12; }
   @media (prefers-reduced-motion:reduce){ .navitem.gold::after{display:none;} }
 
+  /* ===== item prata sólido + brilho (O Detetive) ===== */
+  .navitem.silver{
+    color:#232830; font-weight:600; border:1px solid #c3c9d2; position:relative; overflow:hidden;
+    background:linear-gradient(175deg,#f2f4f7 0%,#dde1e7 40%,#c4cad3 78%,#b2b9c4 100%);
+    box-shadow:0 4px 16px -6px rgba(150,160,175,.55), inset 0 1px 0 rgba(255,255,255,.75);
+    text-shadow:0 1px 0 rgba(255,255,255,.5);
+  }
+  .navitem.silver::after{ content:""; position:absolute; top:-20%; left:-70%; width:45%; height:140%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent); transform:skewX(-18deg);
+    animation:silverSweep 4.6s ease-in-out infinite; pointer-events:none; }
+  @keyframes silverSweep{ 0%{left:-70%} 60%{left:130%} 100%{left:130%} }
+  .navitem.silver:hover,.navitem.silver[aria-current="true"]{ color:#232830; border-color:#e3e7ec;
+    background:linear-gradient(175deg,#fbfcfd 0%,#e9ecf1 40%,#d2d7df 78%,#c0c6d0 100%); }
+  .navitem.silver[aria-current="true"]::before{ background:#3a424e; }
+  @media (prefers-reduced-motion:reduce){ .navitem.silver::after{display:none;} }
+
+  /* ===== O Detetive ===== */
+  .det-form{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
+  .det-form label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:var(--muted);}
+  .det-form input,.det-form select{background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;color:var(--text);font-family:var(--sans);font-size:13.5px;font-weight:400;}
+  .det-form input:focus,.det-form select:focus{outline:none;border-color:var(--accent);}
+  .det-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
+  .det-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .det-go{appearance:none;border:1px solid #c3c9d2;border-radius:9px;padding:10px 22px;cursor:pointer;font-family:var(--sans);font-size:13px;font-weight:600;color:#232830;
+    background:linear-gradient(175deg,#f2f4f7 0%,#dde1e7 40%,#c4cad3 78%,#b2b9c4 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.75);}
+  .det-go:hover{background:linear-gradient(175deg,#fbfcfd 0%,#e9ecf1 40%,#d2d7df 78%,#c0c6d0 100%);}
+  .det-go[disabled]{opacity:.5;cursor:default;}
+  .det-hint{font-size:11.5px;color:var(--faint);}
+  .det-busy{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:13px;padding:14px 0;}
+  /* classe com display vence o [hidden] do navegador — precisa reafirmar */
+  .det-busy[hidden],.det-offline[hidden],.det-form[hidden],#detErro[hidden]{display:none;}
+  .det-spin{width:13px;height:13px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:detSpin .8s linear infinite;}
+  @keyframes detSpin{to{transform:rotate(360deg)}}
+  .det-offline{background:var(--surface);border:1px dashed var(--border2);border-radius:12px;padding:16px;margin-bottom:16px;}
+  .det-offline h4{margin:0 0 6px;font-size:13px;}
+  .det-offline p{margin:6px 0;font-size:12.5px;color:var(--muted);}
+  .det-offline pre{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px 12px;font-family:var(--mono);font-size:12px;margin:8px 0;overflow-x:auto;}
+  .det-link{appearance:none;border:0;background:transparent;color:var(--accent);font:inherit;cursor:pointer;text-decoration:underline;padding:0;}
+  .det-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;}
+  .det-card h3{margin:0 0 10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-family:var(--mono);font-weight:600;}
+  .det-kv{display:grid;grid-template-columns:130px 1fr;gap:7px 14px;font-size:13px;}
+  .det-kv dt{color:var(--muted);font-weight:600;}
+  .det-kv dd{margin:0;word-break:break-all;}
+  .det-kv a{color:var(--accent);}
+  .det-chain{list-style:none;margin:0;padding:0;font-size:12px;font-family:var(--mono);}
+  .det-chain li{padding:5px 0 5px 11px;border-left:2px solid var(--border2);margin-left:3px;word-break:break-all;}
+  .det-thumbs{display:flex;flex-wrap:wrap;gap:8px;}
+  .det-thumbs img{width:104px;height:74px;object-fit:cover;border-radius:7px;border:1px solid var(--border);background:var(--bg);}
+  .det-badge{display:inline-block;font-size:10.5px;font-family:var(--mono);border:1px solid var(--border2);border-radius:5px;padding:1px 7px;margin:2px 4px 0 0;color:var(--muted);}
+  .det-badge.on{color:var(--ok);border-color:var(--ok);}
+  .det-badge.off{color:#c2554e;border-color:#c2554e;}
+
 
   .ana-form{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:18px;display:flex;flex-direction:column;gap:14px;}
   .ana-form label{display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);}
@@ -329,6 +381,7 @@
     <div class="nav-sec">Ferramentas</div>
     <nav>
       <button class="navitem gold" data-page="analises" aria-current="false">Análises de Ofertas</button>
+      <button class="navitem silver" data-page="detetive" aria-current="false">O Detetive</button>
     </nav>
     <button id="themeToggle" class="theme-toggle" type="button"><span class="tdot"></span><span id="themeLabel">Modo claro</span></button>
     <div class="nav-soon">Atualizado: <b>10/ago/2026</b><br>Páginas de ofertas/criativos/VSL são atualizadas a cada acesso. Dossiês só sob demanda.</div>
@@ -1035,6 +1088,46 @@
       <div class="note" style="margin-top:16px"><h4>Fila</h4><p>Sem novas ofertas na fila. Manda a primeira que eu analiso e adiciono aqui. 🕊</p></div>
     </div>
   </div><!-- /page-analises -->
+
+  <div class="page" id="page-detetive">
+    <div class="wrap">
+      <header>
+        <div>
+          <div class="eyebrow">Ferramenta · Investigação de Funil</div>
+          <h1>O Detetive</h1>
+          <p>Cole a URL de um advertorial e ele percorre o funil inteiro: página, VSL, criativos, saídas monetizadas, cadeia de tracker e a oferta no fim. Roda na sua máquina — nada do que for investigado é publicado.</p>
+        </div>
+        <div class="snapshot"><b id="detStatus">Verificando o motor…</b><br>investigação local<br>advertorial · VSL · oferta</div>
+      </header>
+
+      <div class="det-offline" id="detOffline" hidden>
+        <h4>Motor desligado</h4>
+        <p>O Detetive precisa do motor rodando localmente — é ele que faz as requisições que o navegador não pode fazer sozinho. Abra o terminal na pasta <code>furador</code> e rode:</p>
+        <pre>node server.js</pre>
+        <p>Depois clique em <button type="button" class="det-link" id="detRetry">tentar de novo</button>.</p>
+      </div>
+
+      <form class="det-form" id="detForm">
+        <label>URL do advertorial
+          <input type="url" id="detUrl" placeholder="https://exemplo.com/18800025.php" required></label>
+        <div class="det-grid">
+          <label>Geo<select id="detGeo"></select></label>
+          <label>Device<select id="detDevice"></select></label>
+          <label>Origem<select id="detRef"></select></label>
+        </div>
+        <div class="det-actions">
+          <button type="submit" class="det-go" id="detGo">Investigar</button>
+          <span class="det-hint" id="detHint">Sem proxy configurado, o alvo vê seu IP real.</span>
+        </div>
+      </form>
+
+      <div id="detBusy" class="det-busy" hidden><span class="det-spin"></span> Percorrendo o funil…</div>
+      <div id="detErro" class="note" hidden></div>
+      <div id="detOut"></div>
+
+      <div class="note" style="margin-top:16px"><h4>Histórico</h4><div id="detHist"><p>—</p></div></div>
+    </div>
+  </div><!-- /page-detetive -->
   </main>
 </div><!-- /app -->
 
@@ -1047,10 +1140,10 @@
     const mount=document.getElementById('publico-mount'), aud=document.getElementById('p-audience');
     if(mount&&aud){ aud.classList.add('active'); mount.appendChild(aud); }
     const items=[...document.querySelectorAll('.navitem')];
-    const pages={ofertas:document.getElementById('page-ofertas'),publico:document.getElementById('page-publico'),frescor:document.getElementById('page-frescor'),portabilidade:document.getElementById('page-portabilidade'),analises:document.getElementById('page-analises')};
+    const pages={ofertas:document.getElementById('page-ofertas'),publico:document.getElementById('page-publico'),frescor:document.getElementById('page-frescor'),portabilidade:document.getElementById('page-portabilidade'),analises:document.getElementById('page-analises'),detetive:document.getElementById('page-detetive')};
     items.forEach(b=>b.addEventListener('click',()=>{
       items.forEach(x=>x.setAttribute('aria-current', x===b));
-      Object.entries(pages).forEach(([k,p])=>p.classList.toggle('active',k===b.dataset.page));
+      Object.entries(pages).forEach(([k,p])=>p&&p.classList.toggle('active',k===b.dataset.page));
       window.scrollTo(0,0);
     }));
   })();
@@ -1384,4 +1477,122 @@
     try{ var c=JSON.parse(localStorage.getItem("nkb_cache")||"null"); if(c&&c.off) window.applyKB(c.off, c.up||"2026-08-10"); }catch(e){}
     fetch("native_kb.json?t="+(""+Math.random()).slice(2)).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j){ var off=j.offers||j; window.applyKB(off, j.updated||null); try{ localStorage.setItem("nkb_cache", JSON.stringify({up:j.updated||null,off:off})); }catch(e){} } }).catch(function(){});
   })();
+</script>
+<script>
+/* ===== O Detetive — fala com o motor local (127.0.0.1). Nada sai daqui pro repo. ===== */
+(function(){
+  var API="http://127.0.0.1:8790";
+  var $=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});};
+  var link=function(u,t){return u?'<a href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">'+esc(t||u)+"</a>":"—";};
+
+  function setStatus(ok,txt){
+    $("detStatus").textContent=txt;
+    $("detOffline").hidden=ok; $("detForm").hidden=!ok;
+  }
+
+  function ping(){
+    $("detStatus").textContent="Verificando o motor…";
+    return fetch(API+"/health",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      if(!j) throw 0;
+      setStatus(true,"Motor conectado");
+      if(j.perfis){ fill("detGeo",j.perfis.geos,"us"); fill("detDevice",j.perfis.devices,"android-chrome"); fill("detRef",j.perfis.referers,"taboola"); }
+      $("detHint").textContent=j.proxy?"Proxy ativo — o alvo vê o IP do proxy.":"Sem proxy configurado, o alvo vê seu IP real.";
+      hist();
+    }).catch(function(){ setStatus(false,"Motor desligado"); });
+  }
+
+  function fill(id,arr,def){
+    var s=$(id); if(!s||!arr||s.options.length) return;
+    s.innerHTML=arr.map(function(v){return '<option value="'+esc(v)+'"'+(v===def?" selected":"")+">"+esc(v)+"</option>";}).join("");
+  }
+
+  function card(t,body){ return '<div class="det-card"><h3>'+esc(t)+"</h3>"+body+"</div>"; }
+  function kv(rows){ return '<dl class="det-kv">'+rows.filter(Boolean).map(function(r){return "<dt>"+esc(r[0])+"</dt><dd>"+r[1]+"</dd>";}).join("")+"</dl>"; }
+
+  function render(d){
+    var out=[];
+    var a=d.advertorial||{};
+    out.push(card("Advertorial",kv([
+      ["Título",esc(a.titulo||"—")],
+      a.h1&&a.h1.length?["H1",esc(a.h1[0])]:null,
+      ["URL final",link(a.finalUrl)],
+      ["Status",esc(a.status)+" · "+esc(a.veredito||"")],
+      ["Idioma",esc(a.lang||"—")+" · "+esc(a.textLen||0)+" chars"]
+    ])+(a.chamada?'<p style="margin:10px 0 0;font-size:12.5px;color:var(--muted)">'+esc(a.chamada.slice(0,320))+"…</p>":"")));
+
+    var v=d.vsl||{};
+    if(v.plataforma) out.push(card("VSL",kv([
+      ["Plataforma",esc(v.plataforma)],
+      v.stream?["Vídeo (HLS)",link(v.stream,"main.m3u8")]:null,
+      v.capa?["Capa",link(v.capa,"cover.jpg")]:null,
+      v.config?["Config do player",link(v.config,"player.js")]:null,
+      v.conta?["Conta",'<span class="mono">'+esc(v.conta)+"</span>"]:null
+    ])));
+
+    var c=d.criativos||{};
+    if((c.imagens&&c.imagens.length)||c.ogImage){
+      var imgs=(c.ogImage?[c.ogImage]:[]).concat(c.imagens||[]).slice(0,14);
+      out.push(card("Criativos",'<div class="det-thumbs">'+imgs.map(function(u){return '<a href="'+esc(u)+'" target="_blank" rel="noopener noreferrer"><img src="'+esc(u)+'" loading="lazy" alt=""></a>';}).join("")+"</div>"));
+    }
+
+    if(d.saidas&&d.saidas.length){
+      out.push(card("Saídas e cadeia",d.saidas.map(function(s){
+        var hops=(s.hops||[]).map(function(h){return "<li>"+esc(h.status||"")+" "+esc(h.tipo||"")+" → "+esc(h.para)+"</li>";}).join("");
+        return '<div style="margin-bottom:12px">'+kv([
+          ["Entrada",link(s.entrada)],
+          ["Destino",link(s.destino)],
+          ["Situação",esc(s.status)+(s.bloqueio?' · <span class="det-badge off">'+esc(s.bloqueio)+"</span>":"")],
+          s.motivos?["Detectado por",(s.motivos||[]).map(function(m){return '<span class="det-badge">'+esc(m)+"</span>";}).join("")]:null
+        ])+(hops?'<ul class="det-chain">'+hops+"</ul>":"")+"</div>";
+      }).join("")));
+    }
+
+    if(d.oferta) out.push(card("Oferta",kv([
+      ["URL",link(d.oferta.url)],
+      ["Status",esc(d.oferta.status)+(d.oferta.bloqueio?' · <span class="det-badge off">'+esc(d.oferta.bloqueio)+"</span>":"")],
+      d.oferta.titulo?["Título",esc(d.oferta.titulo)]:null,
+      d.oferta.dados&&d.oferta.dados.checkouts&&d.oferta.dados.checkouts.length?["Checkout",d.oferta.dados.checkouts.map(function(u){return link(u)+"<br>";}).join("")]:null,
+      d.oferta.dados&&d.oferta.dados.prices&&d.oferta.dados.prices.length?["Preços",esc(d.oferta.dados.prices.join(" · "))]:null
+    ])));
+
+    var extras=[];
+    if(d.geoVazado) extras.push(["Geo vazado pela página",'<span class="det-badge on">'+esc(d.geoVazado.pais)+"</span> "+esc([d.geoVazado.cidade,d.geoVazado.regiao].filter(Boolean).join(" · "))]);
+    if(d.pixelsAfiliado&&d.pixelsAfiliado.length) extras.push(["Pixel de afiliado",d.pixelsAfiliado.slice(0,3).map(function(u){return link(u)+"<br>";}).join("")]);
+    var px=d.pixels||{}; var pxs=Object.keys(px).filter(function(k){return px[k]&&px[k].length;});
+    if(pxs.length) extras.push(["Pixels",pxs.map(function(k){return '<span class="det-badge">'+esc(k)+": "+esc(px[k].join(","))+"</span>";}).join("")]);
+    if(d.terceiros&&d.terceiros.length) extras.push(["Terceiros",d.terceiros.slice(0,12).map(function(h){return '<span class="det-badge">'+esc(h)+"</span>";}).join("")]);
+    if(extras.length) out.push(card("Sinais",kv(extras)));
+
+    $("detOut").innerHTML=out.join("");
+  }
+
+  function hist(){
+    fetch(API+"/historico",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      if(!j||!j.itens||!j.itens.length){ $("detHist").innerHTML="<p>Nenhuma investigação ainda.</p>"; return; }
+      $("detHist").innerHTML='<dl class="det-kv">'+j.itens.slice(0,12).map(function(i){
+        return "<dt>"+esc((i.quando||"").slice(0,16).replace("T"," "))+"</dt><dd>"+link(i.url)+(i.titulo?" — "+esc(i.titulo):"")+"</dd>";
+      }).join("")+"</dl>";
+    }).catch(function(){});
+  }
+
+  $("detRetry").addEventListener("click",ping);
+  $("detForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    $("detBusy").hidden=false; $("detErro").hidden=true; $("detOut").innerHTML=""; $("detGo").disabled=true;
+    fetch(API+"/investigar",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+      url:$("detUrl").value, geo:$("detGeo").value, device:$("detDevice").value, ref:$("detRef").value
+    })}).then(function(r){return r.json();}).then(function(j){
+      if(j.erro){ $("detErro").innerHTML="<h4>Não deu</h4><p>"+esc(j.erro)+"</p>"; $("detErro").hidden=false; }
+      else { render(j); hist(); }
+    }).catch(function(err){
+      $("detErro").innerHTML="<h4>Motor não respondeu</h4><p>"+esc(err&&err.message||err)+"</p>"; $("detErro").hidden=false;
+    }).then(function(){ $("detBusy").hidden=true; $("detGo").disabled=false; });
+  });
+
+  // só acorda quando a aba é aberta, pra não bater no motor à toa
+  var navBtn=document.querySelector('.navitem[data-page="detetive"]');
+  if(navBtn) navBtn.addEventListener("click",function(){ if(!$("detGeo").options.length) ping(); else hist(); });
+  if(location.hash==="#detetive"&&navBtn) navBtn.click();
+})();
 </script></body></html>
