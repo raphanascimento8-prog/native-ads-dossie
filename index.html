@@ -1159,6 +1159,8 @@
       <div id="detErro" class="note" hidden></div>
       <div id="detOut"></div>
 
+      <div class="note" style="margin-top:16px"><h4>Donos — quem opera mais de uma casa</h4><div id="detDonos"><p>—</p></div></div>
+      <div class="note" style="margin-top:16px"><h4>Variantes vivas — quantas versões o dono mantém</h4><div id="detIrmaos"><p>—</p></div></div>
       <div class="note" style="margin-top:16px"><h4>Inteligência acumulada</h4><div id="detIntel"><p>—</p></div></div>
       <div class="note" style="margin-top:16px"><h4>Vigilância — o que mudou nos alvos</h4><div id="detVigia"><p>—</p></div></div>
       <div class="note" style="margin-top:16px"><h4>Histórico</h4><div id="detHist"><p>—</p></div></div>
@@ -1551,7 +1553,7 @@
       if(j.proxy){ hint.textContent="Proxy ativo em "+(j.geosComProxy||0)+" geo(s) — o alvo vê o IP do proxy."; hint.className="det-hint"; }
       else if(j.exigirProxy){ hint.innerHTML='<b>Proxy obrigatório e nenhum configurado</b> — investigação bloqueada de propósito, para não expor seu IP.'; hint.className="det-hint alerta"; }
       else { hint.innerHTML='<b>Sem proxy</b> — o alvo vê seu IP real. Ligue <code>exigirProxy</code> na config para bloquear isso.'; hint.className="det-hint alerta"; }
-      hist(); vigia(); intel();
+      hist(); vigia(); intel(); donos(); irmaos();
     }).catch(function(){ setStatus(false,"Motor desligado"); });
   }
 
@@ -1704,6 +1706,50 @@
     }).catch(function(){});
   }
 
+  /* Donos. Estudar a casa uma por uma era refazer trabalho: o mesmo operador
+     roda várias ofertas e se repete, porque trocar de padrão custa. Conta de
+     player atravessa domínio — foi ela que juntou 4 casas num dono só. */
+  function donos(){
+    fetch(API+"/operadores",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      var el=$("detDonos"); if(!el) return;
+      if(!j||!j.donos){ el.innerHTML="<p>Nenhum dono com duas casas ainda. O perfil se forma sozinho conforme as investigações acumulam.</p>"; return; }
+      el.innerHTML='<p class="muted" style="margin:0 0 8px">'+esc(j.donos)+" dono(s) cobrindo "+esc(j.ofertasCobertas)+" ofertas · "+esc(j.variantesVivas)+" variantes vivas</p>"+
+        '<ul class="det-chain">'+j.perfis.map(function(p){
+          var b=[];
+          if(p.propriedades.length>1) b.push('<span class="det-badge on">'+esc(p.propriedades.length)+" domínios</span>");
+          if(p.vendors&&p.vendors.length) b.push('<span class="det-badge">checkout '+esc(p.vendors[0])+"</span>");
+          if(p.variantesVivas) b.push('<span class="det-badge">'+esc(p.variantesVivas)+" variantes</span>");
+          if(p.formatos&&p.formatos[0]) b.push('<span class="det-badge">'+esc(p.formatos[0])+"</span>");
+          return "<li><b>"+esc(p.visto)+" ofertas</b> — "+esc((p.ofertas||[]).slice(0,3).join(" · "))+
+            ((p.ofertas||[]).length>3?' <span class="muted">+'+esc(p.ofertas.length-3)+"</span>":"")+
+            "<br>"+b.join(" ")+
+            '<br><span class="muted">'+esc((p.propriedades||[]).slice(0,4).join(", "))+"</span></li>";
+        }).join("")+"</ul>";
+    }).catch(function(){});
+  }
+
+  /* Variantes. O dono numera o que testa (/vsl/03/, /vmaxvsl1-9/), então o
+     endereço irmão é dedutível — GET puro, sem passar por gate nenhum. E a
+     quantidade de variantes VIVAS é o sinal mais direto de que a oferta paga:
+     ninguém mantém treze versões de uma VSL que não vende. */
+  function irmaos(){
+    fetch(API+"/irmaos",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      var el=$("detIrmaos"); if(!el) return;
+      if(!j||!j.itens||!j.itens.length){ el.innerHTML="<p>Nenhuma variante mapeada ainda.</p>"; return; }
+      el.innerHTML='<p class="muted" style="margin:0 0 8px">'+esc(j.itens.length)+" oferta(s) com variantes descobertas sem tocar no cloaker</p>"+
+        '<ul class="det-chain">'+j.itens.map(function(i){
+          var cls=i.maturidade.nivel==="escalada"?"on":"";
+          var res=i.estadoNaAuditoria&&i.estadoNaAuditoria!=="viva"
+            ? ' <span class="det-badge off">estava '+esc(i.estadoNaAuditoria)+"</span>" : "";
+          return "<li><b>"+esc(i.nome)+"</b> "+'<span class="det-badge '+cls+'">'+esc(i.maturidade.nivel)+"</span>"+res+
+            (i.nomenclatura?'<br><span class="muted">'+esc(i.nomenclatura)+"</span>":"")+
+            "<br>"+esc(i.maturidade.nota)+
+            "<br>"+i.irmaos.slice(0,6).map(function(x){return link(x.url);}).join(" · ")+
+            (i.irmaos.length>6?' <span class="muted">+'+esc(i.irmaos.length-6)+"</span>":"")+"</li>";
+        }).join("")+"</ul>";
+    }).catch(function(){});
+  }
+
   /* O que o Detetive já sabe. Cresce sozinho: cada investigação alimenta as
      assinaturas, e o aprender.mjs extrai a máquina de mutação dos alvos. */
   function intel(){
@@ -1851,7 +1897,7 @@
 
   // só acorda quando a aba é aberta, pra não bater no motor à toa
   var navBtn=document.querySelector('.navitem[data-page="detetive"]');
-  if(navBtn) navBtn.addEventListener("click",function(){ if(!$("detGeo").options.length) ping(); else { hist(); vigia(); } });
+  if(navBtn) navBtn.addEventListener("click",function(){ if(!$("detGeo").options.length) ping(); else { hist(); vigia(); donos(); irmaos(); } });
   if(location.hash==="#detetive"&&navBtn) navBtn.click();
 })();
 </script></body></html>

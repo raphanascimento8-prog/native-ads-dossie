@@ -1,0 +1,48 @@
+name: refresh-native
+# Atualiza native_kb.json todo dia (loga no MonsterSwipe, raspa as ofertas Native e commita).
+# Requer os secrets do repositório: MS_EMAIL e MS_PASSWORD.
+# Rodar manualmente: aba Actions -> refresh-native -> Run workflow.
+on:
+  schedule:
+    - cron: '0 9 * * *'   # 09:00 UTC (~06:00 America/Sao_Paulo)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-native
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Instalar Chrome real (melhor contra Cloudflare)
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+      - name: Instalar Playwright (sem baixar navegador)
+        run: |
+          npm init -y
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i playwright@1.47.2
+      - name: Raspar Native
+        env:
+          MS_EMAIL: ${{ secrets.MS_EMAIL }}
+          MS_PASSWORD: ${{ secrets.MS_PASSWORD }}
+        run: node scripts/scrape-native.js
+      - name: Commitar native_kb.json
+        run: |
+          if git diff --quiet -- native_kb.json; then
+            echo "Sem mudanças no banco."
+            exit 0
+          fi
+          git config user.name "native-refresh-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add native_kb.json
+          git commit -m "auto-refresh native $(date -u +%F)"
+          git push
