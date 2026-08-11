@@ -341,6 +341,17 @@
   .det-passo{font-size:12px;font-weight:600;background:var(--surface2);border:1px solid var(--border2);border-radius:7px;padding:5px 11px;}
   .det-passo.morto{color:#c2554e;border-color:#c2554e;background:transparent;}
   .det-seta{color:var(--faint);font-size:12px;}
+  /* banco parado: a data sozinha nao denuncia robo travado, a idade denuncia */
+  .update-stamp.stale{color:#8a6d1f;}
+  .update-stamp.stale .dot-live{background:#d2a437;box-shadow:0 0 0 3px rgba(210,164,55,.18);animation:none;}
+  .update-stamp.muito-stale{color:#a8443c;}
+  .update-stamp.muito-stale .dot-live{background:#c2554e;box-shadow:0 0 0 3px rgba(194,85,78,.18);animation:none;}
+  /* auditoria sobreposta nos cards de oferta */
+  .aud-box{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border2);}
+  .aud-h{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:7px;}
+  .aud-l{display:grid;grid-template-columns:118px 1fr;gap:4px 10px;font-size:12px;margin-bottom:4px;}
+  .aud-l > span{color:var(--muted);font-weight:600;}
+  .aud-l a{color:var(--accent);word-break:break-all;}
 
 
   .ana-form{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:18px;display:flex;flex-direction:column;gap:14px;}
@@ -1350,7 +1361,7 @@
       if(o.vsl) lk.push('<a class="lnk" target="_blank" rel="noopener" href="'+o.vsl+'">▶ VSL</a>');
       if(o.vid && o.vid!==o.vsl) lk.push('<a class="lnk" target="_blank" rel="noopener" href="'+o.vid+'">▶ Criativo (vídeo)</a>');
       if(o.img) lk.push('<a class="lnk" target="_blank" rel="noopener" href="'+o.img+'">▤ Criativo/print</a>');
-      return '<article class="regcard '+o.cls+'"><div class="regcard-h"><span class="regcard-t">'+esc(o.name)+((window.__NOVAS&&window.__NOVAS[o.slug])?' <span class="pill-nova">NOVA</span>':'')+'</span><span class="regcard-sub">'+esc(o.nl)+' · '+o.geo+' · '+o.lang+'</span></div>'
+      return '<article class="regcard '+o.cls+'" data-slug="'+esc(o.slug)+'"><div class="regcard-h"><span class="regcard-t">'+esc(o.name)+((window.__NOVAS&&window.__NOVAS[o.slug])?' <span class="pill-nova">NOVA</span>':'')+'</span><span class="regcard-sub">'+esc(o.nl)+' · '+o.geo+' · '+o.lang+'</span></div>'
         + row("Classe", clsPill(o.cls))
         + row("Onde roda", (o.netObs&&o.netObs.length)? ("<b>"+o.netObs.join(" · ")+"</b> · "+o.geo+" <span class='mono' style='color:var(--ok)'>(CONFIRMADA — rastreio do funil)</span>") : (o.netPix&&o.netPix.length)? ("<b>"+o.netPix.join(" · ")+"</b> · "+o.geo+" <span class='mono' style='color:var(--accent)'>(provável — pixels no advertorial)</span>") : ("<b>"+o.net+"</b> · "+o.geo+" <span class='mono' style='color:var(--faint)'>(estimada por nicho — sem rastro/pixel)</span>"))
         + row("Anúncios ativos", "<b>"+o.ads+"</b>"+(o.active?" · ativa hoje":""))
@@ -1471,7 +1482,21 @@
       }catch(e){}
       window.__NOVAS=novas; var nn=Object.keys(novas).length;
       window.__buildLupaIDX();
-      var st=document.getElementById("kbStamp"); if(st) st.textContent="Banco native atualizado · "+fmt(dateStr)+" · "+window.NKB.length+" ofertas"+(nn?(" · "+nn+" novas"):"");
+      var st=document.getElementById("kbStamp");
+      if(st){
+        st.textContent="Banco native atualizado · "+fmt(dateStr)+" · "+window.NKB.length+" ofertas"+(nn?(" · "+nn+" novas"):"");
+        /* indicador honesto: data sozinha nao denuncia robo travado — o arquivo local
+           era atualizado e nunca subia. Idade em dias denuncia. */
+        var dias=null; try{ dias=Math.floor((Date.now()-new Date(dateStr+"T00:00:00").getTime())/864e5); }catch(e){}
+        var box=st.parentElement, dot=box&&box.querySelector(".dot-live");
+        box&&box.classList.remove("stale","muito-stale");
+        if(dias!==null&&dias>=2){
+          box&&box.classList.add(dias>=7?"muito-stale":"stale");
+          st.textContent="Banco native parado há "+dias+" dia"+(dias>1?"s":"")+" · "+fmt(dateStr)+" · "+window.NKB.length+" ofertas"
+            +(dias>=7?" — o robô de refresh provavelmente travou":"");
+          if(dot) dot.title="última atualização publicada há "+dias+" dias";
+        }
+      }
       var nb=document.getElementById("novasBtn"); if(nb) nb.style.display=nn?"inline-flex":"none"; };
     window.showNovas=function(){ var out=document.getElementById("offerSearchResult"), grid=document.getElementById("offerGrid"); if(!out) return;
       var t=document.querySelector('.tab[data-panel="offers"]'); if(t&&t.getAttribute("aria-selected")!=="true") t.click();
@@ -1646,6 +1671,57 @@
       $("detErro").innerHTML="<h4>Motor não respondeu</h4><p>"+esc(err&&err.message||err)+"</p>"; $("detErro").hidden=false;
     }).then(function(){ $("detBusy").hidden=true; $("detGo").disabled=false; });
   });
+
+  /* ===== Auditoria de vida: sobrepõe estado e links reais nos cards de oferta.
+     Vem do motor local, nunca do repositório — o dossiê é público, o destino
+     real e a chave do cloaker não são. Sem motor, o dash fica como sempre foi. ===== */
+  var AUD=null;
+  var ROTULO={"viva":["viva","on"],"morta":["funil morto","off"],"oferta-bloqueada":["oferta bloqueada","off"],
+              "bloqueada-geo":["bloqueada por geo","off"],"nao-abriu":["não abriu","off"],"sem-link":["sem link",""]};
+
+  function aplicarAuditoria(){
+    if(!AUD||!AUD.itens) return;
+    // as 87 do banco saem na lupa (regcard); o #offerGrid e o dossie curado, estatico
+    document.querySelectorAll('[data-slug]').forEach(function(card){
+      if(card.dataset.audOk) return;
+      var it=AUD.itens[card.dataset.slug]; if(!it) return;
+      card.dataset.audOk="1";
+
+      var r=ROTULO[it.estado]||[it.estado,""];
+      var t=card.querySelector('.regcard-t');
+      if(t) t.insertAdjacentHTML('beforeend',' <span class="det-badge '+r[1]+'">'+esc(r[0])+'</span>');
+
+      var linhas=[];
+      if(it.formato) linhas.push(["Formato real",esc(it.formato)]);
+      if(it.cloaker&&it.cloaker.tipo!=="nenhum detectado")
+        linhas.push(["Cloaker",esc(it.cloaker.tipo)+(it.cloaker.contornavel===false?' <span class="det-badge off">não contornável daqui</span>':"")]);
+      if(it.chave) linhas.push(["Chave que abre",'<span class="det-badge on">'+esc(it.chave.geo)+"/"+esc(it.chave.device)+"/"+esc(it.chave.ref)+(it.chave.browser?"+browser":"")+"</span>"]);
+      if(it.advertorial) linhas.push(["Advertorial real",link(it.advertorial)]);
+      if(it.vsl&&it.vsl.stream) linhas.push(["VSL",link(it.vsl.stream,it.vsl.plataforma+" · "+(it.vsl.onde||""))]);
+      if(it.trilhaClique&&it.trilhaClique.length) linhas.push(["Caminho por clique",it.trilhaClique.map(function(u){return link(u)}).join(" → ")]);
+      if(it.oferta) linhas.push(["Oferta",link(it.oferta)+(it.bloqueio?' <span class="det-badge off">'+esc(it.bloqueio)+"</span>":"")]);
+      if(it.checkouts&&it.checkouts.length) linhas.push(["Checkout",it.checkouts.map(function(u){return link(u)}).join("<br>")]);
+      if(it.precos&&it.precos.length) linhas.push(["Preços",esc(it.precos.slice(0,4).join(" · "))]);
+      if(!linhas.length&&it.bloqueio) linhas.push(["Motivo",esc(it.bloqueio)]);
+      if(!linhas.length) return;
+
+      card.insertAdjacentHTML('beforeend',
+        '<div class="aud-box"><div class="aud-h">rastreado pelo Detetive · '+esc((it.quando||"").slice(0,10))+'</div>'+
+        linhas.map(function(l){return '<div class="aud-l"><span>'+esc(l[0])+'</span><div>'+l[1]+'</div></div>';}).join('')+'</div>');
+    });
+  }
+  window.__aplicarAuditoria=aplicarAuditoria;
+
+  fetch(API+"/auditoria",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+    if(!j||!j.itens||!Object.keys(j.itens).length) return;
+    AUD=j; aplicarAuditoria();
+    if(window.MutationObserver){
+      var obs=new MutationObserver(aplicarAuditoria);
+      ['offerSearchResult','offerGrid','page-ofertas'].forEach(function(id){
+        var el=document.getElementById(id); if(el) obs.observe(el,{childList:true,subtree:true});
+      });
+    }
+  }).catch(function(){});
 
   // só acorda quando a aba é aberta, pra não bater no motor à toa
   var navBtn=document.querySelector('.navitem[data-page="detetive"]');
