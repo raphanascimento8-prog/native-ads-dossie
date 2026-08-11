@@ -1159,6 +1159,7 @@
       <div id="detErro" class="note" hidden></div>
       <div id="detOut"></div>
 
+      <div class="note" style="margin-top:16px"><h4>Vigilância — o que mudou nos alvos</h4><div id="detVigia"><p>—</p></div></div>
       <div class="note" style="margin-top:16px"><h4>Histórico</h4><div id="detHist"><p>—</p></div></div>
     </div>
   </div><!-- /page-detetive -->
@@ -1549,7 +1550,7 @@
       if(j.proxy){ hint.textContent="Proxy ativo em "+(j.geosComProxy||0)+" geo(s) — o alvo vê o IP do proxy."; hint.className="det-hint"; }
       else if(j.exigirProxy){ hint.innerHTML='<b>Proxy obrigatório e nenhum configurado</b> — investigação bloqueada de propósito, para não expor seu IP.'; hint.className="det-hint alerta"; }
       else { hint.innerHTML='<b>Sem proxy</b> — o alvo vê seu IP real. Ligue <code>exigirProxy</code> na config para bloquear isso.'; hint.className="det-hint alerta"; }
-      hist();
+      hist(); vigia();
     }).catch(function(){ setStatus(false,"Motor desligado"); });
   }
 
@@ -1680,6 +1681,21 @@
     $("detOut").innerHTML=out.join("");
   }
 
+  /* Vigilância: cloaker rotaciona. Um alvo olhado uma vez é retrato de coisa
+     que se move — a rotação só vira informação com observação contínua. */
+  function vigia(){
+    fetch(API+"/vigilancia",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      var el=$("detVigia"); if(!el) return;
+      if(!j||!j.alvos){ el.innerHTML="<p>Nenhum alvo sob vigia ainda. Ela liga sozinha a cada 4h sobre as ofertas que já mostraram gate.</p>"; return; }
+      var cab='<p class="muted" style="margin:0 0 8px">'+esc(j.alvos)+' alvo(s) sob vigia · última passada '+esc((j.atualizado||"").slice(0,16).replace("T"," "))+"</p>";
+      if(!j.eventos||!j.eventos.length){ el.innerHTML=cab+"<p>Nada mudou desde a primeira leitura.</p>"; return; }
+      el.innerHTML=cab+'<ul class="det-chain">'+j.eventos.slice(0,15).map(function(e){
+        return "<li><b>"+esc((e.quando||"").slice(0,16).replace("T"," "))+"</b> — "+esc(e.nome||e.url)+
+          "<br>"+(e.diffs||[]).map(function(d){return '<span class="det-badge off">'+esc(d)+"</span>";}).join(" ")+"</li>";
+      }).join("")+"</ul>";
+    }).catch(function(){});
+  }
+
   function hist(){
     fetch(API+"/historico",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
       if(!j||!j.itens||!j.itens.length){ $("detHist").innerHTML="<p>Nenhuma investigação ainda.</p>"; return; }
@@ -1788,7 +1804,7 @@
 
   // só acorda quando a aba é aberta, pra não bater no motor à toa
   var navBtn=document.querySelector('.navitem[data-page="detetive"]');
-  if(navBtn) navBtn.addEventListener("click",function(){ if(!$("detGeo").options.length) ping(); else hist(); });
+  if(navBtn) navBtn.addEventListener("click",function(){ if(!$("detGeo").options.length) ping(); else { hist(); vigia(); } });
   if(location.hash==="#detetive"&&navBtn) navBtn.click();
 })();
 </script></body></html>
