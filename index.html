@@ -352,6 +352,8 @@
   .aud-l{display:grid;grid-template-columns:118px 1fr;gap:4px 10px;font-size:12px;margin-bottom:4px;}
   .aud-l > span{color:var(--muted);font-weight:600;}
   .aud-l a{color:var(--accent);word-break:break-all;}
+  .aud-nota{font-size:12px;color:var(--muted);background:var(--surface);border:1px dashed var(--border2);border-radius:9px;padding:9px 12px;margin-bottom:12px;}
+  .det-badge.viva{color:var(--ok);border-color:var(--ok);}
 
 
   .ana-form{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:18px;display:flex;flex-direction:column;gap:14px;}
@@ -1679,6 +1681,20 @@
   var ROTULO={"viva":["viva","on"],"morta":["funil morto","off"],"oferta-bloqueada":["oferta bloqueada","off"],
               "bloqueada-geo":["bloqueada por geo","off"],"nao-abriu":["não abriu","off"],"sem-link":["sem link",""]};
 
+  var MOSTRAR_MORTAS=false, ocultadas=0;
+  window.__mostrarMortas=function(){ MOSTRAR_MORTAS=true;
+    document.querySelectorAll('[data-slug][data-morta]').forEach(function(c){ c.style.display=""; });
+    var n=document.getElementById('audNota'); if(n) n.remove(); };
+
+  function nota(){
+    if(!ocultadas||MOSTRAR_MORTAS) return;
+    var alvo=document.getElementById('offerSearchResult')||document.getElementById('offerGrid');
+    if(!alvo||document.getElementById('audNota')) return;
+    var d=document.createElement('div'); d.id='audNota'; d.className='aud-nota';
+    d.innerHTML=ocultadas+' oferta(s) com funil <b>confirmado morto</b> ocultadas — <button type="button" class="det-link" onclick="window.__mostrarMortas()">mostrar mesmo assim</button>';
+    alvo.insertBefore(d, alvo.firstChild);
+  }
+
   function aplicarAuditoria(){
     if(!AUD||!AUD.itens) return;
     // as 87 do banco saem na lupa (regcard); o #offerGrid e o dossie curado, estatico
@@ -1686,6 +1702,14 @@
       if(card.dataset.audOk) return;
       var it=AUD.itens[card.dataset.slug]; if(!it) return;
       card.dataset.audOk="1";
+
+      /* dossiê de native não deveria listar cadáver. Só some o que foi
+         CONFIRMADO morto pelo teste de controle — recusa disfarçada de 404 fica,
+         porque essa ainda é oferta viva pra quem chegar com a chave certa. */
+      if(it.estado==="morta"){
+        card.dataset.morta="1";
+        if(!MOSTRAR_MORTAS){ card.style.display="none"; ocultadas++; nota(); return; }
+      }
 
       var r=ROTULO[it.estado]||[it.estado,""];
       var t=card.querySelector('.regcard-t');
