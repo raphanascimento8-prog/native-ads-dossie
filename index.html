@@ -337,6 +337,10 @@
   .det-av[open] summary::before{content:"▾ ";}
   .det-av summary:hover{color:var(--muted);}
   .det-av .det-grid{margin-top:10px;}
+  .det-fluxo{display:flex;flex-wrap:wrap;align-items:center;gap:6px;}
+  .det-passo{font-size:12px;font-weight:600;background:var(--surface2);border:1px solid var(--border2);border-radius:7px;padding:5px 11px;}
+  .det-passo.morto{color:#c2554e;border-color:#c2554e;background:transparent;}
+  .det-seta{color:var(--faint);font-size:12px;}
 
 
   .ana-form{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:18px;display:flex;flex-direction:column;gap:14px;}
@@ -1533,9 +1537,27 @@
         ["Rede",'<b>'+esc(desc.origem.rede||"não identificada")+"</b> "+'<span class="det-badge">'+esc(desc.origem.confianca)+"</span>"],
         ["Chave que abriu",'<span class="det-badge on">'+esc(ch.geo)+"</span>"+'<span class="det-badge on">'+esc(ch.device)+"</span>"+'<span class="det-badge on">'+esc(ch.ref)+"</span>"],
         desc.macros&&desc.macros.length?["Macros preenchidas",desc.macros.map(function(m){return '<span class="det-badge">'+esc(m)+"</span>";}).join("")]:null,
-        tent.length>1?["Tentativas",esc(tent.length)+" — "+esc(tent.map(function(t){return t.geo+"/"+t.device;}).join(" · "))]:null
+        desc.cloaker?["Cloaker",'<b>'+esc(desc.cloaker.tipo)+"</b>"+(desc.cloaker.contornavel===false?' <span class="det-badge off">não contornável daqui</span>':"")+'<div class="muted">'+esc(desc.cloaker.detalhe||"")+"</div>"]:null,
+        tent.length>1?["Tentativas",esc(tent.length)+" — "+esc(tent.map(function(t){return t.geo+"/"+t.device+(t.browser?"+br":"");}).join(" · "))]:null
       ])));
     }
+
+    // o funil como ele e, nivel a nivel — sem supor formato
+    if(d.etapas&&d.etapas.length){
+      out.push(card("Formato do funil",'<div class="det-fluxo">'+d.etapas.map(function(e){
+        return '<span class="det-passo'+(e.morto?" morto":"")+'">'+esc(e.tipo||"?")+"</span>";
+      }).join('<span class="det-seta">→</span>')+"</div>"+
+      '<ul class="det-chain" style="margin-top:12px">'+d.etapas.map(function(e){
+        return "<li><b>"+esc(e.nivel)+". "+esc(e.tipo||"?")+"</b> "+esc(e.status)+
+          (e.h1?" — "+esc(e.h1.slice(0,70)):e.titulo?" — "+esc(e.titulo.slice(0,70)):"")+
+          (e.vsl?' <span class="det-badge on">'+esc(e.vsl.plataforma)+"</span>":"")+
+          (e.precos&&e.precos.length?' <span class="det-badge">'+esc(e.precos.slice(0,3).join(" "))+"</span>":"")+
+          (e.bloqueio?' <span class="det-badge off">'+esc(e.bloqueio)+"</span>":"")+
+          (e.morto?' <span class="det-badge off">'+esc(e.morto)+"</span>":"")+
+          "<br>"+link(e.url)+"</li>";
+      }).join("")+"</ul>"));
+    }
+    if(d.funilMorto) out.push(card("Aviso",'<p><span class="det-badge off">'+esc(d.funilMorto)+"</span> — a oferta no fim desse funil não existe mais.</p>"));
 
     var a=d.advertorial||{};
     out.push(card("Advertorial",kv([
