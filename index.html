@@ -307,6 +307,8 @@
   .det-go:hover{background:linear-gradient(175deg,#fbfcfd 0%,#e9ecf1 40%,#d2d7df 78%,#c0c6d0 100%);}
   .det-go[disabled]{opacity:.5;cursor:default;}
   .det-hint{font-size:11.5px;color:var(--faint);}
+  .det-hint.alerta{color:#a8443c;}
+  .det-hint code{font-family:var(--mono);background:var(--surface2);padding:1px 5px;border-radius:4px;}
   .det-busy{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:13px;padding:14px 0;}
   /* classe com display vence o [hidden] do navegador — precisa reafirmar */
   .det-busy[hidden],.det-offline[hidden],.det-form[hidden],#detErro[hidden]{display:none;}
@@ -1543,7 +1545,10 @@
       if(!j) throw 0;
       setStatus(true,"Motor conectado");
       if(j.perfis){ fill("detGeo",j.perfis.geos,"us"); fill("detDevice",j.perfis.devices,"android-chrome"); fill("detRef",j.perfis.referers,"taboola"); }
-      $("detHint").textContent=j.proxy?"Proxy ativo — o alvo vê o IP do proxy.":"Sem proxy configurado, o alvo vê seu IP real.";
+      var hint=$("detHint");
+      if(j.proxy){ hint.textContent="Proxy ativo em "+(j.geosComProxy||0)+" geo(s) — o alvo vê o IP do proxy."; hint.className="det-hint"; }
+      else if(j.exigirProxy){ hint.innerHTML='<b>Proxy obrigatório e nenhum configurado</b> — investigação bloqueada de propósito, para não expor seu IP.'; hint.className="det-hint alerta"; }
+      else { hint.innerHTML='<b>Sem proxy</b> — o alvo vê seu IP real. Ligue <code>exigirProxy</code> na config para bloquear isso.'; hint.className="det-hint alerta"; }
       hist();
     }).catch(function(){ setStatus(false,"Motor desligado"); });
   }
