@@ -352,6 +352,11 @@
   .aud-l{display:grid;grid-template-columns:118px 1fr;gap:4px 10px;font-size:12px;margin-bottom:4px;}
   .aud-l > span{color:var(--muted);font-weight:600;}
   .aud-l a{color:var(--accent);word-break:break-all;}
+  .inv-l{display:grid;grid-template-columns:132px 1fr;gap:5px 12px;font-size:12.5px;padding:6px 0;border-bottom:1px solid var(--border);}
+  .inv-l:last-of-type{border-bottom:0;}
+  .inv-l > span{color:var(--muted);font-weight:600;}
+  .inv-l a{color:var(--accent);word-break:break-all;}
+  .inv-rodape{margin-top:10px;font-size:11px;color:var(--faint);font-family:var(--mono);}
   .aud-nota{font-size:12px;color:var(--muted);background:var(--surface);border:1px dashed var(--border2);border-radius:9px;padding:9px 12px;margin-bottom:12px;}
   .det-badge.viva{color:var(--ok);border-color:var(--ok);}
 
@@ -1585,6 +1590,35 @@
       }).join("")+"</ul>"));
     }
     if(d.funilMorto) out.push(card("Aviso",'<p><span class="det-badge off">'+esc(d.funilMorto)+"</span> — a oferta no fim desse funil não existe mais.</p>"));
+
+    /* Inventário: tudo que o funil tem, clicável, com status conferido agora.
+       Vem primeiro porque é o que se quer em mãos — o resto é contexto. */
+    var L=d.links||{};
+    function st(u){ var v=L[u]; if(!v) return "";
+      return v.ok ? ' <span class="det-badge on">'+esc(v.status)+"</span>"
+                  : ' <span class="det-badge off">'+esc(v.status||"falhou")+"</span>"; }
+    function item(rot,u,txt){ return u? '<div class="inv-l"><span>'+esc(rot)+"</span><div>"+link(u,txt||u)+st(u)+"</div></div>" : ""; }
+
+    var inv=[];
+    inv.push(item("Advertorial",(d.advertorial||{}).finalUrl));
+    if(d.vsl&&d.vsl.stream) inv.push(item("VSL (vídeo)",d.vsl.stream,"main."+(/m3u8/.test(d.vsl.stream)?"m3u8":"mp4")+" · "+esc(d.vsl.plataforma||"")));
+    if(d.vsl&&d.vsl.capa) inv.push(item("Capa da VSL",d.vsl.capa,"cover.jpg"));
+    if(d.vsl&&d.vsl.config) inv.push(item("Config do player",d.vsl.config,"player.js"));
+    (d.trilhaClique||[]).forEach(function(u,i){ inv.push(item("Passo "+(i+1)+" (clique)",u)); });
+    if(d.oferta&&d.oferta.url) inv.push(item("Oferta",d.oferta.url));
+    ((d.oferta&&d.oferta.dados&&d.oferta.dados.checkouts)||[]).forEach(function(u){ inv.push(item("Checkout",u)); });
+    var imgs=((d.criativos||{}).ogImage?[d.criativos.ogImage]:[]).concat(((d.criativos||{}).imagens)||[]).slice(0,12);
+    var corpo=inv.filter(Boolean).join("");
+    if(imgs.length) corpo+='<div class="inv-l"><span>Criativos</span><div class="det-thumbs">'+
+      imgs.map(function(u){return '<a href="'+esc(u)+'" target="_blank" rel="noopener noreferrer" title="'+esc(u)+'"><img src="'+esc(u)+'" loading="lazy" alt=""></a>';}).join("")+"</div></div>";
+    if((d.oferta&&d.oferta.dados&&d.oferta.dados.prices||[]).length)
+      corpo+='<div class="inv-l"><span>Preços</span><div>'+esc(d.oferta.dados.prices.slice(0,5).join("  ·  "))+"</div></div>";
+    if(corpo){
+      var quebrados=Object.values(L).filter(function(v){return !v.ok}).length;
+      out.push(card("Tudo do funil — links conferidos",corpo+
+        '<div class="inv-rodape">'+Object.keys(L).length+' link(s) testados agora'+
+        (quebrados? ' · <b>'+quebrados+' não abriram</b>':' · todos abriram')+"</div>"));
+    }
 
     var a=d.advertorial||{};
     out.push(card("Advertorial",kv([
