@@ -1128,7 +1128,7 @@
           <h1>O Detetive</h1>
           <p>Cole o link que o criativo aponta. Ele descobre sozinho a rede, o geo e o device a partir do próprio link, atravessa o cloaker que fica entre criativo e advertorial, e mapeia o resto do funil: advertorial, VSL, saídas, tracker e checkout. Roda na sua máquina — nada do que for investigado é publicado.</p>
         </div>
-        <div class="snapshot"><b id="detStatus">Verificando o motor…</b><br>investigação local · 85/100 sparring<br>triagem + auto-escalation + 6 armas</div>
+        <div class="snapshot"><b id="detStatus">Verificando o motor…</b><br>investigação local · 85/100 sparring<br>triagem + auto-escalation + 6 armas<br><b style="color:var(--ok)">50 funis quebrados · 12/ago/2026</b></div>
       </header>
 
       <div class="det-offline" id="detOffline" hidden>
@@ -1247,6 +1247,108 @@
       </div>
 
       <div class="note" style="margin-top:16px"><b>Como rodar o treino:</b> <span class="mono">node test/_sparring.mjs</span> (100 cenários, ~2min). <b>Estresse real:</b> <span class="mono">node test/_estresse.mjs</span> (5 alvos do KB). Dados em <span class="mono">data/sparring.json</span> e <span class="mono">data/estresse.json</span>. Atualizado: <b>12/ago/2026</b>.</div>
+
+      <div class="sec-label">Caçada — 50 Funis Quebrados <span class="tag">sessão única · 12/ago/2026</span></div>
+
+      <div class="kpis" style="margin-bottom:18px">
+        <div class="kpi hl"><div class="n tnum">50</div><div class="l">Funis quebrados</div></div>
+        <div class="kpi"><div class="n tnum">9</div><div class="l">Stacks mapeadas</div></div>
+        <div class="kpi"><div class="n tnum">90+</div><div class="l">Domínios varridos</div></div>
+        <div class="kpi"><div class="n tnum">3</div><div class="l">Rebrands confirmados</div></div>
+      </div>
+
+      <div class="insight" style="margin-bottom:16px">
+        <h3>Resultado da caçada</h3>
+        <p>50 funis cloakeados abertos em sessão única. <strong>29 via BuyGoods</strong>, <strong>10 via ClickBank</strong>, 2 via mweb*, 1 CartPanda, 1 Stripe/PV Offers, 1 DFO/Shopify, 1 Digistore24, 1 AtomicAt. Cobertura: <strong>8 nichos</strong> (diabetes, emagrecimento, memória, dor, adulto, visão, dental, auditivo). Rebrands provados: FlatBelly (#6=#11), Igenics (#16=#31), GlucoTonic (#5=#40) — mesmo account_id, domínios diferentes.</p>
+      </div>
+
+      <div class="nets" style="margin-bottom:18px">
+        <article class="net"><div class="net-h"><span class="net-b">Distribuição por stack</span><span class="net-geo mono">5 checkouts principais</span></div><ul>
+          <li><span class="dot w"></span><b>BuyGoods · 29 funis (58%)</b><span class="obs">Padrão: <span class="mono">buygoods.com/secure/checkout.html?account_id=X&amp;product_codename=Y&amp;aff_id=Z</span></span></li>
+          <li><span class="dot g"></span><b>ClickBank · 10 funis (20%)</b><span class="obs">Padrão: <span class="mono">{aff}-{vendor}.hop.clickbank.net</span></span></li>
+          <li><span class="dot g"></span><b>mweb* · 2 funis</b><span class="obs">6 domínios irmãos: maxwebconnect, mwebun, mweblynix, mwebtrackforge, mwebzova, mweblyx</span></li>
+          <li><span class="dot g"></span><b>Outros · 4 funis</b><span class="obs">CartPanda (BR), Stripe/PV Offers, DFO/Shopify, Digistore24</span></li>
+        </ul></article>
+        <article class="net"><div class="net-h"><span class="net-b">Habilidades que mais pesaram</span><span class="net-geo mono">ranking por impacto</span></div><ul>
+          <li><span class="dot w"></span><b>#1 Pensar um passo antes</b><span class="obs">Script extraction em vez de navegar. Bola de neve por footers. Padrão de tracker reconhecido.</span></li>
+          <li><span class="dot w"></span><b>#2 Diagnóstico rápido</b><span class="obs">Triagem DNS/raiz/path matou 12-15 domínios mortos em &lt;10s, poupando 30+ min.</span></li>
+          <li><span class="dot g"></span><b>#3 Mesmo produto outro domínio</b><span class="obs">Variantes de domínio (en-X, X-com, theX) abriram ~15 funis bloqueados.</span></li>
+          <li><span class="dot g"></span><b>#4 Perfil de operador</b><span class="obs">account_id = chave de agrupamento. Revelou VisioCore=Ceramiri, GlucoZen=Glucopezil.</span></li>
+        </ul></article>
+      </div>
+
+      <div class="tbl-wrap" style="margin-bottom:16px"><table id="huntTable">
+        <thead><tr><th>#</th><th>Domínio afiliado</th><th>Produto real</th><th>Checkout</th><th>Account</th><th>Aff ID</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">1</td><td class="name">naturalhealthdailyguide.site</td><td>Mind Honey</td><td>Digistore24</td><td class="mono">712633</td><td class="mono">marywave</td></tr>
+          <tr><td class="mono">2</td><td class="name">magazinetype2.info</td><td>(3-layer cloaker)</td><td>AtomicAt</td><td class="mono">—</td><td class="mono">—</td></tr>
+          <tr><td class="mono">3</td><td class="name">dailyhealthmanual.com</td><td>MemoFix</td><td>BuyGoods</td><td class="mono">13162</td><td class="mono">34</td></tr>
+          <tr><td class="mono">4</td><td class="name">arielief.com</td><td>Arialief</td><td>BuyGoods</td><td class="mono">bg.arialief</td><td class="mono">6079</td></tr>
+          <tr><td class="mono">5</td><td class="name">en-us-glucozen.com</td><td>GlucoTonic</td><td>BuyGoods</td><td class="mono">10262</td><td class="mono">67</td></tr>
+          <tr><td class="mono">6</td><td class="name">lipomax.site</td><td>FlatBelly</td><td>BuyGoods</td><td class="mono">10666</td><td class="mono">2571</td></tr>
+          <tr><td class="mono">7</td><td class="name">en-aquascqlpt.com</td><td>AquaSculpt</td><td>BuyGoods</td><td class="mono">10370</td><td class="mono">148111</td></tr>
+          <tr><td class="mono">8</td><td class="name">braiinmary.com</td><td>CogniCare Pro</td><td>ClickBank</td><td class="mono">cognicare</td><td class="mono">comet92</td></tr>
+          <tr><td class="mono">9</td><td class="name">memoceptt.com</td><td>(portal 23 products)</td><td>mweb*</td><td class="mono">—</td><td class="mono">—</td></tr>
+          <tr><td class="mono">10</td><td class="name">steelpower-com.com</td><td>AlphaSteel</td><td>BuyGoods</td><td class="mono">12811</td><td class="mono">470</td></tr>
+          <tr style="color:var(--warn)"><td class="mono">11</td><td class="name">en-flaxburn.com</td><td>FlatBelly =#6</td><td>BuyGoods</td><td class="mono">10666</td><td class="mono">2571</td></tr>
+          <tr><td class="mono">12</td><td class="name">nervecell.us</td><td>NerveCell</td><td>BuyGoods</td><td class="mono">12474</td><td class="mono">2030</td></tr>
+          <tr><td class="mono">13</td><td class="name">en-jointbrex.com</td><td>JointBrex</td><td>BuyGoods</td><td class="mono">12476</td><td class="mono">11910</td></tr>
+          <tr><td class="mono">14</td><td class="name">theglucotide.com</td><td>GlucoTide</td><td>BuyGoods</td><td class="mono">12479</td><td class="mono">118</td></tr>
+          <tr><td class="mono">15</td><td class="name">thelipotrine.com</td><td>Lipotrine</td><td>BuyGoods</td><td class="mono">12367</td><td class="mono">5806</td></tr>
+          <tr><td class="mono">16</td><td class="name">visiocore.shop</td><td>Igenics</td><td>BuyGoods</td><td class="mono">7163</td><td class="mono">32435</td></tr>
+          <tr><td class="mono">17</td><td class="name">en-jellytide.com</td><td>JellyTide</td><td>BuyGoods</td><td class="mono">12446</td><td class="mono">96610</td></tr>
+          <tr><td class="mono">18</td><td class="name">glycoharmonyy.us</td><td>GlycoHarmony</td><td>BuyGoods</td><td class="mono">12374</td><td class="mono">935</td></tr>
+          <tr><td class="mono">19</td><td class="name">vigoroxprime-com.com</td><td>EndoPeak</td><td>BuyGoods</td><td class="mono">8288</td><td class="mono">19</td></tr>
+          <tr><td class="mono">20</td><td class="name">oxydentalpro-com.com</td><td>OxyDental</td><td>ClickBank</td><td class="mono">oxydental</td><td class="mono">justingol</td></tr>
+          <tr><td class="mono">21</td><td class="name">sleepem.us</td><td>NiteHush Pro</td><td>BuyGoods</td><td class="mono">9663</td><td class="mono">827</td></tr>
+          <tr><td class="mono">22</td><td class="name">glucolynn.com</td><td>Glucolyn</td><td>BuyGoods</td><td class="mono">11978</td><td class="mono">1990</td></tr>
+          <tr><td class="mono">23</td><td class="name">venusfactor-com.com</td><td>Venus Factor</td><td>ClickBank</td><td class="mono">venus</td><td class="mono">newyorrk</td></tr>
+          <tr><td class="mono">24</td><td class="name">wildgut-shop.com</td><td>WildGut</td><td>BuyGoods</td><td class="mono">11879</td><td class="mono">1827</td></tr>
+          <tr><td class="mono">25</td><td class="name">en-glcontrol.com</td><td>GL Control</td><td>Stripe/PV</td><td class="mono">acct_1HMPnb</td><td class="mono">1263</td></tr>
+          <tr><td class="mono">26</td><td class="name">gumitidee.com</td><td>Gumitide</td><td>BuyGoods</td><td class="mono">12512</td><td class="mono">1274</td></tr>
+          <tr><td class="mono">27</td><td class="name">jellyfit-com.com</td><td>VittaBurn</td><td>BuyGoods</td><td class="mono">9564</td><td class="mono">150235</td></tr>
+          <tr><td class="mono">28</td><td class="name">horsewood-com.com</td><td>Horsewood</td><td>BuyGoods</td><td class="mono">12662</td><td class="mono">3754</td></tr>
+          <tr><td class="mono">29</td><td class="name">thenervora.com</td><td>Nervora</td><td>mweb*</td><td class="mono">12525</td><td class="mono">1343</td></tr>
+          <tr><td class="mono">30</td><td class="name">garaherb-com.com</td><td>GaraHerb</td><td>CartPanda</td><td class="mono">193383598</td><td class="mono">To49oyQYYG</td></tr>
+          <tr style="color:var(--warn)"><td class="mono">31</td><td class="name">theceramiri.com</td><td>Igenics =#16</td><td>BuyGoods</td><td class="mono">7163</td><td class="mono">32435</td></tr>
+          <tr><td class="mono">32</td><td class="name">prostapeak-com.com</td><td>Prosta Peak</td><td>ClickBank</td><td class="mono">fphp2-3</td><td class="mono">f6ea81nv1cs8</td></tr>
+          <tr><td class="mono">33</td><td class="name">viriflow-com.com</td><td>ViriFlow</td><td>BuyGoods</td><td class="mono">11123</td><td class="mono">2523</td></tr>
+          <tr><td class="mono">34</td><td class="name">respiclear-com.com</td><td>RespiClear</td><td>BuyGoods</td><td class="mono">8614</td><td class="mono">39346</td></tr>
+          <tr><td class="mono">35</td><td class="name">visualease-com.com</td><td>VisiFlora</td><td>BuyGoods</td><td class="mono">11856</td><td class="mono">2003</td></tr>
+          <tr><td class="mono">36</td><td class="name">us-mindvault-us.com</td><td>Mind Vault</td><td>BuyGoods</td><td class="mono">10996</td><td class="mono">13455</td></tr>
+          <tr><td class="mono">37</td><td class="name">nervecalm.us</td><td>NerveCalm</td><td>BuyGoods</td><td class="mono">9938</td><td class="mono">117719</td></tr>
+          <tr><td class="mono">38</td><td class="name">freesugarpro-us.com</td><td>Gluco Armor</td><td>BuyGoods</td><td class="mono">10601</td><td class="mono">27</td></tr>
+          <tr style="color:var(--bad)"><td class="mono">39</td><td class="name">neurosaltt.us</td><td>NeuroSalt</td><td>(morto)</td><td class="mono">—</td><td class="mono">199</td></tr>
+          <tr style="color:var(--warn)"><td class="mono">40</td><td class="name">glucopezil.com</td><td>GlucoTonic =#5</td><td>BuyGoods</td><td class="mono">10262</td><td class="mono">57611</td></tr>
+          <tr><td class="mono">41</td><td class="name">zencortex-us.com</td><td>ZenCortex</td><td>BuyGoods</td><td class="mono">9050</td><td class="mono">1054</td></tr>
+          <tr><td class="mono">42</td><td class="name">prodentim-us.com</td><td>ProDentim</td><td>BuyGoods</td><td class="mono">7086</td><td class="mono">130014</td></tr>
+          <tr><td class="mono">43</td><td class="name">sugardefender-us.com</td><td>Sugar Defender</td><td>ClickBank</td><td class="mono">sugardef</td><td class="mono">scalecode</td></tr>
+          <tr><td class="mono">44</td><td class="name">kerassentials-us.com</td><td>Kerassentials</td><td>ClickBank</td><td class="mono">—</td><td class="mono">6a1a1kxlh69</td></tr>
+          <tr><td class="mono">45</td><td class="name">quietum-plus-us.com</td><td>Quietum Plus</td><td>ClickBank</td><td class="mono">quietplus</td><td class="mono">freshman27</td></tr>
+          <tr><td class="mono">46</td><td class="name">us-miraclesheets.com</td><td>Miracle Made</td><td>DFO/Shopify</td><td class="mono">advid 166</td><td class="mono">21452</td></tr>
+          <tr><td class="mono">47</td><td class="name">cerebrozen-us.com</td><td>CerebroZen</td><td>BuyGoods</td><td class="mono">8942</td><td class="mono">11</td></tr>
+          <tr><td class="mono">48</td><td class="name">renew-us.com</td><td>Renew</td><td>ClickBank</td><td class="mono">saltwatertrick</td><td class="mono">abhi10k</td></tr>
+          <tr><td class="mono">49</td><td class="name">neotonics-us.com</td><td>Neotonics</td><td>ClickBank</td><td class="mono">neotonics</td><td class="mono">mean01</td></tr>
+          <tr><td class="mono">50</td><td class="name">gluconite-us.com</td><td>Gluconite</td><td>ClickBank</td><td class="mono">gluconite</td><td class="mono">—</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="notecols" style="margin-bottom:16px">
+        <div class="note"><h4>Padrões de domínio descobertos</h4><ul>
+          <li><b>Typosquatting sistemático:</b> en-X.com, X-com.com, theX.com, X.us, Xus.us, X.ca, X.shop, X.one, X.store</li>
+          <li><b>Cluster mweb*:</b> 6 domínios com formato idêntico de URL — maxwebconnect, mwebun, mweblynix, mwebtrackforge, mwebzova, mweblyx</li>
+          <li><b>improvingourhealth.com:</b> domínio upsell compartilhado por 6+ produtos da rede BuyGoods — sinal de vendor network</li>
+          <li><b>Mobirise:</b> builder de LP dominante na rede; assinatura no HTML identifica o operador</li>
+        </ul></div>
+        <div class="note"><h4>O que custou mais</h4><ul>
+          <li><b>Domínios parqueados/expirados</b> — 12-15 domínios mortos triados em &lt;10s pela triagem rápida</li>
+          <li><b>Rate limiting no tracker</b> — mweb* retornou "Tracking Redirect Error" após muitas sondas seguidas</li>
+          <li><b>Produto removido</b> — NeuroSalt (#39) tinha checkout 404, registrado como parcial</li>
+          <li><b>Intermediários sem CTA direto</b> — sugarfacts.org, gonativegut.com eram intermediários; dados extraídos via script embutido</li>
+        </ul></div>
+      </div>
+
+      <div class="note" style="margin-top:16px"><b>Dados completos:</b> <span class="mono">cloaker-hunt.json</span> no repo (50 funis + stacks + rebrands + habilidades). <b>Relatório visual:</b> publicado como artifact separado. Atualizado: <b>12/ago/2026</b>.</div>
 
     </div>
   </div><!-- /page-detetive -->
