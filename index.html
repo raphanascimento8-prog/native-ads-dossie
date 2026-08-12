@@ -415,7 +415,7 @@
       <button class="navitem silver" data-page="detetive" aria-current="false">O Detetive</button>
     </nav>
     <button id="themeToggle" class="theme-toggle" type="button"><span class="tdot"></span><span id="themeLabel">Modo claro</span></button>
-    <div class="nav-soon">Atualizado: <b>10/ago/2026</b><br>Páginas de ofertas/criativos/VSL são atualizadas a cada acesso. Dossiês só sob demanda.</div>
+    <div class="nav-soon">Atualizado: <b>12/ago/2026</b><br>Páginas de ofertas/criativos/VSL são atualizadas a cada acesso. Dossiês só sob demanda.</div>
   </aside>
   <main class="main">
   <div class="page active" id="page-ofertas">
@@ -1128,7 +1128,7 @@
           <h1>O Detetive</h1>
           <p>Cole o link que o criativo aponta. Ele descobre sozinho a rede, o geo e o device a partir do próprio link, atravessa o cloaker que fica entre criativo e advertorial, e mapeia o resto do funil: advertorial, VSL, saídas, tracker e checkout. Roda na sua máquina — nada do que for investigado é publicado.</p>
         </div>
-        <div class="snapshot"><b id="detStatus">Verificando o motor…</b><br>investigação local<br>criativo → advertorial → VSL → checkout</div>
+        <div class="snapshot"><b id="detStatus">Verificando o motor…</b><br>investigação local · 85/100 sparring<br>triagem + auto-escalation + 6 armas</div>
       </header>
 
       <div class="det-offline" id="detOffline" hidden>
@@ -1164,6 +1164,90 @@
       <div class="note" style="margin-top:16px"><h4>Inteligência acumulada</h4><div id="detIntel"><p>—</p></div></div>
       <div class="note" style="margin-top:16px"><h4>Vigilância — o que mudou nos alvos</h4><div id="detVigia"><p>—</p></div></div>
       <div class="note" style="margin-top:16px"><h4>Histórico</h4><div id="detHist"><p>—</p></div></div>
+
+      <div class="sec-label">Treinamento — Sparring Ring <span class="tag">100 cenários sintéticos · 12 níveis de dificuldade</span></div>
+
+      <div class="kpis" style="margin-bottom:18px">
+        <div class="kpi hl"><div class="n tnum">85<span style="font-size:18px;color:var(--faint)">/100</span></div><div class="l">Cenários quebrados</div></div>
+        <div class="kpi"><div class="n tnum">3</div><div class="l">Gaps reais consertados</div></div>
+        <div class="kpi"><div class="n tnum">30+</div><div class="l">Gates simulados</div></div>
+        <div class="kpi"><div class="n tnum">12</div><div class="l">Níveis de dificuldade</div></div>
+      </div>
+
+      <div class="insight" style="margin-bottom:16px">
+        <h3>O que o sparring ring ensinou</h3>
+        <p>100 cloakers imaginários com defesas combinadas. Progressão: <b>73 → 83 → 85</b> após consertar <b>3 fraquezas reais</b> do furador. Os 15 cenários restantes: 3 contradições (impossíveis), 7 combos de cobertura (identidades que não temos), 3 conflitos ref/click ID, 2 BOSS multi-fase. <b>Identidade vencedora: <span class="mono">br/android-chrome/taboola</span></b> — ganhou 53/85 cenários na primeira tentativa.</p>
+      </div>
+
+      <div class="nets" style="margin-bottom:18px">
+        <article class="net"><div class="net-h"><span class="net-b">Gap #1 · Timing Gate</span><span class="net-geo mono" style="color:var(--ok)">0% → 100%</span></div><ul>
+          <li><span class="dot w"></span><b>Problema:</b> fastProbe seguia redirects em &lt;5ms. Cloaker com token cronometrado detectava bot.<span class="obs"><b>Fix:</b> <span class="mono">hopDelay: 300</span> — delay de 300-600ms entre hops de redirect. Custo: ~600ms extra por sonda.</span></li>
+        </ul></article>
+        <article class="net"><div class="net-h"><span class="net-b">Gap #2 · Cookie Persistência</span><span class="net-geo mono" style="color:var(--ok)">0% → 100%</span></div><ul>
+          <li><span class="dot w"></span><b>Problema:</b> cada sonda começava com jar vazio. Cloaker que planta cookie na 1ª visita não reconhecia na 2ª.<span class="obs"><b>Fix:</b> <span class="mono">jarCompartilhado</span> — Map compartilhado entre todas as sondas do mesmo alvo.</span></li>
+        </ul></article>
+        <article class="net"><div class="net-h"><span class="net-b">Gap #3 · fbclid Coverage</span><span class="net-geo mono" style="color:var(--ok)">0% → 100%</span></div><ul>
+          <li><span class="dot w"></span><b>Problema:</b> referer 'facebook' não existe — correto é 'facebook-mobile'/'facebook-link'. Nenhuma identidade gerava fbclid.<span class="obs"><b>Fix:</b> nomes corretos no arsenal de identidades. Cloakers que gatam em fbclid agora são alcançáveis.</span></li>
+        </ul></article>
+      </div>
+
+      <div class="sec-label">Estresse em Campo — Alvos Reais <span class="tag">9 alvos atacados · validação das armas</span></div>
+
+      <div class="kpis" style="margin-bottom:18px">
+        <div class="kpi"><div class="n tnum">9</div><div class="l">Alvos atacados</div></div>
+        <div class="kpi hl"><div class="n tnum">2</div><div class="l">Abriram</div></div>
+        <div class="kpi"><div class="n tnum">7</div><div class="l">Mortos (triagem rápida)</div></div>
+        <div class="kpi"><div class="n tnum">~400s</div><div class="l">Tempo economizado</div></div>
+      </div>
+
+      <div class="tbl-wrap" style="margin-bottom:16px"><table>
+        <thead><tr><th>Alvo</th><th>Resultado</th><th>Tempo</th><th>Como</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Angel Whisperer</td><td><span class="status live">ABRIU</span></td><td class="mono">26s</td><td>JS cloaker → Chrome atravessou · <span class="mono">us/android-chrome/direct</span></td></tr>
+          <tr><td class="name">Clarify</td><td><span class="status live">ABRIU</span></td><td class="mono">15s</td><td>Dono reconhecido → chave vencedora · <span class="mono">us/win-chrome/direct</span></td></tr>
+          <tr><td class="name">Choiceonline</td><td><span class="status dead">BLOQUEADO</span></td><td class="mono">64s</td><td>Token de rede real — inquebrável sem tráfego legítimo</td></tr>
+          <tr><td class="name">Queima Gordura</td><td><span class="status dead">MORTO</span></td><td class="mono">&lt;1s</td><td>DNS não resolve · triagem rápida</td></tr>
+          <tr><td class="name">Gelatine Slim</td><td><span class="status dead">MORTO</span></td><td class="mono">&lt;1s</td><td>Path 404 · triagem rápida</td></tr>
+          <tr><td class="name">Prostlosina</td><td><span class="status dead">MORTO</span></td><td class="mono">&lt;2s</td><td>Path 404 · triagem rápida</td></tr>
+          <tr><td class="name">Secrets of Lourdes</td><td><span class="status dead">MORTO</span></td><td class="mono">&lt;2s</td><td>SSL error · triagem rápida</td></tr>
+          <tr><td class="name">Truque Do Mel Clarify</td><td><span class="status dead">MORTO</span></td><td class="mono">&lt;2s</td><td>Path 404 · triagem rápida</td></tr>
+          <tr><td class="name">Slimsy Clarify</td><td><span class="status dead">MORTO</span></td><td class="mono">&lt;2s</td><td>Path 404 · triagem rápida</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="notecols" style="margin-bottom:16px">
+        <div class="note"><h4>Aprendizado de campo</h4><ul>
+          <li><b>Triagem rápida</b> — matou 7 alvos mortos em &lt;2s cada, economizando ~400s de sondas desnecessárias.</li>
+          <li><b>Auto-escalation</b> — Angel Whisperer: primeiro tentou HTTP, detectou JS gate (200/0c), escalou pra Chrome automaticamente.</li>
+          <li><b>Reconhecimento de dono</b> — Clarify: ledger reconheceu o operador e pulou direto pra chave vencedora.</li>
+          <li><b>Token real é inquebrável</b> — choiceonline valida o VALOR do token (emitido pela rede), não só o formato. Caminho: swipe.</li>
+        </ul></div>
+        <div class="note"><h4>Estado do mercado</h4><ul>
+          <li><b>78% dos alvos do KB estão mortos</b> — o mercado native gira rápido. Domínios caem em dias.</li>
+          <li><b>JS cloaker</b> cai em ~26s com Chrome headless. É a defesa mais comum e a mais fraca.</li>
+          <li><b>Gate por IP/ASN/TLS</b> é o único que ainda segura — mas só redes grandes (Taboola, RevContent) implementam.</li>
+        </ul></div>
+      </div>
+
+      <div class="sec-label">Arsenal do Detetive <span class="tag">capacidades atuais · atualizado 12/ago/2026</span></div>
+
+      <div class="nets">
+        <article class="net"><div class="net-h"><span class="net-b">Identidades</span><span class="net-geo mono">19 geo × 10 device × 17 ref</span></div><ul>
+          <li><span class="dot w"></span><b>Vencedora: <span class="mono">br/android-chrome/taboola</span></b><span class="obs">53/85 cenários na primeira tentativa. Melhor combo para native ads brasileiras.</span></li>
+          <li><span class="dot g"></span><b>Backup: <span class="mono">us/android-chrome/direct</span></b><span class="obs">Funciona com Chrome headless para JS cloakers.</span></li>
+        </ul></article>
+        <article class="net"><div class="net-h"><span class="net-b">Armas</span><span class="net-geo mono">6 capacidades</span></div><ul>
+          <li><span class="dot w"></span><b>Triagem rápida</b><span class="obs">DNS → raiz → path em 3 checks. Mata alvo morto em &lt;2s.</span></li>
+          <li><span class="dot w"></span><b>Auto-escalation</b><span class="obs">HTTP → fastProbe → deepProbe (Chrome). Escala só quando precisa.</span></li>
+          <li><span class="dot w"></span><b>hopDelay</b><span class="obs">300-600ms entre redirect hops. Passa timing gates.</span></li>
+          <li><span class="dot w"></span><b>jarCompartilhado</b><span class="obs">Cookies persistem entre sondas do mesmo alvo.</span></li>
+          <li><span class="dot w"></span><b>Click IDs realistas</b><span class="obs">tblci (60-80 chars, prefixo GI), fbclid (base64), gclid.</span></li>
+          <li><span class="dot w"></span><b>Ledger de donos</b><span class="obs">Reconhece operador → pula direto pro motor certo.</span></li>
+        </ul></article>
+      </div>
+
+      <div class="note" style="margin-top:16px"><b>Como rodar o treino:</b> <span class="mono">node test/_sparring.mjs</span> (100 cenários, ~2min). <b>Estresse real:</b> <span class="mono">node test/_estresse.mjs</span> (5 alvos do KB). Dados em <span class="mono">data/sparring.json</span> e <span class="mono">data/estresse.json</span>. Atualizado: <b>12/ago/2026</b>.</div>
+
     </div>
   </div><!-- /page-detetive -->
   </main>
